@@ -1,0 +1,119 @@
+
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:300,600');
+body {
+    margin: 0;
+    background-image: url(../img/paciente.jpg);
+    background-blend-mode: multiply;
+    background-size: cover;
+    font-family: sans-serif;
+    font-weight: 400;
+    padding: 0;
+    background-color: #454545;
+}
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    cursor: pointer;
+    font-size: 16px;  
+    border: none;
+    outline: none;
+    color: white;
+    padding: 20px 20px;
+    background-color: inherit;
+    font-family: sans-serif;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.dropdown:hover .dropbtn, .dropbtn:focus {
+    background-color: #60aeee;
+    color: white;
+}
+
+.dropdown-content {
+    display: none;
+    position: fixed;
+    background-color: #151515;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: white;
+    padding: 20px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}
+/* Style the header with a grey background and some padding */
+.header {
+    position: absolute;
+    left:0px;
+    top:0px;
+    width: 90%;
+    overflow: hidden;
+    background-color: #151515;
+    padding: 10px 75px;
+    font-family: sans-serif;
+}
+
+/* Style the header links */
+.header a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 20px 25px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+.header a.logo {
+    font-size: 25px;
+    font-weight: bold;
+    padding: 12px;
+}
+
+/* Change the background color on mouse-over */
+.header a:hover {
+    background-color: #60aeee;
+    color: white;
+}
+
+/* Style the active/current link*/
+.header a.active {
+    background-color: dodgerblue;
+    color: white;
+}
+
+/* Float the link section to the right */
+.header-right {
+    float: right;
+}
+
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+@media screen and (max-width: 500px) {
+    .header a {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+    .header-right {
+        float: none;
+    }
+    
+}
