@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,13 +22,12 @@ public class GerenteModel {
             + Gerente.TURNO_DB_NAME + "," + Gerente.DPI_DB_NAME + "," + Gerente.DIRECCION_DB_NAME + "," + Gerente.SEXO_DB_NAME + ","
             + Gerente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?)";
     private static Connection connection = DbConnection.getConnection();
-    
 
     /**
      * Realizamos una busqueda en base al id del usuario. De no existir la nota
      * nos devuelve un valor null.
      *
-     * @param codigoGerente 
+     * @param codigoGerente
      * @return
      * @throws SQLException
      */
@@ -49,7 +49,7 @@ public class GerenteModel {
         }
         return gerente;
     }
-    
+
     /**
      * Verifica que las credenciales del gerente sean correctas
      *
@@ -64,5 +64,31 @@ public class GerenteModel {
             return gerente;
         }
         return null;
+    }
+
+    public Boolean enHora(int codigoGerente) throws SQLException {
+        LocalTime horaActual = LocalTime.now();
+        LocalTime horaInicio, horaFinal;
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_GERENTE);
+        preSt.setInt(1, codigoGerente);
+        ResultSet result = preSt.executeQuery();
+        String turno = "";
+        while (result.next()) {
+
+            turno = result.getString(Gerente.TURNO_DB_NAME);
+        }
+        if (turno.equals("Vespertino")) {
+            horaInicio = LocalTime.of(1, 0);
+            horaFinal = LocalTime.of(22, 0);
+        } else {
+            horaInicio = LocalTime.of(6, 0);
+            horaFinal = LocalTime.of(14, 30);
+        }
+
+        if (horaActual.isAfter(horaInicio) && (horaActual.isBefore(horaFinal))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -4,5 +4,6 @@ Controladores/Login.class
 Modelos/ClienteModel.class
 Modelos/GerenteModel.class
 Objetos/Gerente.class
+Controladores/Horario.class
 Objetos/Cajero.class
 Objetos/Cliente.class

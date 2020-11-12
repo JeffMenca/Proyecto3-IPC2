@@ -91,12 +91,15 @@ public class Login extends HttpServlet {
             Cliente cliente = clienteModel.loginValidation(Integer.parseInt(username), password);
             if (gerente != null && tipo.equals("Gerente")) {
                 request.getSession().setAttribute("id", username);
-                request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
+                request.getSession().setAttribute("gerente", gerente);
+                response.sendRedirect(request.getContextPath()+"/Horario");
             } else if (cajero != null && tipo.equals("Cajero")) {
                 request.getSession().setAttribute("id", username);
-                request.getRequestDispatcher("/cajero/CajeroIndex.jsp").forward(request, response);
+                request.getSession().setAttribute("cajero", cajero);
+                request.getRequestDispatcher("/cajero/CajeroIndex").forward(request, response);
             } else if (cliente != null && tipo.equals("Cliente")) {
                 request.getSession().setAttribute("id", username);
+                request.getSession().setAttribute("cliente", cliente);
                 request.getRequestDispatcher("/cliente/ClienteIndex.jsp").forward(request, response);
             } else {
                 request.setAttribute("success", 0);
