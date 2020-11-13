@@ -6,8 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalTime;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,27 +21,87 @@ public class GerenteModel {
     private final String CREAR_GERENTE = "INSERT INTO " + Gerente.GERENTE_DB_NAME + " (" + Gerente.NOMBRE_DB_NAME + ","
             + Gerente.TURNO_DB_NAME + "," + Gerente.DPI_DB_NAME + "," + Gerente.DIRECCION_DB_NAME + "," + Gerente.SEXO_DB_NAME + ","
             + Gerente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?)";
+    private final String CREAR_GERENTE_MANUAL = "INSERT INTO " + Gerente.GERENTE_DB_NAME + " (" + Gerente.CODIGO_DB_NAME + "," + Gerente.NOMBRE_DB_NAME + ","
+            + Gerente.TURNO_DB_NAME + "," + Gerente.DPI_DB_NAME + "," + Gerente.DIRECCION_DB_NAME + "," + Gerente.SEXO_DB_NAME + ","
+            + Gerente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
     private static Connection connection = DbConnection.getConnection();
+    HistorialGerenteModel historialGerente=new HistorialGerenteModel();
 
     /**
-     * Realizamos una busqueda en base al id del usuario. De no existir la nota
+     * Agregamos una nuevo gerente. Al completar la insercion devuelve el ID
+     * autogenerado del usuario. De no existir nos devolvera <code>-1</code>.
+     *
+     * @param gerente
+     * @return
+     * @throws SQLException
+     */
+    public long agregarGerente(Gerente gerente) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(CREAR_GERENTE, Statement.RETURN_GENERATED_KEYS);
+        preSt.setString(1, gerente.getNombre());
+        preSt.setString(2, gerente.getTurno());
+        preSt.setString(3, gerente.getDPI());
+        preSt.setString(4, gerente.getDireccion());
+        preSt.setString(5, gerente.getSexo());
+        preSt.setString(6, gerente.getPassword());
+
+        preSt.executeUpdate();
+        historialGerente.agregarHistorialGerente(gerente);
+        ResultSet result = preSt.getGeneratedKeys();
+        if (result.first()) {
+            return result.getLong(1);
+        }
+        return -1;
+        
+    }
+
+    /**
+     * Agregamos una nuevo gerente con codigo manual. Al completar la insercion
+     * devuelve el codigo De no existir nos devolvera <code>-1</code>.
+     *
+     * @param gerente
+     * @return
+     * @throws SQLException
+     */
+    public long agregarGerenteManualmente(Gerente gerente) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(CREAR_GERENTE_MANUAL, Statement.RETURN_GENERATED_KEYS);
+
+        preSt.setLong(1, gerente.getCodigo());
+        preSt.setString(2, gerente.getNombre());
+        preSt.setString(3, gerente.getTurno());
+        preSt.setString(4, gerente.getDPI());
+        preSt.setString(5, gerente.getDireccion());
+        preSt.setString(6, gerente.getSexo());
+        preSt.setString(7, gerente.getPassword());
+
+        preSt.executeUpdate();
+
+        ResultSet result = preSt.getGeneratedKeys();
+        if (result.first()) {
+            return result.getLong(1);
+        }
+        return -1;
+    }
+
+    
+    /**
+     * Realizamos una busqueda en base al codigo del gerente. De no existir
      * nos devuelve un valor null.
      *
      * @param codigoGerente
      * @return
      * @throws SQLException
      */
-    public Gerente obtenerGerente(int codigoGerente) throws SQLException {
+    public Gerente obtenerGerente(Long codigoGerente) throws SQLException {
         PreparedStatement preSt = connection.prepareStatement(BUSCAR_GERENTE);
-        preSt.setInt(1, codigoGerente);
+        preSt.setLong(1, codigoGerente);
         ResultSet result = preSt.executeQuery();
         Gerente gerente = null;
         while (result.next()) {
             gerente = new Gerente(
-                    result.getInt(Gerente.CODIGO_DB_NAME),
+                    result.getLong(Gerente.CODIGO_DB_NAME),
                     result.getString(Gerente.NOMBRE_DB_NAME),
                     result.getString(Gerente.TURNO_DB_NAME),
-                    result.getInt(Gerente.DPI_DB_NAME),
+                    result.getString(Gerente.DPI_DB_NAME),
                     result.getString(Gerente.DIRECCION_DB_NAME),
                     result.getString(Gerente.SEXO_DB_NAME),
                     result.getString(Gerente.PASSWORD_DB_NAME)
@@ -58,7 +118,7 @@ public class GerenteModel {
      * @return
      * @throws SQLException
      */
-    public Gerente loginValidation(int codigo, String password) throws SQLException {
+    public Gerente loginValidation(Long codigo, String password) throws SQLException {
         Gerente gerente = obtenerGerente(codigo);
         if (gerente != null && gerente.getPassword().equals(password)) {
             return gerente;
@@ -66,11 +126,18 @@ public class GerenteModel {
         return null;
     }
 
-    public Boolean enHora(int codigoGerente) throws SQLException {
+    /**
+     * Verifica si el gerente estra trabajando dentro de su turno
+     *
+     * @param codigoGerente
+     * @return
+     * @throws SQLException
+     */
+    public Boolean enHora(Long codigoGerente) throws SQLException {
         LocalTime horaActual = LocalTime.now();
         LocalTime horaInicio, horaFinal;
         PreparedStatement preSt = connection.prepareStatement(BUSCAR_GERENTE);
-        preSt.setInt(1, codigoGerente);
+        preSt.setLong(1, codigoGerente);
         ResultSet result = preSt.executeQuery();
         String turno = "";
         while (result.next()) {

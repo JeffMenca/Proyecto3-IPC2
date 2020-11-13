@@ -17,10 +17,10 @@ USE `ELBILLETON` ;
 -- Tabla Gerente`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `GERENTE` (
-  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `codigo` BIGINT(19) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(200) NOT NULL,
   `turno` VARCHAR(45) NOT NULL,
-  `DPI` INT NOT NULL,
+  `DPI` VARCHAR(20) NOT NULL,
   `direccion` VARCHAR(200) NOT NULL,
   `sexo` VARCHAR(45) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
@@ -32,10 +32,10 @@ CREATE TABLE IF NOT EXISTS `GERENTE` (
 -- Tabla Cajero`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CAJERO` (
-  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `codigo` BIGINT(19) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(200) NOT NULL,
   `turno` VARCHAR(45) NOT NULL,
-  `DPI` INT NOT NULL,
+  `DPI` VARCHAR(20) NOT NULL,
   `direccion` VARCHAR(200) NOT NULL,
   `sexo` VARCHAR(45) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
@@ -47,10 +47,10 @@ INSERT INTO CAJERO VALUES(101,'Banca virtual','Toda hora',101,'','','8cX7%%tedj4
 -- Tabla Cliente
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CLIENTE` (
-  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `codigo` BIGINT(19) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(200) NOT NULL,
   `fecha_nacimiento` DATE NOT NULL,
-  `DPI` INT NOT NULL,
+  `DPI` VARCHAR(200) NOT NULL,
   `direccion` VARCHAR(200) NOT NULL,
   `sexo` VARCHAR(45) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
@@ -63,10 +63,10 @@ CREATE TABLE IF NOT EXISTS `CLIENTE` (
 -- Tabla cuenta
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CUENTA` (
-  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `codigo` BIGINT(19) NOT NULL AUTO_INCREMENT,
   `fecha_creacion` DATE NOT NULL,
   `monto` DOUBLE NOT NULL,
-  `cliente_codigo` INT NOT NULL,
+  `cliente_codigo` BIGINT(19) NOT NULL,
   PRIMARY KEY (`codigo`),
   FOREIGN KEY (`cliente_codigo`) 
   REFERENCES `CLIENTE` (`codigo`));
@@ -79,8 +79,8 @@ CREATE TABLE IF NOT EXISTS `SOLICITUD_ASOCIACION` (
   `codigo` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
-  `cuenta_envia_codigo` INT NOT NULL,
-  `cuenta2_recibe_codigo1` INT NOT NULL,
+  `cuenta_envia_codigo` BIGINT(19) NOT NULL,
+  `cuenta2_recibe_codigo1` BIGINT(19) NOT NULL,
   PRIMARY KEY (`codigo`),
     FOREIGN KEY (`cuenta_envia_codigo`)
     REFERENCES `CUENTA` (`codigo`),
@@ -104,13 +104,13 @@ CREATE TABLE IF NOT EXISTS `ASOCIACION_CUENTAS` (
 -- Tabla Transaccion
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRANSACCION` (
-  `codigo` INT NOT NULL AUTO_INCREMENT,
+  `codigo` BIGINT(19) NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
-  `hora` DOUBLE NOT NULL,
+  `hora` TIME NOT NULL,
   `tipo` VARCHAR(45) NOT NULL,
   `monto` DOUBLE NOT NULL,
-  `cuenta_codigo` INT NOT NULL,
-  `cajero_codigo` INT NOT NULL,
+  `cuenta_codigo` BIGINT(19) NOT NULL,
+  `cajero_codigo` BIGINT(19) NOT NULL,
   PRIMARY KEY (`codigo`),
     FOREIGN KEY (`cuenta_codigo`)
     REFERENCES `CUENTA` (`codigo`),
@@ -125,11 +125,11 @@ CREATE TABLE IF NOT EXISTS `HISTORIAL_GERENTE` (
   `codigo` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(200) NOT NULL,
   `turno` VARCHAR(45) NOT NULL,
-  `DPI` INT NOT NULL,
+  `DPI` VARCHAR(20) NOT NULL,
   `direccion` VARCHAR(200) NOT NULL,
   `sexo` VARCHAR(45) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
-  `gerente_codigo` INT NOT NULL,
+  `gerente_codigo` BIGINT(19) NOT NULL,
   PRIMARY KEY (`codigo`),
     FOREIGN KEY (`gerente_codigo`)
     REFERENCES `GERENTE` (`codigo`));
@@ -142,11 +142,11 @@ CREATE TABLE IF NOT EXISTS `HISTORIAL_CAJERO` (
   `codigo` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(200) NOT NULL,
   `turno` VARCHAR(45) NOT NULL,
-  `DPI` INT NOT NULL,
+  `DPI` VARCHAR(20) NOT NULL,
   `direccion` VARCHAR(200) NOT NULL,
   `sexo` VARCHAR(45) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
-  `cajero_codigo` INT NOT NULL,
+  `cajero_codigo` BIGINT(19) NOT NULL,
   PRIMARY KEY (`codigo`),
     FOREIGN KEY (`cajero_codigo`)
     REFERENCES `CAJERO` (`codigo`));
@@ -159,12 +159,12 @@ CREATE TABLE IF NOT EXISTS `HISTORIAL_CLIENTE` (
   `codigo` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(200) NOT NULL,
   `fecha_nacimiento` DATE NOT NULL,
-  `DPI` INT NOT NULL,
+  `DPI` VARCHAR(20) NOT NULL,
   `direccion` VARCHAR(200) NOT NULL,
   `sexo` VARCHAR(45) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
   `DPI_copia` MEDIUMBLOB NOT NULL,
-  `cliente_codigo` INT NOT NULL,
+  `cliente_codigo` BIGINT(19) NOT NULL,
   PRIMARY KEY (`codigo`),
     FOREIGN KEY (`cliente_codigo`)
     REFERENCES `CLIENTE` (`codigo`));

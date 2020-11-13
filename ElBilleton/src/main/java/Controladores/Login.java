@@ -21,7 +21,10 @@ import java.sql.SQLException;
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
-
+    
+    /**
+     * Objetos de entidad para comprobar en el login
+     */
     GerenteModel gerenteModel = new GerenteModel();
     CajeroModel cajeroModel = new CajeroModel();
     ClienteModel clienteModel = new ClienteModel();
@@ -79,34 +82,37 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         /**
-     * Abre el formulario especifico de una entidad si valida las credenciales
-     *
-     */
+         * Abre el formulario especifico de una entidad si valida las
+         * credenciales
+         *
+         */
         try {
             String username = request.getParameter("usuario");
             String password = request.getParameter("password");
             String tipo = request.getParameter("tipo");
-            Gerente gerente = gerenteModel.loginValidation(Integer.parseInt(username), password);
-            Cajero cajero = cajeroModel.loginValidation(Integer.parseInt(username), password);
-            Cliente cliente = clienteModel.loginValidation(Integer.parseInt(username), password);
+            //Objetos de validacion
+            Gerente gerente = gerenteModel.loginValidation(Long.parseLong(username), password);
+            Cajero cajero = cajeroModel.loginValidation(Long.parseLong(username), password);
+            Cliente cliente = clienteModel.loginValidation(Long.parseLong(username), password);
             if (gerente != null && tipo.equals("Gerente")) {
-                request.getSession().setAttribute("id", username);
+                request.getSession().setAttribute("user", username);
                 request.getSession().setAttribute("gerente", gerente);
-                response.sendRedirect(request.getContextPath()+"/Horario");
+                response.sendRedirect(request.getContextPath() + "/Horario");
             } else if (cajero != null && tipo.equals("Cajero")) {
-                request.getSession().setAttribute("id", username);
+                request.getSession().setAttribute("user", username);
                 request.getSession().setAttribute("cajero", cajero);
                 request.getRequestDispatcher("/cajero/CajeroIndex").forward(request, response);
             } else if (cliente != null && tipo.equals("Cliente")) {
-                request.getSession().setAttribute("id", username);
+                request.getSession().setAttribute("user", username);
                 request.getSession().setAttribute("cliente", cliente);
                 request.getRequestDispatcher("/cliente/ClienteIndex.jsp").forward(request, response);
             } else {
+                //Datos incorrectos
                 request.setAttribute("success", 0);
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
             }
         } catch (SQLException | IOException | NumberFormatException e) {
-            
+            //No lleno datos
             request.setAttribute("success", 2);
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }

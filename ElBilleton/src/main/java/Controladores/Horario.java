@@ -66,7 +66,7 @@ public class Horario extends HttpServlet {
             horaInicio = LocalTime.of(6, 0);
             horaFinal = LocalTime.of(14, 30);
         }
-
+        
         if (horaActual.isAfter(horaInicio) && (horaActual.isBefore(horaFinal))) {
             request.getSession().setAttribute("enHora", "Si");
             request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);

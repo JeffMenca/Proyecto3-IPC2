@@ -5,7 +5,7 @@
         <title>Menu</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../styles/MenuNavStyle.css?3.0">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/MenuNavStyle.css?3.0">
 
     </head>
     <body>
@@ -14,6 +14,7 @@
             <div class="header-right">
                 <div class="navbar">
                     <a href="${pageContext.request.contextPath}/gerente/GerenteIndex.jsp">Inicio</a>
+                    <a href="${pageContext.request.contextPath}/HorarioCargarDatos">Cargar datos</a>
                     <div class="dropdown">
                         <button class="dropbtn" onclick="dropCrear()">Crear usuarios
                             <i class="fa fa-caret-down"></i>

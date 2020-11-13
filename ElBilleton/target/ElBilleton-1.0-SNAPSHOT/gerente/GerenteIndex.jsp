@@ -19,12 +19,14 @@
     <body>
         <%@include  file="MenuNavigator.jsp" %>
         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
-    <center><h1 style="color:white;">Bienvenido gerente: ${gerente.getNombre()}</h1></h1></center>
+    <center><h1 style="color:white;">Bienvenido gerente</h1></h1></center>
     <br> 
     <center><div style="color:white;">
             <strong><p>Codigo: ${gerente.getCodigo()}</p>
+                <p>Nombre: ${gerente.getNombre()}</p>
                 <p>Turno: ${gerente.getTurno()}</p>
                 <p>Esta en turno?: ${enHora}</p></strong>
+                <br>
             <p>Aqui podra administrar los usuarios que accedan al portal .</p>
             <p>Podra crear usuarios como clientes,cajeros y gerentes</p>
             <p>Podra generar reportes y exportarlos de facil manera .</p>
