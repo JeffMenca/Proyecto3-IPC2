@@ -37,8 +37,8 @@
                     </div>
                     <div class="col-77">
                         <select id="country2" name="turno">
-                            <option value="vespertino" >Vespertino</option>  
-                            <option value="matutino" >Matutino</option>
+                            <option value="Vespertino" >Vespertino</option>  
+                            <option value="Matutino" >Matutino</option>
                         </select>
                     </div>
                 </div>
@@ -64,9 +64,9 @@
                     </div>
                     <div class="col-77">
                         <select id="country2" name="sexo">
-                            <option value="masculino" >Masculino</option>  
-                            <option value="femenino" >Femenino</option>
-                            <option value="otro" >Otro</option>
+                            <option value="Masculino" >Masculino</option>  
+                            <option value="Femenino" >Femenino</option>
+                            <option value="Otro" >Otro</option>
                         </select>
                     </div>
                 </div>

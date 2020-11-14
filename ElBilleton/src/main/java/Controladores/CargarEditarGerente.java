@@ -1,11 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controladores;
 
+import Modelos.CajeroModel;
 import Modelos.GerenteModel;
+import Objetos.Cajero;
+import Objetos.Gerente;
+import SQLConnector.Encriptar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jeffrey
  */
-@WebServlet(name = "HorarioAcciones", urlPatterns = {"/HorarioAcciones"})
-public class HorarioAcciones extends HttpServlet {
+@WebServlet(name = "CargarEditarGerente", urlPatterns = {"/CargarEditarGerente"})
+public class CargarEditarGerente extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +38,10 @@ public class HorarioAcciones extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HorarioCargarDatos</title>");
+            out.println("<title>Servlet CargarCliente</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HorarioCargarDatos at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CargarCliente at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,40 +59,15 @@ public class HorarioAcciones extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Long codigo = Long.valueOf((String) request.getSession().getAttribute("user"));
+        GerenteModel gerenteModel = new GerenteModel();
         try {
-            GerenteModel gerenteModel = new GerenteModel();
-            String codigo = String.valueOf(request.getSession().getAttribute("user"));
-            String opcion = request.getParameter("opcion");
-            long user = Long.valueOf(codigo);
-            try {
-                if (gerenteModel.enHora(user) == true) {
-                    if (opcion.equals("1")) {
-                        request.getRequestDispatcher("/gerente/CargarDatos.jsp").forward(request, response);
-                    } else if (opcion.equals("2")) {
-                        request.getRequestDispatcher("/gerente/CrearCliente.jsp").forward(request, response);
-                    } else if (opcion.equals("3")) {
-                        request.getRequestDispatcher("/VerClientes").forward(request, response);
-                    } else if (opcion.equals("4")) {
-                        request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
-                    } else if (opcion.equals("5")) {
-                        request.getRequestDispatcher("/gerente/CrearGerente.jsp").forward(request, response);
-                    } else if (opcion.equals("6")) {
-                        request.getRequestDispatcher("/CargarEditarGerente").forward(request, response);
-                    } else if (opcion.equals("7")) {
-                        request.getRequestDispatcher("/VerEditarCajeros").forward(request, response);
-                    } else if (opcion.equals("8")) {
-                        request.getRequestDispatcher("/VerEditarClientes").forward(request, response);
-                    }
-
-                } else {
-                    request.getRequestDispatcher("/gerente/ErrorHorario.jsp").forward(request, response);
-                }
-            } catch (Exception e) {
-            }
+            Gerente gerente=gerenteModel.obtenerGerente(codigo);
+            String password=gerente.getPassword();
+            gerente.setPassword(Encriptar.desencriptar(password));
+            request.setAttribute("gerenteSeleccionado", gerente);
+            request.getRequestDispatcher("/gerente/EditarGerente.jsp").forward(request, response);
         } catch (Exception e) {
-            if (request.getSession().getAttribute("user") == null) {
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
-            }
         }
 
     }

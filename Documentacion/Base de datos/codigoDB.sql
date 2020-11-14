@@ -40,7 +40,6 @@ CREATE TABLE IF NOT EXISTS `CAJERO` (
   `sexo` VARCHAR(45) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`codigo`));
-  INSERT INTO CAJERO VALUES(1,'Banca virtual','Toda hora',101,'','','123');
 INSERT INTO CAJERO VALUES(101,'Banca virtual','Toda hora',101,'','','8cX7%%tedj4!yJm4');
 
 -- -----------------------------------------------------

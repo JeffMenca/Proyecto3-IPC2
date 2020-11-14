@@ -5,9 +5,11 @@
  */
 package Controladores;
 
-import Modelos.GerenteModel;
+import Modelos.CajeroModel;
+import Modelos.ClienteModel;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jeffrey
  */
-@WebServlet(name = "HorarioAcciones", urlPatterns = {"/HorarioAcciones"})
-public class HorarioAcciones extends HttpServlet {
+@WebServlet(name = "VerEditarCajeros", urlPatterns = {"/VerEditarCajeros"})
+public class VerEditarCajeros extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +40,10 @@ public class HorarioAcciones extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HorarioCargarDatos</title>");
+            out.println("<title>Servlet VerClientes</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HorarioCargarDatos at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet VerClientes at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,40 +61,19 @@ public class HorarioAcciones extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        CajeroModel cajeroModel = new CajeroModel();
         try {
-            GerenteModel gerenteModel = new GerenteModel();
-            String codigo = String.valueOf(request.getSession().getAttribute("user"));
-            String opcion = request.getParameter("opcion");
-            long user = Long.valueOf(codigo);
-            try {
-                if (gerenteModel.enHora(user) == true) {
-                    if (opcion.equals("1")) {
-                        request.getRequestDispatcher("/gerente/CargarDatos.jsp").forward(request, response);
-                    } else if (opcion.equals("2")) {
-                        request.getRequestDispatcher("/gerente/CrearCliente.jsp").forward(request, response);
-                    } else if (opcion.equals("3")) {
-                        request.getRequestDispatcher("/VerClientes").forward(request, response);
-                    } else if (opcion.equals("4")) {
-                        request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
-                    } else if (opcion.equals("5")) {
-                        request.getRequestDispatcher("/gerente/CrearGerente.jsp").forward(request, response);
-                    } else if (opcion.equals("6")) {
-                        request.getRequestDispatcher("/CargarEditarGerente").forward(request, response);
-                    } else if (opcion.equals("7")) {
-                        request.getRequestDispatcher("/VerEditarCajeros").forward(request, response);
-                    } else if (opcion.equals("8")) {
-                        request.getRequestDispatcher("/VerEditarClientes").forward(request, response);
-                    }
+            ArrayList cajeros = cajeroModel.obtenerCajeros();
+            String codigo = request.getParameter("filtro");
 
-                } else {
-                    request.getRequestDispatcher("/gerente/ErrorHorario.jsp").forward(request, response);
-                }
-            } catch (Exception e) {
+            if (codigo == null || (codigo != null && codigo.isEmpty())) {
+                cajeros = cajeroModel.obtenerCajeros();
+            } else {
+                cajeros = cajeroModel.obtenerCajerosLike(codigo);
             }
+            request.setAttribute("listaCajeros", cajeros);
+            request.getRequestDispatcher("/gerente/VerEditarCajero.jsp").forward(request, response);
         } catch (Exception e) {
-            if (request.getSession().getAttribute("user") == null) {
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
-            }
         }
 
     }

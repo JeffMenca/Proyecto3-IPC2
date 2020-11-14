@@ -31,8 +31,8 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content" id="editar">
-                            <a href="VerCitaConsulta.jsp">Actualizar informacion</a>
-                            <a href="VerPacienteNuevo.jsp">Actualizar cajero</a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=6">Actualizar informacion</a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=7">Actualizar cajero</a>
                             <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=8">Actualizar cliente</a>
                         </div>
                     </div>

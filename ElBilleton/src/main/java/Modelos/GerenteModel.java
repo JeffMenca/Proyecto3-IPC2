@@ -25,6 +25,9 @@ public class GerenteModel {
     private final String CREAR_GERENTE_MANUAL = "INSERT INTO " + Gerente.GERENTE_DB_NAME + " (" + Gerente.CODIGO_DB_NAME + "," + Gerente.NOMBRE_DB_NAME + ","
             + Gerente.TURNO_DB_NAME + "," + Gerente.DPI_DB_NAME + "," + Gerente.DIRECCION_DB_NAME + "," + Gerente.SEXO_DB_NAME + ","
             + Gerente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
+    private final String EDITAR_GERENTE = "UPDATE " + Gerente.GERENTE_DB_NAME + " SET " + Gerente.NOMBRE_DB_NAME + "=?,"
+            + Gerente.TURNO_DB_NAME + "=?," + Gerente.DPI_DB_NAME + "=?," + Gerente.DIRECCION_DB_NAME + "=?," + Gerente.SEXO_DB_NAME + "=?,"
+            + Gerente.PASSWORD_DB_NAME + "=? WHERE codigo=?";
     private static Connection connection = DbConnection.getConnection();
     HistorialGerenteModel historialGerente = new HistorialGerenteModel();
 
@@ -122,6 +125,33 @@ public class GerenteModel {
             );
         }
         return gerente;
+    }
+    
+    /**
+     * Editamos el cajero por medio de un codig
+     *
+     * @param cajero
+     * @throws SQLException
+     */
+    public void actualizarGerente(Gerente gerente, Long codigoGerente) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(EDITAR_GERENTE, Statement.RETURN_GENERATED_KEYS);
+
+            preSt.setString(1, gerente.getNombre());
+            preSt.setString(2, gerente.getTurno());
+            preSt.setString(3, gerente.getDPI());
+            preSt.setString(4, gerente.getDireccion());
+            preSt.setString(5, gerente.getSexo());
+            try {
+                preSt.setString(6, Encriptar.encriptar(gerente.getPassword()));
+            } catch (Exception e) {
+            }
+            preSt.setLong(7, codigoGerente);
+            preSt.executeUpdate();
+
+        } catch (Exception e) {
+        }
+
     }
 
     /**

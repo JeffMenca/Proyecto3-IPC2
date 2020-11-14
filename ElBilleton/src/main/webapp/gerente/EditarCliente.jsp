@@ -72,9 +72,9 @@
                     <div class="col-77">
                         <select id="country2" name="sexo">
                             <option  value="${clienteSeleccionado.getSexo()}"> ${clienteSeleccionado.getSexo()}</option>
-                            <option value="masculino" >Masculino</option>  
-                            <option value="femenino" >Femenino</option>
-                            <option value="otro" >Otro</option>
+                            <option value="Masculino" >Masculino</option>  
+                            <option value="Femenino" >Femenino</option>
+                            <option value="Otro" >Otro</option>
                         </select>
                     </div>
                 </div>
@@ -83,7 +83,9 @@
                         <label for="fname">Seleccionar archivos</label>
                     </div>
                     <div class="col-77">
-                        <input type="file" id="lfile" name="archivo"  multiple required>
+                        
+                        <a href="${pageContext.request.contextPath}/CargarDPI?codigo=${clienteSeleccionado.getCodigo()}" target="_blank">Ver el DPI en PDF</a>
+                        <input type="file" id="lfile" name="archivo"  multiple >
                     </div>
                 </div>
                 <div class="row">
@@ -115,7 +117,7 @@
         <c:if test="${successEditarCliente == 1}">
             <div class="alert1">
                 <span class="closebtn"> 
-                    <strong>Creado</strong> El cliente se edito exitosamente
+                    <strong>Actualizado</strong> El cliente se edito exitosamente
             </div>
         </c:if>
     </body>

@@ -18,7 +18,7 @@
     </head> 
     <body>
         <%@include  file="MenuNavigator.jsp" %>
-        <form method="GET" action="VerEditarCliente">
+        <form method="GET" action="VerEditarClientes">
 
             <br> <br> <br> <br> <br> <br> <br> 
 

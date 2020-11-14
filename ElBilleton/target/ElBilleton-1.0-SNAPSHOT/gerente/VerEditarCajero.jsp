@@ -18,12 +18,12 @@
     </head> 
     <body>
         <%@include  file="MenuNavigator.jsp" %>
-        <form method="GET" action="VerEditarClientes">
+        <form method="GET" action="VerEditarCajeros">
 
             <br> <br> <br> <br> <br> <br> <br> 
 
             <div class="container">
-                <h1 style="color:WHITE">Seleccionar Cliente</h1>
+                <h1 style="color:WHITE">Seleccionar Cajero</h1>
                 <br> <br>
                 <div class="wrap">
                     <div class="search">
@@ -37,23 +37,23 @@
                     <tr>
                         <th >Codigo  </th>
                         <th >Nombre  </th>
+                        <th >Turno  </th>
                         <th >DPI  </th>
                         <th >Direccion  </th>
                         <th >Sexo  </th>
-                        <th >Fecha de nacimiento  </th>
                         <th >Seleccionar  </th>
                     </tr>
-                    <c:forEach items="${listaClientes}" var="cliente">
+                    <c:forEach items="${listaCajeros}" var="cajero">
                         <tr>
-                            <td>${cliente.getCodigo()}</td>
-                            <td>${cliente.getNombre()}</td>
-                            <td>${cliente.getDPI()}</td>
-                            <td>${cliente.getDireccion()}</td>
-                            <td>${cliente.getSexo()}</td>
-                            <td>${cliente.getFechaNacimiento()}</td>
+                            <td>${cajero.getCodigo()}</td>
+                            <td>${cajero.getNombre()}</td>
+                            <td>${cajero.getTurno()}</td>
+                            <td>${cajero.getDPI()}</td>
+                            <td>${cajero.getDireccion()}</td>
+                            <td>${cajero.getSexo()}</td>
                             <td>
                                 
-                                <a class="button" href="${pageContext.request.contextPath}/CargarEditarCliente?codigo=${cliente.getCodigo()}">Seleccionar</a>
+                                <a class="button" href="${pageContext.request.contextPath}/CargarEditarCajero?codigo=${cajero.getCodigo()}">Seleccionar</a>
                             </td>
                         </tr>
                     </c:forEach>

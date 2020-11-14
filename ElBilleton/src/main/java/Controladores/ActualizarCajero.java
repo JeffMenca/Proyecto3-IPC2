@@ -1,8 +1,11 @@
 package Controladores;
 
 import Clases.GeneradorArchivo;
+import Modelos.CajeroModel;
 import Modelos.ClienteModel;
+import Modelos.HistorialCajeroModel;
 import Modelos.HistorialClienteModel;
+import Objetos.Cajero;
 import Objetos.Cliente;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,9 +24,9 @@ import javax.swing.JOptionPane;
  *
  * @author jeffrey
  */
-@WebServlet(name = "ActualizarCliente", urlPatterns = {"/ActualizarCliente"})
+@WebServlet(name = "ActualizarCajero", urlPatterns = {"/ActualizarCajero"})
 @MultipartConfig
-public class ActualizarCliente extends HttpServlet {
+public class ActualizarCajero extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,52 +81,32 @@ public class ActualizarCliente extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ClienteModel clienteModel = new ClienteModel();
-            HistorialClienteModel historialClienteModel = new HistorialClienteModel();
-            GeneradorArchivo generadorArchivo = new GeneradorArchivo();
-            
-            Long codigoCliente = Long.parseLong((String) request.getParameter("codigo"));
+            CajeroModel cajeroModel = new CajeroModel();
+            HistorialCajeroModel historialCajeroModel = new HistorialCajeroModel();
+
+            Long codigoCajero = Long.parseLong((String) request.getParameter("codigo"));
             String nombre = request.getParameter("nombre");
-            Date fecha_nacimiento = Date.valueOf((String) request.getParameter("fecha"));
+            String turno = request.getParameter("turno");
             String DPI = request.getParameter("DPI");
             String direccion = request.getParameter("direccion");
             String sexo = request.getParameter("sexo");
             String password = request.getParameter("password");
-            InputStream archivo = InputStream.nullInputStream();
-            Part file = request.getPart("archivo");
-            if (file != null && file.getSize()>0) {
-                try {
-                    archivo = generadorArchivo.extraerArchivo("archivo", request);
-                    Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, archivo);
-                    try {
-                        clienteModel.actualizarCliente(nuevoCliente, codigoCliente);
-                        historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
-                        request.setAttribute("successEditarCliente", 1);
-                        request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);
-                    } catch (Exception e) {
-                        request.setAttribute("successEditarCliente", 0);
-                        request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);
-                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e);
-                }
-            } else {
-                Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, clienteModel.obtenerDPI(codigoCliente));
-                try {
-                    clienteModel.actualizarCliente(nuevoCliente, codigoCliente);
-                    historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
-                    request.setAttribute("successEditarCliente", 1);
-                    request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);
-                } catch (Exception e) {
-                    request.setAttribute("successEditarCliente", 0);
-                    request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);
-                }
+
+            Cajero nuevoCajero = new Cajero(0, nombre, turno, DPI, direccion, sexo, password);
+            try {
+                cajeroModel.actualizarCajero(nuevoCajero, codigoCajero);
+                historialCajeroModel.agregarHistorialCajeroCodigo(nuevoCajero, codigoCajero);
+                request.setAttribute("successEditarCajero", 1);
+                request.getRequestDispatcher("/gerente/EditarCajero.jsp").forward(request, response);
+            } catch (Exception e) {
+                request.setAttribute("successEditarCajero", 0);
+                request.getRequestDispatcher("/gerente/EditarCajero.jsp").forward(request, response);
             }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        
+
     }
 
     /**

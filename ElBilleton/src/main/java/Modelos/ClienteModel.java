@@ -3,6 +3,7 @@ package Modelos;
 import Objetos.Cliente;
 import SQLConnector.DbConnection;
 import SQLConnector.Encriptar;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +31,7 @@ public class ClienteModel {
     private final String EDITAR_CLIENTE = "UPDATE " + Cliente.CLIENTE_DB_NAME + " SET " + Cliente.NOMBRE_DB_NAME + "=?,"
             + Cliente.FECHA_DB_NAME + "=?," + Cliente.DPI_DB_NAME + "=?," + Cliente.DIRECCION_DB_NAME + "=?," + Cliente.SEXO_DB_NAME + "=?,"
             + Cliente.PASSWORD_DB_NAME + "=?," + Cliente.PDF_DB_NAME + "=? WHERE "+Cliente.CODIGO_DB_NAME+" =?";
+    private final String DPI_CLIENTE = "SELECT " + Cliente.PDF_DB_NAME + " FROM " + Cliente.CLIENTE_DB_NAME + " WHERE " + Cliente.CODIGO_DB_NAME + "= ?";
     private static Connection connection = DbConnection.getConnection();
     HistorialClienteModel historialCliente = new HistorialClienteModel();
     CuentaModel cuentasModel = new CuentaModel();
@@ -219,6 +221,29 @@ public class ClienteModel {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
+    }
+    
+    /**
+     * Obtiene el DPI en PDF
+     *
+     * @param cliente
+     * @throws SQLException
+     */
+    public InputStream obtenerDPI(long codigo) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(DPI_CLIENTE);
+            preSt.setLong(1, codigo);
+
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                return result.getBlob(1).getBinaryStream();
+            }
+
+        } catch (SQLException e) {
+            return null;
+        }
+        return null;
     }
 
     /**

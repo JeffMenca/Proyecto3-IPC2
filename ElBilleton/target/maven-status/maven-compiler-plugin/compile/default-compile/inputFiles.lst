@@ -1,8 +1,10 @@
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/ActualizarCliente.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Objetos/Transaccion.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Objetos/Gerente.java
+/home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/CargarEditarCajero.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/CargaDatos.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Modelos/HistorialGerenteModel.java
+/home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/CargarDPI.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/SQLConnector/DbConnection.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Objetos/Cuenta.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Modelos/CuentaModel.java
@@ -18,6 +20,8 @@
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/InsertarGerente.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/InsertarCajero.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/HorarioAcciones.java
+/home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/ActualizarCajero.java
+/home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/CargarEditarGerente.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/VerClientes.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Clases/GeneradorArchivo.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/Login.java
@@ -29,6 +33,7 @@
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Objetos/Cliente.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/Logout.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Clases/EtiquetasCajero.java
+/home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/ActualizarGerente.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Modelos/CajeroModel.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Clases/EtiquetasCliente.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/CargarEditarCliente.java
@@ -36,3 +41,4 @@
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/InsertarCliente.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Modelos/HistorialClienteModel.java
 /home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Clases/LeerXML.java
+/home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/java/Controladores/VerEditarCajeros.java

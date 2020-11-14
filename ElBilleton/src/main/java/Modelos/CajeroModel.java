@@ -1,6 +1,7 @@
 package Modelos;
 
 import Objetos.Cajero;
+import Objetos.Cliente;
 import SQLConnector.DbConnection;
 import SQLConnector.Encriptar;
 import java.sql.Connection;
@@ -8,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +20,7 @@ public class CajeroModel {
 
     private final String CAJERO = "SELECT * FROM " + Cajero.CAJERO_DB_NAME;
     private final String BUSCAR_CAJERO = CAJERO + " WHERE " + Cajero.CODIGO_DB_NAME + " = ? LIMIT 1";
+    private final String BUSCAR_CAJEROS = "SELECT * FROM CAJERO";
     private final String BUSCAR_POR_NOMBRE = CAJERO + " WHERE " + Cajero.NOMBRE_DB_NAME + " LIKE ?";
     private final String CREAR_CAJERO = "INSERT INTO " + Cajero.CAJERO_DB_NAME + " (" + Cajero.NOMBRE_DB_NAME + ","
             + Cajero.TURNO_DB_NAME + "," + Cajero.DPI_DB_NAME + "," + Cajero.DIRECCION_DB_NAME + "," + Cajero.SEXO_DB_NAME + ","
@@ -24,6 +28,9 @@ public class CajeroModel {
     private final String CREAR_CAJERO_MANUALMENTE = "INSERT INTO " + Cajero.CAJERO_DB_NAME + " (" + Cajero.CODIGO_DB_NAME + "," + Cajero.NOMBRE_DB_NAME + ","
             + Cajero.TURNO_DB_NAME + "," + Cajero.DPI_DB_NAME + "," + Cajero.DIRECCION_DB_NAME + "," + Cajero.SEXO_DB_NAME + ","
             + Cajero.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
+    private final String EDITAR_CAJERO = "UPDATE " + Cajero.CAJERO_DB_NAME + " SET " + Cajero.NOMBRE_DB_NAME + "=?,"
+            + Cajero.TURNO_DB_NAME + "=?," + Cajero.DPI_DB_NAME + "=?," + Cajero.DIRECCION_DB_NAME + "=?," + Cajero.SEXO_DB_NAME + "=?,"
+            + Cajero.PASSWORD_DB_NAME + "=? WHERE codigo=?";
     private static Connection connection = DbConnection.getConnection();
     HistorialCajeroModel historialCajero = new HistorialCajeroModel();
 
@@ -122,6 +129,89 @@ public class CajeroModel {
             );
         }
         return cajero;
+    }
+
+    /**
+     * Realizamos una busqueda en base al codigo del cajero. De no existir nos
+     * devuelve un valor null.
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerCajeros() throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_CAJEROS + " WHERE codigo!=101");
+        ResultSet result = preSt.executeQuery();
+        ArrayList cajeros = new ArrayList();
+        Cajero cajero = null;
+        while (result.next()) {
+            cajero = new Cajero(
+                    result.getLong(Cajero.CODIGO_DB_NAME),
+                    result.getString(Cajero.NOMBRE_DB_NAME),
+                    result.getString(Cajero.TURNO_DB_NAME),
+                    result.getString(Cajero.DPI_DB_NAME),
+                    result.getString(Cajero.DIRECCION_DB_NAME),
+                    result.getString(Cajero.SEXO_DB_NAME),
+                    result.getString(Cajero.PASSWORD_DB_NAME)
+            );
+            cajeros.add(cajero);
+        }
+        return cajeros;
+    }
+
+    /**
+     * Realizamos una busqueda en base al codigo del cliente. De no existir nos
+     * devuelve un valor null.
+     *
+     * @param filtro
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerCajerosLike(String filtro) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_CAJEROS + " WHERE codigo LIKE '%" + filtro + "%' && codigo!=101");
+        ResultSet result = preSt.executeQuery();
+        ArrayList cajeros = new ArrayList();
+        Cajero cajero = null;
+        while (result.next()) {
+            cajero = new Cajero(
+                    result.getLong(Cajero.CODIGO_DB_NAME),
+                    result.getString(Cajero.NOMBRE_DB_NAME),
+                    result.getString(Cajero.TURNO_DB_NAME),
+                    result.getString(Cajero.DPI_DB_NAME),
+                    result.getString(Cajero.DIRECCION_DB_NAME),
+                    result.getString(Cajero.SEXO_DB_NAME),
+                    result.getString(Cajero.PASSWORD_DB_NAME)
+            );
+            cajeros.add(cajero);
+        }
+        return cajeros;
+    }
+
+    /**
+     * Editamos el cajero por medio de un codigo
+     *
+     * @param cajero
+     * @throws SQLException
+     */
+    public void actualizarCajero(Cajero cajero, Long codigoCajero) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(EDITAR_CAJERO, Statement.RETURN_GENERATED_KEYS);
+
+            preSt.setString(1, cajero.getNombre());
+            preSt.setString(2, cajero.getTurno());
+            preSt.setString(3, cajero.getDPI());
+            preSt.setString(4, cajero.getDireccion());
+            preSt.setString(5, cajero.getSexo());
+            try {
+                preSt.setString(6, Encriptar.encriptar(cajero.getPassword()));
+            } catch (Exception e) {
+            }
+            preSt.setLong(7, codigoCajero);
+            preSt.executeUpdate();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
     }
 
     /**

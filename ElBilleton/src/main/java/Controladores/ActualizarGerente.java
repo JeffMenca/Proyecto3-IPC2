@@ -1,29 +1,30 @@
 package Controladores;
 
 import Clases.GeneradorArchivo;
-import Modelos.ClienteModel;
+import Modelos.CajeroModel;
+import Modelos.GerenteModel;
+import Modelos.HistorialCajeroModel;
 import Modelos.HistorialClienteModel;
-import Objetos.Cliente;
+import Modelos.HistorialGerenteModel;
+import Objetos.Cajero;
+import Objetos.Gerente;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author jeffrey
  */
-@WebServlet(name = "ActualizarCliente", urlPatterns = {"/ActualizarCliente"})
+@WebServlet(name = "ActualizarGerente", urlPatterns = {"/ActualizarGerente"})
 @MultipartConfig
-public class ActualizarCliente extends HttpServlet {
+public class ActualizarGerente extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,52 +79,32 @@ public class ActualizarCliente extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ClienteModel clienteModel = new ClienteModel();
-            HistorialClienteModel historialClienteModel = new HistorialClienteModel();
-            GeneradorArchivo generadorArchivo = new GeneradorArchivo();
-            
-            Long codigoCliente = Long.parseLong((String) request.getParameter("codigo"));
+            GerenteModel gerenteModel = new GerenteModel();
+            HistorialGerenteModel historialGerenteModel = new HistorialGerenteModel();
+
+            Long codigoGerente = Long.parseLong((String) request.getParameter("codigo"));
             String nombre = request.getParameter("nombre");
-            Date fecha_nacimiento = Date.valueOf((String) request.getParameter("fecha"));
+            String turno = request.getParameter("turno");
             String DPI = request.getParameter("DPI");
             String direccion = request.getParameter("direccion");
             String sexo = request.getParameter("sexo");
             String password = request.getParameter("password");
-            InputStream archivo = InputStream.nullInputStream();
-            Part file = request.getPart("archivo");
-            if (file != null && file.getSize()>0) {
-                try {
-                    archivo = generadorArchivo.extraerArchivo("archivo", request);
-                    Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, archivo);
-                    try {
-                        clienteModel.actualizarCliente(nuevoCliente, codigoCliente);
-                        historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
-                        request.setAttribute("successEditarCliente", 1);
-                        request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);
-                    } catch (Exception e) {
-                        request.setAttribute("successEditarCliente", 0);
-                        request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);
-                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e);
-                }
-            } else {
-                Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, clienteModel.obtenerDPI(codigoCliente));
-                try {
-                    clienteModel.actualizarCliente(nuevoCliente, codigoCliente);
-                    historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
-                    request.setAttribute("successEditarCliente", 1);
-                    request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);
-                } catch (Exception e) {
-                    request.setAttribute("successEditarCliente", 0);
-                    request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);
-                }
+
+            Gerente nuevoGerente = new Gerente(0, nombre, turno, DPI, direccion, sexo, password);
+            try {
+                gerenteModel.actualizarGerente(nuevoGerente, codigoGerente);
+                historialGerenteModel.agregarHistorialGerenteCodigo(nuevoGerente, codigoGerente);
+                request.setAttribute("successEditarGerente", 1);
+                request.getRequestDispatcher("/gerente/EditarGerente.jsp").forward(request, response);
+            } catch (Exception e) {
+                request.setAttribute("successEditarGerente", 0);
+                request.getRequestDispatcher("/gerente/EditarGerente.jsp").forward(request, response);
             }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        
+
     }
 
     /**

@@ -63,8 +63,8 @@
                     </div>
                     <div class="col-77">
                         <select id="country2" name="sexo">
-                            <option value="masculino" >Masculino</option>  
-                            <option value="femenino" >Femenino</option>
+                            <option value="Masculino" >Masculino</option>  
+                            <option value="Femenino" >Femenino</option>
                             <option value="otro" >Otro</option>
                         </select>
                     </div>

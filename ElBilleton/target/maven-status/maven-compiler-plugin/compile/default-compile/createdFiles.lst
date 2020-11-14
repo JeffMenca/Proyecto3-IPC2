@@ -1,7 +1,9 @@
+Controladores/VerEditarCajeros.class
 Clases/LeerXML.class
 Objetos/HistorialCliente.class
 Objetos/HistorialCajero.class
 Modelos/CuentaModel.class
+Controladores/CargarDPI.class
 Objetos/Cajero.class
 Modelos/TransaccionModel.class
 Modelos/HistorialClienteModel.class
@@ -14,6 +16,7 @@ Controladores/Login.class
 Controladores/InsertarCajero.class
 Clases/EtiquetasCliente.class
 Controladores/HorarioAcciones.class
+Controladores/ActualizarCajero.class
 Modelos/GerenteModel.class
 Controladores/InsertarGerente.class
 Controladores/Logout.class
@@ -24,11 +27,13 @@ Controladores/CargarEditarCliente.class
 Modelos/HistorialGerenteModel.class
 SQLConnector/Encriptar.class
 Controladores/CargarCliente.class
+Controladores/CargarEditarCajero.class
 Controladores/InsertarCuenta.class
 Objetos/Cuenta.class
 Controladores/VerEditarClientes.class
 Clases/EtiquetasGerente.class
 Controladores/ActualizarCliente.class
+Controladores/CargarEditarGerente.class
 Clases/EtiquetasTransaccion.class
 Modelos/CajeroModel.class
 Controladores/VerClientes.class
@@ -36,3 +41,4 @@ Clases/GeneradorArchivo.class
 Modelos/ClienteModel.class
 Controladores/CargaDatos.class
 Modelos/HistorialCajeroModel.class
+Controladores/ActualizarGerente.class
