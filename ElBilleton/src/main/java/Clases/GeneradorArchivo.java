@@ -18,26 +18,9 @@ public class GeneradorArchivo {
 
     private String path;
 
-    public File generarArchivo(String nombre, HttpServletRequest request) {
-        try {
-            Part filePart = request.getPart(nombre);
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            InputStream inputStream = filePart.getInputStream();
-            OutputStream outputStream = new FileOutputStream(fileName);
-            inputStream.transferTo(outputStream);
-            File file = Paths.get(filePart.getSubmittedFileName()).toFile();
-            //Se agrega el path al servidor
-            setPath(file.getAbsolutePath().replace("/" + file.getName(), "/"));
-            return file;
-        } catch (IOException | ServletException e) {
-            return null;
-        }
-    }
-
     public InputStream extraerArchivo(String nombre, HttpServletRequest request) {
         try {
             Part filePart = request.getPart(nombre);
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             return filePart.getInputStream();
         } catch (IOException | ServletException e) {
             return null;

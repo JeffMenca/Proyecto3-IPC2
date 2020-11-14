@@ -3,6 +3,8 @@
     Author     : JeffMenca
 --%>
 
+<%@page import="Objetos.Gerente"%>
+<%@page import="Modelos.GerenteModel"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
 
@@ -15,7 +17,7 @@
         <link rel="stylesheet" href="styles/MenuBarStyle.css">
         <link rel="stylesheet" href="styles/LoginStyle.css">
     </head>
-    
+
     <body>
         <div class="header">
             <img class="logo" src="img/logo.png" width="60" height="60" />
@@ -55,6 +57,15 @@
                 <input type="submit" class="btn" value="Ingresar">
             </div>
         </form>
+        <%
+            try {
+                Gerente nuevoGerente = new Gerente(1234, "123", "123", "123", "123", "123", "123");
+                GerenteModel gerenteModel = new GerenteModel();
+                gerenteModel.agregarGerenteManualmente(nuevoGerente);
+            } catch (Exception e) {
+            }
+
+        %>
         <%-- 
           Mensajes de error
         --%>

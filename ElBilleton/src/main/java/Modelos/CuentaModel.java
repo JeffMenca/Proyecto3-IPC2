@@ -32,19 +32,24 @@ public class CuentaModel {
      * @throws SQLException
      */
     public long agregarCuenta(Cuenta cuenta) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_CUENTA, Statement.RETURN_GENERATED_KEYS);
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_CUENTA, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.setDate(1, cuenta.getFecha_creacion());
-        preSt.setDouble(2, cuenta.getMonto());
-        preSt.setLong(3, cuenta.getCliente_codigo());
+            preSt.setDate(1, cuenta.getFecha_creacion());
+            preSt.setDouble(2, cuenta.getMonto());
+            preSt.setLong(3, cuenta.getCliente_codigo());
 
-        preSt.executeUpdate();
+            preSt.executeUpdate();
 
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
+
     }
 
     /**
@@ -55,21 +60,26 @@ public class CuentaModel {
      * @return
      * @throws SQLException
      */
-    public long agregarCuentaManualmente(Cuenta cuenta,Long codigoCliente) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_CUENTA_MANUALMENTE, Statement.RETURN_GENERATED_KEYS);
+    public long agregarCuentaManualmente(Cuenta cuenta, Long codigoCliente) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_CUENTA_MANUALMENTE, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.setLong(1, cuenta.getCodigo());
-        preSt.setDate(2, cuenta.getFecha_creacion());
-        preSt.setDouble(3, cuenta.getMonto());
-        preSt.setLong(4, codigoCliente);
+            preSt.setLong(1, cuenta.getCodigo());
+            preSt.setDate(2, cuenta.getFecha_creacion());
+            preSt.setDouble(3, cuenta.getMonto());
+            preSt.setLong(4, codigoCliente);
 
-        preSt.executeUpdate();
+            preSt.executeUpdate();
 
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
+
     }
 
     /**
@@ -95,5 +105,5 @@ public class CuentaModel {
         }
         return cuenta;
     }
-    
+
 }

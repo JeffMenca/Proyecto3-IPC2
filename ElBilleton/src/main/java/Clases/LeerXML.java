@@ -17,11 +17,7 @@ import org.xml.sax.SAXException;
 public class LeerXML {
 
     /**
-     * ORDEN DE CARGA DE ARCHIVO 1 Gerente | 1.1 Historial de Creacion Gerente |
-     * 2 Cajero | 2.1 Historial de Creacion Cajero | 3 Cliente | 3.1 Historial
-     * de Creacion Cliente | 3.2 Cuenta | 3.3 Asociacion entre Cuentas Propias
-     * del Cliente | 4 Transaccion
-     *
+     * Clase para dividir el archivo por etiquetas y generarlas
      * @param nombreArchivo
      */
     EtiquetasGerente etiquetaGerente=new EtiquetasGerente();

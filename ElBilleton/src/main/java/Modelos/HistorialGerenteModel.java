@@ -24,25 +24,54 @@ public class HistorialGerenteModel {
     private static Connection connection = DbConnection.getConnection();
 
     /**
-     * Agregamos una nuevo Historial de gerente. Al completar la insercion devuelve el codigo
-     * autogenerado del historial de gerente. De no existir nos devolvera <code>-1</code>.
+     * Agregamos una nuevo Historial de gerente. Al completar la insercion
+     * devuelve el codigo autogenerado del historial de gerente. De no existir
+     * nos devolvera <code>-1</code>.
      *
      * @param gerente
      * @throws SQLException
      */
     public void agregarHistorialGerente(Gerente gerente) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_GERENTE, Statement.RETURN_GENERATED_KEYS);
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_GERENTE, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.setString(1, gerente.getNombre());
-        preSt.setString(2, gerente.getTurno());
-        preSt.setString(3, gerente.getDPI());
-        preSt.setString(4, gerente.getDireccion());
-        preSt.setString(5, gerente.getSexo());
-        preSt.setString(6, gerente.getPassword());
-        preSt.setLong(7, gerente.getCodigo());
-        preSt.executeUpdate();
+            preSt.setString(1, gerente.getNombre());
+            preSt.setString(2, gerente.getTurno());
+            preSt.setString(3, gerente.getDPI());
+            preSt.setString(4, gerente.getDireccion());
+            preSt.setString(5, gerente.getSexo());
+            preSt.setString(6, gerente.getPassword());
+            preSt.setLong(7, gerente.getCodigo());
+            preSt.executeUpdate();
+        } catch (Exception e) {
+        }
+
     }
+    
+    /**
+     * Agregamos una nuevo Historial de gerente. Al completar la insercion
+     * devuelve el codigo autogenerado del historial de gerente. De no existir
+     * nos devolvera <code>-1</code>.
+     *
+     * @param gerente
+     * @throws SQLException
+     */
+    public void agregarHistorialGerenteCodigo(Gerente gerente,Long codigoGerente) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_GERENTE, Statement.RETURN_GENERATED_KEYS);
 
+            preSt.setString(1, gerente.getNombre());
+            preSt.setString(2, gerente.getTurno());
+            preSt.setString(3, gerente.getDPI());
+            preSt.setString(4, gerente.getDireccion());
+            preSt.setString(5, gerente.getSexo());
+            preSt.setString(6, gerente.getPassword());
+            preSt.setLong(7, codigoGerente);
+            preSt.executeUpdate();
+        } catch (Exception e) {
+        }
+
+    }
 
     /**
      * Realizamos una busqueda en base al codigo del gerente. De no existir nos
@@ -72,7 +101,4 @@ public class HistorialGerenteModel {
         return gerente;
     }
 
-   
-
-    
 }

@@ -2,6 +2,7 @@ package Modelos;
 
 import Objetos.Cajero;
 import SQLConnector.DbConnection;
+import SQLConnector.Encriptar;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class CajeroModel {
             + Cajero.TURNO_DB_NAME + "," + Cajero.DPI_DB_NAME + "," + Cajero.DIRECCION_DB_NAME + "," + Cajero.SEXO_DB_NAME + ","
             + Cajero.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
     private static Connection connection = DbConnection.getConnection();
-    HistorialCajeroModel historialCajero=new HistorialCajeroModel();
+    HistorialCajeroModel historialCajero = new HistorialCajeroModel();
 
     /**
      * Agregamos un nuevo Cajero al completar la insercion devuelve el codigo
@@ -35,22 +36,29 @@ public class CajeroModel {
      * @throws SQLException
      */
     public long agregarCajero(Cajero cajero) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_CAJERO, Statement.RETURN_GENERATED_KEYS);
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_CAJERO, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.setString(1, cajero.getNombre());
-        preSt.setString(2, cajero.getTurno());
-        preSt.setString(3, cajero.getDPI());
-        preSt.setString(4, cajero.getDireccion());
-        preSt.setString(5, cajero.getSexo());
-        preSt.setString(6, cajero.getPassword());
+            preSt.setString(1, cajero.getNombre());
+            preSt.setString(2, cajero.getTurno());
+            preSt.setString(3, cajero.getDPI());
+            preSt.setString(4, cajero.getDireccion());
+            preSt.setString(5, cajero.getSexo());
+            try {
+                preSt.setString(6, Encriptar.encriptar(cajero.getPassword()));
+            } catch (Exception e) {
+            }
 
-        preSt.executeUpdate();
-        historialCajero.agregarHistorialCajero(cajero);
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            preSt.executeUpdate();
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
+
     }
 
     /**
@@ -62,23 +70,31 @@ public class CajeroModel {
      * @throws SQLException
      */
     public long agregarCajeroManualmente(Cajero cajero) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_CAJERO_MANUALMENTE, Statement.RETURN_GENERATED_KEYS);
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_CAJERO_MANUALMENTE, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.setLong(1, cajero.getCodigo());
-        preSt.setString(2, cajero.getNombre());
-        preSt.setString(3, cajero.getTurno());
-        preSt.setString(4, cajero.getDPI());
-        preSt.setString(5, cajero.getDireccion());
-        preSt.setString(6, cajero.getSexo());
-        preSt.setString(7, cajero.getPassword());
+            preSt.setLong(1, cajero.getCodigo());
+            preSt.setString(2, cajero.getNombre());
+            preSt.setString(3, cajero.getTurno());
+            preSt.setString(4, cajero.getDPI());
+            preSt.setString(5, cajero.getDireccion());
+            preSt.setString(6, cajero.getSexo());
+            try {
+                preSt.setString(7, Encriptar.encriptar(cajero.getPassword()));
+            } catch (Exception e) {
+            }
 
-        preSt.executeUpdate();
-
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            preSt.executeUpdate();
+            historialCajero.agregarHistorialCajero(cajero);
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
+
     }
 
     /**
@@ -118,9 +134,13 @@ public class CajeroModel {
      */
     public Cajero loginValidation(Long codigo, String password) throws SQLException {
         Cajero cajero = obtenerCajero(codigo);
-        if (cajero != null && cajero.getPassword().equals(password)) {
-            return cajero;
+        try {
+            if (cajero != null && Encriptar.desencriptar(cajero.getPassword()).equals(password)) {
+                return cajero;
+            }
+        } catch (Exception e) {
         }
+
         return null;
     }
 }

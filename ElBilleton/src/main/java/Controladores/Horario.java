@@ -56,24 +56,30 @@ public class Horario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Gerente gerente = (Gerente) request.getSession().getAttribute("gerente");
-        LocalTime horaActual = LocalTime.now();
-        LocalTime horaInicio, horaFinal;
-        if (gerente.getTurno().equals("Vespertino")) {
-            horaInicio = LocalTime.of(1, 0);
-            horaFinal = LocalTime.of(22, 0);
-        } else {
-            horaInicio = LocalTime.of(6, 0);
-            horaFinal = LocalTime.of(14, 30);
-        }
-        
-        if (horaActual.isAfter(horaInicio) && (horaActual.isBefore(horaFinal))) {
-            request.getSession().setAttribute("enHora", "Si");
-            request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
-        } else {
-            request.getSession().setAttribute("enHora", "No");
-            request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
-            
+        try {
+            Gerente gerente = (Gerente) request.getSession().getAttribute("gerente");
+            LocalTime horaActual = LocalTime.now();
+            LocalTime horaInicio, horaFinal;
+            if (gerente.getTurno().equals("Vespertino")) {
+                horaInicio = LocalTime.of(1, 0);
+                horaFinal = LocalTime.of(22, 0);
+            } else {
+                horaInicio = LocalTime.of(6, 0);
+                horaFinal = LocalTime.of(14, 30);
+            }
+
+            if (horaActual.isAfter(horaInicio) && (horaActual.isBefore(horaFinal))) {
+                request.getSession().setAttribute("enHora", "Si");
+                request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
+            } else {
+                request.getSession().setAttribute("enHora", "No");
+                request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
+
+            }
+        } catch (Exception e) {
+            if (request.getSession().getAttribute("user") == null) {
+                response.sendRedirect(request.getContextPath()+"/index.jsp");
+            }
         }
 
     }

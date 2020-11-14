@@ -5,7 +5,7 @@
         <title>Menu</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/MenuNavStyle.css?3.0">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/MenuNavStyle.css?4.0">
 
     </head>
     <body>
@@ -14,16 +14,16 @@
             <div class="header-right">
                 <div class="navbar">
                     <a href="${pageContext.request.contextPath}/gerente/GerenteIndex.jsp">Inicio</a>
-                    <a href="${pageContext.request.contextPath}/HorarioCargarDatos">Cargar datos</a>
+                    <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=1">Cargar datos</a>
                     <div class="dropdown">
                         <button class="dropbtn" onclick="dropCrear()">Crear usuarios
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content" id="crear">
-                            <a href="VerCitaConsulta.jsp">Crear cliente </a>
-                            <a href="VerCitaIntervalo.jsp">Crear cuenta</a>
-                            <a href="VerPacienteNuevo.jsp">Crear cajero</a>
-                            <a href="CancelarCita.jsp">Crear gerente</a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=2">Crear cliente </a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=3">Crear cuenta</a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=4">Crear cajero</a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=5">Crear gerente</a>
                         </div>
                     </div>
                     <div class="dropdown">
@@ -33,7 +33,7 @@
                         <div class="dropdown-content" id="editar">
                             <a href="VerCitaConsulta.jsp">Actualizar informacion</a>
                             <a href="VerPacienteNuevo.jsp">Actualizar cajero</a>
-                            <a href="CancelarCita.jsp">Actualizar cliente</a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=8">Actualizar cliente</a>
                         </div>
                     </div>
                     <div class="dropdown">
@@ -55,7 +55,7 @@
                                 un intervalo de tiempo</a>
                         </div>
                     </div>
-                    <a href="../index.jsp">Cerrar sesion</a>
+                    <a href="${pageContext.request.contextPath}/Logout">Cerrar sesion</a>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
             function dropReporte() {
                 document.getElementById("reportes").classList.toggle("show");
                 var myDropdown = document.getElementById("crear");
-                var myDropdown1= document.getElementById("editar");
+                var myDropdown1 = document.getElementById("editar");
                 myDropdown.classList.remove('show');
                 myDropdown1.classList.remove('show');
             }
@@ -104,5 +104,12 @@
                 }
             };
         </script>
+        <%
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
+            if (session.getAttribute("user") == null) {
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
+            }
+        %>
     </body>
 </html>

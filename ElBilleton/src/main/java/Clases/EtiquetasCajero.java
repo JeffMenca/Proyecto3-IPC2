@@ -3,7 +3,6 @@ package Clases;
 
 import Modelos.CajeroModel;
 import Objetos.Cajero;
-import javax.swing.JOptionPane;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -22,7 +21,6 @@ public class EtiquetasCajero {
     public void ingresarEtiquetaCajero(NodeList listadoCajero) {
         // Imprime en consola la etiqueta
         System.out.println(" <========>Cajero");
-
         Cajero cajero;
 
         for (int i = 0; i < listadoCajero.getLength(); i++) {
@@ -42,7 +40,11 @@ public class EtiquetasCajero {
                         //Imprime el valor en consola
                         System.out.println("Etiqueta: " + hijo.getNodeName()
                                 + ", Valor: " + hijo.getTextContent());
-                        crearCajero(cajero, hijo.getNodeName(), hijo.getTextContent());
+                        try {
+                             crearCajero(cajero, hijo.getNodeName(), hijo.getTextContent());
+                        } catch (Exception ee) {
+                        }
+                       
 
                     }
 
@@ -72,7 +74,8 @@ public class EtiquetasCajero {
      * @param atributo = datos del objeto cajero
      */
     public void crearCajero(Cajero cajero, String tag, String atributo) {
-
+        
+       
         switch (tag.toUpperCase()) {
             case "CODIGO":
                 cajero.setCodigo(Long.parseLong(atributo));

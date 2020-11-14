@@ -2,6 +2,7 @@ package Modelos;
 
 import Objetos.Gerente;
 import SQLConnector.DbConnection;
+import SQLConnector.Encriptar;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +26,7 @@ public class GerenteModel {
             + Gerente.TURNO_DB_NAME + "," + Gerente.DPI_DB_NAME + "," + Gerente.DIRECCION_DB_NAME + "," + Gerente.SEXO_DB_NAME + ","
             + Gerente.PASSWORD_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
     private static Connection connection = DbConnection.getConnection();
-    HistorialGerenteModel historialGerente=new HistorialGerenteModel();
+    HistorialGerenteModel historialGerente = new HistorialGerenteModel();
 
     /**
      * Agregamos una nuevo gerente. Al completar la insercion devuelve el ID
@@ -36,22 +37,28 @@ public class GerenteModel {
      * @throws SQLException
      */
     public long agregarGerente(Gerente gerente) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_GERENTE, Statement.RETURN_GENERATED_KEYS);
-        preSt.setString(1, gerente.getNombre());
-        preSt.setString(2, gerente.getTurno());
-        preSt.setString(3, gerente.getDPI());
-        preSt.setString(4, gerente.getDireccion());
-        preSt.setString(5, gerente.getSexo());
-        preSt.setString(6, gerente.getPassword());
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_GERENTE, Statement.RETURN_GENERATED_KEYS);
+            preSt.setString(1, gerente.getNombre());
+            preSt.setString(2, gerente.getTurno());
+            preSt.setString(3, gerente.getDPI());
+            preSt.setString(4, gerente.getDireccion());
+            preSt.setString(5, gerente.getSexo());
+            try {
+                preSt.setString(6, Encriptar.encriptar(gerente.getPassword()));
+            } catch (Exception e) {
+            }
 
-        preSt.executeUpdate();
-        historialGerente.agregarHistorialGerente(gerente);
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            preSt.executeUpdate();
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
-        
+
     }
 
     /**
@@ -63,29 +70,36 @@ public class GerenteModel {
      * @throws SQLException
      */
     public long agregarGerenteManualmente(Gerente gerente) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_GERENTE_MANUAL, Statement.RETURN_GENERATED_KEYS);
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_GERENTE_MANUAL, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.setLong(1, gerente.getCodigo());
-        preSt.setString(2, gerente.getNombre());
-        preSt.setString(3, gerente.getTurno());
-        preSt.setString(4, gerente.getDPI());
-        preSt.setString(5, gerente.getDireccion());
-        preSt.setString(6, gerente.getSexo());
-        preSt.setString(7, gerente.getPassword());
+            preSt.setLong(1, gerente.getCodigo());
+            preSt.setString(2, gerente.getNombre());
+            preSt.setString(3, gerente.getTurno());
+            preSt.setString(4, gerente.getDPI());
+            preSt.setString(5, gerente.getDireccion());
+            preSt.setString(6, gerente.getSexo());
+            try {
+                preSt.setString(7, Encriptar.encriptar(gerente.getPassword()));
+            } catch (Exception e) {
+            }
 
-        preSt.executeUpdate();
-
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            preSt.executeUpdate();
+            historialGerente.agregarHistorialGerente(gerente);
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
+
     }
 
-    
     /**
-     * Realizamos una busqueda en base al codigo del gerente. De no existir
-     * nos devuelve un valor null.
+     * Realizamos una busqueda en base al codigo del gerente. De no existir nos
+     * devuelve un valor null.
      *
      * @param codigoGerente
      * @return
@@ -120,8 +134,11 @@ public class GerenteModel {
      */
     public Gerente loginValidation(Long codigo, String password) throws SQLException {
         Gerente gerente = obtenerGerente(codigo);
-        if (gerente != null && gerente.getPassword().equals(password)) {
-            return gerente;
+        try {
+            if (gerente != null && Encriptar.desencriptar(gerente.getPassword()).equals(password)) {
+                return gerente;
+            }
+        } catch (Exception e) {
         }
         return null;
     }
@@ -148,8 +165,8 @@ public class GerenteModel {
             horaInicio = LocalTime.of(1, 0);
             horaFinal = LocalTime.of(22, 0);
         } else {
-            horaInicio = LocalTime.of(6, 0);
-            horaFinal = LocalTime.of(14, 30);
+            horaInicio = LocalTime.of(0, 0);
+            horaFinal = LocalTime.of(23, 59);
         }
 
         if (horaActual.isAfter(horaInicio) && (horaActual.isBefore(horaFinal))) {

@@ -27,12 +27,11 @@ public class EtiquetasCliente {
      */
     
      public void ingresarEtiquetaCliente(NodeList listadoCliente,String path) {
-
         Cliente cliente;
         List<Cuenta> cuentas = new ArrayList<>();
         
-
-        for (int i = 0; i < listadoCliente.getLength(); i++) {
+         try {
+              for (int i = 0; i < listadoCliente.getLength(); i++) {
             cliente = new Cliente();
             cuentas.clear();
             // Cojo el nodo actual
@@ -47,23 +46,26 @@ public class EtiquetasCliente {
                 for (int j = 0; j < hijos.getLength(); j++) {
                     // Obtengo al hijo actual
                     Node hijo = hijos.item(j);
-                    NodeList hijoCuentas = hijo.getChildNodes();
                     // Compruebo si es un nodo
                     if (hijo.getNodeType() == Node.ELEMENT_NODE) {
                         // Muestro el contenido
-
-                         if (hijo.getNodeName().equalsIgnoreCase("CUENTAS")) {
+                        try {
+                            if (hijo.getNodeName().equalsIgnoreCase("CUENTAS")) {
                             cuentas = ingresarEtiquetaCuentas(hijo);
                             //especialidades = tagEspecialidad(hijo);
-
                         } else {
                             crearCliente(cliente, hijo.getNodeName(), hijo.getTextContent(),path);
 
                         }
+                        } catch (Exception ee) {
+                        }
+                         
                     }
 
                 }
+               
                 try {
+                    
                     ClienteModel nuevoCliente = new ClienteModel();
                     CuentaModel nuevaCuenta=new CuentaModel();
                     
@@ -79,6 +81,10 @@ public class EtiquetasCliente {
             }
 
         }
+         } catch (Exception e) {
+             JOptionPane.showMessageDialog(null, e.getMessage());
+         }
+       
     }
     
     
@@ -93,7 +99,7 @@ public class EtiquetasCliente {
 
         switch (tag.toUpperCase()) {
             case "CODIGO":
-                cliente.setCodigo(Integer.parseInt(atributo));
+                cliente.setCodigo(Long.parseLong(atributo));
                 break;
 
             case "NOMBRE":
@@ -203,7 +209,7 @@ public class EtiquetasCliente {
                                     + ", Valor: " + hijo.getTextContent());
                             switch (hijo.getNodeName().toUpperCase()) {
                                 case "CODIGO":
-                                    cuenta.setCodigo(Integer.parseInt(hijo.getTextContent()));
+                                    cuenta.setCodigo(Long.parseLong(hijo.getTextContent()));
                                     break;
                                 case "CREADA":
                                     cuenta.setFecha_creacion(Date.valueOf(hijo.getTextContent()));

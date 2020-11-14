@@ -23,6 +23,7 @@ public class EtiquetasTransaccion {
      */
     public void ingresarEtiquetaTransaccion(NodeList listadoTransaccion) {
         // Imprime en consola la entidad
+        JOptionPane.showMessageDialog(null, listadoTransaccion.getLength());
         System.out.println(" <========>TRANSACCION");
 
         Transaccion transaccion ;
@@ -48,7 +49,11 @@ public class EtiquetasTransaccion {
 
                         System.out.println("Etiqueta: " + hijo.getNodeName()
                                 + ", Valor: " + hijo.getTextContent());
-                        crearTransaccion(transaccion, hijo.getNodeName(), hijo.getTextContent());
+                        try {
+                            crearTransaccion(transaccion, hijo.getNodeName(), hijo.getTextContent());
+                        } catch (Exception ee) {
+                        }
+                        
 
                     }
 
@@ -81,11 +86,11 @@ public class EtiquetasTransaccion {
 
         switch (tag.toUpperCase()) {
             case "CODIGO":
-                transaccion.setCodigo(Integer.parseInt(atributo));
+                transaccion.setCodigo(Long.parseLong(atributo));
                 break;
 
             case "CUENTA-ID":
-                transaccion.setCuenta_codigo(Integer.parseInt(atributo));
+                transaccion.setCuenta_codigo(Long.parseLong(atributo));
                 break;
 
             case "FECHA":
@@ -105,7 +110,7 @@ public class EtiquetasTransaccion {
                 break;
 
             case "CAJERO-ID":
-                transaccion.setCajero_codigo(Integer.parseInt(atributo));
+                transaccion.setCajero_codigo(Long.parseLong(atributo));
                 break;
 
             default:

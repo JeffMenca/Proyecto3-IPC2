@@ -33,7 +33,8 @@ public class HistorialCajeroModel {
      * @throws SQLException
      */
     public long agregarHistorialCajero(Cajero cajero) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_CAJERO, Statement.RETURN_GENERATED_KEYS);
+        try {
+             PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_CAJERO, Statement.RETURN_GENERATED_KEYS);
 
         preSt.setString(1, cajero.getNombre());
         preSt.setString(2, cajero.getTurno());
@@ -41,15 +42,52 @@ public class HistorialCajeroModel {
         preSt.setString(4, cajero.getDireccion());
         preSt.setString(5, cajero.getSexo());
         preSt.setString(6, cajero.getPassword());
-        preSt.setLong(6, cajero.getCodigo());
+        preSt.setLong(7, cajero.getCodigo());
 
         preSt.executeUpdate();
-
+        
         ResultSet result = preSt.getGeneratedKeys();
         if (result.first()) {
             return result.getLong(1);
         }
         return -1;
+        } catch (Exception e) {
+            return -1;
+        }
+       
+    }
+    /**
+     * Agregamos un nuevo HistorialCajero al completar la insercion devuelve el
+     * codigo autogenerado del cajero. De no existir nos devolvera
+     * <code>-1</code>.
+     *
+     * @param cajero
+     * @return
+     * @throws SQLException
+     */
+    public long agregarHistorialCajeroCodigo(Cajero cajero,Long codigoCajero) throws SQLException {
+        try {
+             PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_CAJERO, Statement.RETURN_GENERATED_KEYS);
+
+        preSt.setString(1, cajero.getNombre());
+        preSt.setString(2, cajero.getTurno());
+        preSt.setString(3, cajero.getDPI());
+        preSt.setString(4, cajero.getDireccion());
+        preSt.setString(5, cajero.getSexo());
+        preSt.setString(6, cajero.getPassword());
+        preSt.setLong(7, codigoCajero);
+
+        preSt.executeUpdate();
+        
+        ResultSet result = preSt.getGeneratedKeys();
+        if (result.first()) {
+            return result.getLong(1);
+        }
+        return -1;
+        } catch (Exception e) {
+            return -1;
+        }
+       
     }
 
     /**

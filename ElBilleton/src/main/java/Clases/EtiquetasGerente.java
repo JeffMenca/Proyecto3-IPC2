@@ -43,7 +43,11 @@ public class EtiquetasGerente {
                         //Imprime el valor en consola
                         System.out.println("Etiqueta: " + hijo.getNodeName()
                                 + ", Valor: " + hijo.getTextContent());
-                        crearGerente(gerente, hijo.getNodeName(), hijo.getTextContent());
+                        try {
+                            crearGerente(gerente, hijo.getNodeName(), hijo.getTextContent());
+                        } catch (Exception ee) {
+                        }
+                        
 
                     }
 

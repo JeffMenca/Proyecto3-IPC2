@@ -4,11 +4,13 @@ body {
     margin: 0;
     background-image: url(../img/gerente.jpeg);
     background-blend-mode: multiply;
+    background-attachment: fixed;
     background-size: cover;
     font-family: sans-serif;
     font-weight: 400;
     padding: 0;
     background-color: #454545;
+    overflow: visible;
 }
 .dropdown {
     float: left;

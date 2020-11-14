@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>El Billeton</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/AgendarCitaStyle.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/FormStyle.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head> 
     <body>

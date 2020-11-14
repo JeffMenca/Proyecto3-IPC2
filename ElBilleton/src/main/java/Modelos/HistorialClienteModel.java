@@ -20,38 +20,79 @@ public class HistorialClienteModel {
     private final String BUSCAR_POR_NOMBRE = HISTORIAL_CLIENTE + " WHERE " + HistorialCliente.NOMBRE_DB_NAME + " LIKE ?";
     private final String CREAR_HISTORIAL_CLIENTE = "INSERT INTO " + HistorialCliente.HISTORIAL_CLIENTE_DB_NAME + " (" + HistorialCliente.NOMBRE_DB_NAME + ","
             + HistorialCliente.FECHA_DB_NAME + "," + HistorialCliente.DPI_DB_NAME + "," + HistorialCliente.DIRECCION_DB_NAME + "," + HistorialCliente.SEXO_DB_NAME + ","
-            + HistorialCliente.PASSWORD_DB_NAME + "," + HistorialCliente.PDF_DB_NAME + "," + HistorialCliente.CLIENTE_CODIGO_DB_NAME +") VALUES (?,?,?,?,?,?,?,?)";
+            + HistorialCliente.PASSWORD_DB_NAME + "," + HistorialCliente.PDF_DB_NAME + "," + HistorialCliente.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?,?,?,?,?,?)";
     private static Connection connection = DbConnection.getConnection();
 
     /**
-     * Agregamos un nuevo Historial Cliente al completar la insercion devuelve el codigo
-     * autogenerado del historial cliente. De no existir nos devolvera <code>-1</code>.
+     * Agregamos un nuevo Historial Cliente al completar la insercion devuelve
+     * el codigo autogenerado del historial cliente. De no existir nos devolvera
+     * <code>-1</code>.
      *
      * @param cliente
      * @return
      * @throws SQLException
      */
     public long agregarHistorialCliente(Cliente cliente) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_CLIENTE, Statement.RETURN_GENERATED_KEYS);
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_CLIENTE, Statement.RETURN_GENERATED_KEYS);
 
-        preSt.setString(1, cliente.getNombre());
-        preSt.setDate(2, cliente.getFechaNacimiento());
-        preSt.setString(3, cliente.getDPI());
-        preSt.setString(4, cliente.getDireccion());
-        preSt.setString(5, cliente.getSexo());
-        preSt.setString(6, cliente.getPassword());
-        preSt.setBlob(7, cliente.getDPI_copia());
-        preSt.setLong(8, cliente.getCodigo());
+            preSt.setString(1, cliente.getNombre());
+            preSt.setDate(2, cliente.getFechaNacimiento());
+            preSt.setString(3, cliente.getDPI());
+            preSt.setString(4, cliente.getDireccion());
+            preSt.setString(5, cliente.getSexo());
+            preSt.setString(6, cliente.getPassword());
+            preSt.setBinaryStream(7, cliente.getDPI_copia());
+            preSt.setLong(8, cliente.getCodigo());
 
-        preSt.executeUpdate();
+            preSt.executeUpdate();
 
-        ResultSet result = preSt.getGeneratedKeys();
-        if (result.first()) {
-            return result.getLong(1);
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
-    }
 
+    }
+    
+    /**
+     * Agregamos un nuevo Historial Cliente con codigo del cliente al completar la insercion devuelve
+     * el codigo autogenerado del historial cliente. De no existir nos devolvera
+     * <code>-1</code>.
+     *
+     * @param cliente
+     * @return
+     * @throws SQLException
+     */
+    public long agregarHistorialClienteCodigo(Cliente cliente,Long codigoCliente) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_CLIENTE, Statement.RETURN_GENERATED_KEYS);
+
+            preSt.setString(1, cliente.getNombre());
+            preSt.setDate(2, cliente.getFechaNacimiento());
+            preSt.setString(3, cliente.getDPI());
+            preSt.setString(4, cliente.getDireccion());
+            preSt.setString(5, cliente.getSexo());
+            preSt.setString(6, cliente.getPassword());
+            preSt.setBinaryStream(7, cliente.getDPI_copia());
+            preSt.setLong(8, codigoCliente);
+
+            preSt.executeUpdate();
+
+            ResultSet result = preSt.getGeneratedKeys();
+            if (result.first()) {
+                return result.getLong(1);
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
+        }
+
+    }
+    
     
 
     /**

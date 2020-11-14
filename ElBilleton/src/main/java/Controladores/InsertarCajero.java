@@ -5,7 +5,9 @@
  */
 package Controladores;
 
-import Modelos.GerenteModel;
+import Modelos.CajeroModel;
+import Modelos.HistorialCajeroModel;
+import Objetos.Cajero;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jeffrey
  */
-@WebServlet(name = "HorarioCargarDatos", urlPatterns = {"/HorarioCargarDatos"})
-public class HorarioCargarDatos extends HttpServlet {
+@WebServlet(name = "InsertarCajero", urlPatterns = {"/InsertarCajero"})
+public class InsertarCajero extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +40,10 @@ public class HorarioCargarDatos extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HorarioCargarDatos</title>");
+            out.println("<title>Servlet InsertarCliente</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HorarioCargarDatos at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet InsertarCliente at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,19 +61,7 @@ public class HorarioCargarDatos extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        GerenteModel gerenteModel = new GerenteModel();
-        String codigo=String.valueOf(request.getSession().getAttribute("user"));
-        long user=Long.valueOf(codigo);
-        try {
-            if (gerenteModel.enHora(user)==true) {
-                request.getRequestDispatcher("/gerente/CargarDatos.jsp").forward(request, response);
-            }
-            else{
-                request.getRequestDispatcher("/gerente/ErrorHorario.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-        }
-
+        processRequest(request, response);
     }
 
     /**
@@ -85,7 +75,28 @@ public class HorarioCargarDatos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        CajeroModel cajeroModel = new CajeroModel();
+        HistorialCajeroModel historialCajero=new HistorialCajeroModel();
+        String nombre = request.getParameter("nombre");
+        String turno= request.getParameter("turno");
+        String DPI = request.getParameter("DPI");
+        String direccion = request.getParameter("direccion");
+        String sexo = request.getParameter("sexo");
+        String password = request.getParameter("password");
+        
+        
+        Cajero nuevoCajero = new Cajero(0, nombre, turno, DPI, direccion, sexo, password);
+        try {
+            Long codigoCajero=cajeroModel.agregarCajero(nuevoCajero);
+            historialCajero.agregarHistorialCajeroCodigo(nuevoCajero, codigoCajero);
+            request.setAttribute("successCrearCajero", 1);
+            request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("successCrearCajero", 0);
+            request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
+        }
+
     }
 
     /**

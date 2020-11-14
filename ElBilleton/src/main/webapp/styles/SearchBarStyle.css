@@ -2,7 +2,9 @@
 
 .search {
     width: 100%;
-    position: relative;
+    position: absolute;
+    top: 23%;
+    left: 35%;
     display: flex;
 }
 
@@ -11,7 +13,7 @@
     border: 3px solid #60aeee;
     border-right: none;
     padding: 5px;
-    height: 20px;
+    height: 37px;
     border-radius: 5px 0 0 5px;
     outline: none;
     color: #000000;
@@ -51,7 +53,7 @@
 .box{
     position: absolute;
     border: 3px solid #60aeee;
-    top: 21%;
+    top: 50%;
     left: 53%;
 }
 .button {
