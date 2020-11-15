@@ -54,7 +54,7 @@
                         <label for="fDPI">DPI</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" id="lDPI" name="DPI" value="${clienteSeleccionado.getDPI()}" required>
+                        <input type="number" id="lDPI" min="0" pattern="^[0-9]+" name="DPI" value="${clienteSeleccionado.getDPI()}" required>
                     </div>
                 </div>
                 <div class="row">
@@ -118,6 +118,12 @@
             <div class="alert1">
                 <span class="closebtn"> 
                     <strong>Actualizado</strong> El cliente se edito exitosamente
+            </div>
+        </c:if>
+          <c:if test="${successEditarCliente == 2}">
+            <div class="alert2">
+                <span class="closebtn"> 
+                    <strong>Error</strong> No se permiten campos vacios en los campos
             </div>
         </c:if>
     </body>

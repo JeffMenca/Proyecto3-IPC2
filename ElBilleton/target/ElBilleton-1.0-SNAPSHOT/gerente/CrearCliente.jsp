@@ -46,7 +46,7 @@
                         <label for="fDPI">DPI</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" id="lDPI" name="DPI" placeholder="DPI" required>
+                        <input type="number" id="lDPI" min="0" pattern="^[0-9]+" name="DPI" placeholder="DPI" required>
                     </div>
                 </div>
                 <div class="row">
@@ -90,7 +90,7 @@
                         <label for="fDPI">Monto para abrir su cuenta</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" step=".01" id="lDPI" name="monto" placeholder="Monto" required>
+                        <input type="number" step=".01" min="1.0" id="lDPI" name="monto" placeholder="Monto" required>
                     </div>
                 </div>
                 <div class="row">
@@ -115,6 +115,12 @@
             <div class="alert1">
                 <span class="closebtn"> 
                     <strong>Creado</strong> El cliente y su primera cuenta se registraron exitosamente
+            </div>
+        </c:if>
+              <c:if test="${successCrearCliente == 2}">
+            <div class="alert2">
+                <span class="closebtn"> 
+                    <strong>Error</strong> No puede ingresar datos vacios en los campos
             </div>
         </c:if>
     </body>

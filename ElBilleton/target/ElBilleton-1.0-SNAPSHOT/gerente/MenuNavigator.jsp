@@ -41,6 +41,7 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content" id="reportes">
+                            <a href="${pageContext.request.contextPath}/CargarLimitesGerente">Establecer limites</a>
                             <a href="VerPacienteHistorial.jsp">Ver historial de cambios realizados en una entidad
                                 especifica</a>
                             <a href="VerCitaActual.jsp">Ver clientes con transacciones monetarios mayores

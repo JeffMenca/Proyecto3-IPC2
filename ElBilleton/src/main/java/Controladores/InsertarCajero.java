@@ -75,28 +75,30 @@ public class InsertarCajero extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         CajeroModel cajeroModel = new CajeroModel();
-        HistorialCajeroModel historialCajero=new HistorialCajeroModel();
-        String nombre = request.getParameter("nombre");
-        String turno= request.getParameter("turno");
+        HistorialCajeroModel historialCajero = new HistorialCajeroModel();
+        String nombre = request.getParameter("nombre").trim();
+        String turno = request.getParameter("turno");
         String DPI = request.getParameter("DPI");
-        String direccion = request.getParameter("direccion");
+        String direccion = request.getParameter("direccion").trim();
         String sexo = request.getParameter("sexo");
         String password = request.getParameter("password");
-        
-        
-        Cajero nuevoCajero = new Cajero(0, nombre, turno, DPI, direccion, sexo, password);
-        try {
-            Long codigoCajero=cajeroModel.agregarCajero(nuevoCajero);
-            historialCajero.agregarHistorialCajeroCodigo(nuevoCajero, codigoCajero);
-            request.setAttribute("successCrearCajero", 1);
+        if (nombre.trim().equals("")|| direccion.trim().equals("")) {
+            request.setAttribute("successCrearCajero", 2);
             request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("successCrearCajero", 0);
-            request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
+        } else {
+            Cajero nuevoCajero = new Cajero(0, nombre, turno, DPI, direccion, sexo, password);
+            try {
+                Long codigoCajero = cajeroModel.agregarCajero(nuevoCajero);
+                historialCajero.agregarHistorialCajeroCodigo(nuevoCajero, codigoCajero);
+                request.setAttribute("successCrearCajero", 1);
+                request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
+            } catch (Exception e) {
+                request.setAttribute("successCrearCajero", 0);
+                request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
+            }
         }
-
     }
 
     /**

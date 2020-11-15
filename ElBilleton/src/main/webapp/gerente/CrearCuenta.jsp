@@ -45,7 +45,7 @@
                         <label for="fDPI">Monto inicial de la cuenta</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" step=".01" id="lDPI" name="monto" placeholder="Monto" required>
+                        <input type="number" step=".01" min="1.0" pattern="^[0-9]+" id="lDPI" name="monto" placeholder="Monto" required>
                     </div>
                 </div>
 
@@ -70,6 +70,12 @@
             <div class="alert1">
                 <span class="closebtn"> 
                     <strong>Creado</strong> El cajero se creo exitosamente
+            </div>
+        </c:if>
+        <c:if test="${successCrearCuenta == 2}">
+            <div class="alert2">
+                <span class="closebtn"> 
+                    <strong>Creado</strong> No se aceptan datos vacios en los campos
             </div>
         </c:if>
     </body>

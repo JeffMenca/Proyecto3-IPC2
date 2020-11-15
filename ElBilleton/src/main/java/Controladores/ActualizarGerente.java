@@ -1,15 +1,11 @@
 package Controladores;
 
-import Clases.GeneradorArchivo;
-import Modelos.CajeroModel;
 import Modelos.GerenteModel;
-import Modelos.HistorialCajeroModel;
-import Modelos.HistorialClienteModel;
 import Modelos.HistorialGerenteModel;
-import Objetos.Cajero;
 import Objetos.Gerente;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -83,26 +79,31 @@ public class ActualizarGerente extends HttpServlet {
             HistorialGerenteModel historialGerenteModel = new HistorialGerenteModel();
 
             Long codigoGerente = Long.parseLong((String) request.getParameter("codigo"));
-            String nombre = request.getParameter("nombre");
+            String nombre = request.getParameter("nombre").trim();
             String turno = request.getParameter("turno");
             String DPI = request.getParameter("DPI");
-            String direccion = request.getParameter("direccion");
+            String direccion = request.getParameter("direccion").trim();
             String sexo = request.getParameter("sexo");
             String password = request.getParameter("password");
-
-            Gerente nuevoGerente = new Gerente(0, nombre, turno, DPI, direccion, sexo, password);
-            try {
-                gerenteModel.actualizarGerente(nuevoGerente, codigoGerente);
-                historialGerenteModel.agregarHistorialGerenteCodigo(nuevoGerente, codigoGerente);
-                request.setAttribute("successEditarGerente", 1);
+            if (nombre.trim().equals("") || direccion.trim().equals("")) {
+                request.setAttribute("successEditarGerente", 2);
                 request.getRequestDispatcher("/gerente/EditarGerente.jsp").forward(request, response);
-            } catch (Exception e) {
-                request.setAttribute("successEditarGerente", 0);
-                request.getRequestDispatcher("/gerente/EditarGerente.jsp").forward(request, response);
+            } else {
+                Gerente nuevoGerente = new Gerente(0, nombre, turno, DPI, direccion, sexo, password);
+                try {
+                    gerenteModel.actualizarGerente(nuevoGerente, codigoGerente);
+                    historialGerenteModel.agregarHistorialGerenteCodigo(nuevoGerente, codigoGerente);
+                    request.setAttribute("successEditarGerente", 1);
+                    request.getRequestDispatcher("/gerente/EditarGerente.jsp").forward(request, response);
+                } catch (IOException | SQLException | ServletException e) {
+                    request.setAttribute("successEditarGerente", 0);
+                    request.getRequestDispatcher("/gerente/EditarGerente.jsp").forward(request, response);
+                }
             }
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (IOException | NumberFormatException | ServletException e) {
+            JOptionPane.showMessageDialog(null, "No ha cargado su informacion");
+            request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
         }
 
     }

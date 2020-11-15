@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controladores;
 
-import Modelos.CajeroModel;
 import Modelos.GerenteModel;
-import Modelos.HistorialCajeroModel;
 import Modelos.HistorialGerenteModel;
-import Objetos.Cajero;
 import Objetos.Gerente;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -78,26 +70,30 @@ public class InsertarGerente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         GerenteModel gerenteModel = new GerenteModel();
-        HistorialGerenteModel historialGerente=new HistorialGerenteModel();
-        String nombre = request.getParameter("nombre");
-        String turno= request.getParameter("turno");
+        HistorialGerenteModel historialGerente = new HistorialGerenteModel();
+        String nombre = request.getParameter("nombre").trim();
+        String turno = request.getParameter("turno");
         String DPI = request.getParameter("DPI");
-        String direccion = request.getParameter("direccion");
+        String direccion = request.getParameter("direccion").trim();
         String sexo = request.getParameter("sexo");
         String password = request.getParameter("password");
-        
-        
-        Gerente nuevoGerente = new Gerente(0, nombre, turno, DPI, direccion, sexo, password);
-        try {
-            Long codigoGerente=gerenteModel.agregarGerente(nuevoGerente);
-            historialGerente.agregarHistorialGerenteCodigo(nuevoGerente, codigoGerente);
-            request.setAttribute("successCrearGerente", 1);
+
+        if (nombre.trim().equals("") || direccion.trim().equals("")) {
+            request.setAttribute("successCrearGerente", 2);
             request.getRequestDispatcher("/gerente/CrearGerente.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("successCrearGerente", 0);
-            request.getRequestDispatcher("/gerente/CrearGerente.jsp").forward(request, response);
+        } else {
+            Gerente nuevoGerente = new Gerente(0, nombre, turno, DPI, direccion, sexo, password);
+            try {
+                Long codigoGerente = gerenteModel.agregarGerente(nuevoGerente);
+                historialGerente.agregarHistorialGerenteCodigo(nuevoGerente, codigoGerente);
+                request.setAttribute("successCrearGerente", 1);
+                request.getRequestDispatcher("/gerente/CrearGerente.jsp").forward(request, response);
+            } catch (Exception e) {
+                request.setAttribute("successCrearGerente", 0);
+                request.getRequestDispatcher("/gerente/CrearGerente.jsp").forward(request, response);
+            }
         }
 
     }

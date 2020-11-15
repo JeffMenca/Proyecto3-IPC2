@@ -1,26 +1,28 @@
 
 package Controladores;
 
-import Modelos.CuentaModel;
-import Objetos.Cuenta;
+import Modelos.CajeroModel;
+import Modelos.GerenteModel;
+import Modelos.LimitesGerenteModel;
+import Objetos.Cajero;
+import Objetos.Gerente;
+import Objetos.LimitesGerente;
+import SQLConnector.Encriptar;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.time.LocalDate;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author jeffrey
  */
-@WebServlet(name = "InsertarCuenta", urlPatterns = {"/InsertarCuenta"})
-@MultipartConfig
-public class InsertarCuenta extends HttpServlet {
+@WebServlet(name = "CargarLimitesGerente", urlPatterns = {"/CargarLimitesGerente"})
+public class CargarLimitesGerente extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +41,10 @@ public class InsertarCuenta extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InsertarCliente</title>");
+            out.println("<title>Servlet CargarCliente</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InsertarCliente at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CargarCliente at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +62,15 @@ public class InsertarCuenta extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        GerenteModel gerenteModel = new GerenteModel();
+        LimitesGerenteModel limitesModel=new LimitesGerenteModel();
+        try {
+            LimitesGerente limites=limitesModel.obtenerLimites();
+            request.setAttribute("limitesSeleccionados", limites);
+            request.getRequestDispatcher("/gerente/EditarLimites.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
+
     }
 
     /**
@@ -74,23 +84,7 @@ public class InsertarCuenta extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            CuentaModel cuentaModel = new CuentaModel();
-            Long codigoCliente = Long.valueOf((String) request.getParameter("codigo"));
-            Double monto = Double.valueOf((String) request.getParameter("monto"));
-            Date fecha = Date.valueOf(LocalDate.now());
-            Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
-            try {
-                cuentaModel.agregarCuenta(nuevaCuenta);
-                request.setAttribute("successCrearCuenta", 1);
-                request.getRequestDispatcher("/gerente/CrearCuenta.jsp").forward(request, response);
-            } catch (Exception e) {
-                request.setAttribute("successCrearCuenta", 0);
-                request.getRequestDispatcher("/gerente/CrearCuenta.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-        }
-
+        processRequest(request, response);
     }
 
     /**

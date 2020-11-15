@@ -16,43 +16,35 @@
     </head> 
     <body>
         <%@include  file="MenuNavigator.jsp" %>
-        <form method="POST" action="InsertarCuenta">
+        <form method="POST" action="EstablecerLimites" enctype="multipart/form-data">
 
             <br> <br> <br> <br> <br> <br> <br> 
 
             <div class="container">
-                <h1>Crear Cuenta</h1>
+                <h1>Establecer limites del reporte 2 y 3</h1>
 
                 <div class="row">
                     <div class="col-25">
-                        <label for="fnombre">Codigo del cliente</label>
+                        <label for="fDPI">Limite del reporte 2</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lname" name="codigo" value="${clienteSeleccionado.getCodigo()}" placeholder="${clienteSeleccionado.getCodigo()}" readonly>
+                        <input type="number" step=".01" min="0.0" pattern="^[0-9]+" id="lDPI" value="${limitesSeleccionados.getLimite_reporte2()}" name="limite2" placeholder="${limitesSeleccionados.getLimite_reporte2()}" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-25">
-                        <label for="fnombre">Nombre del cliente</label>
+                        <label for="fDPI">Limite del reporte 3</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lname" name="nombre" placeholder="${clienteSeleccionado.getNombre()}" readonly>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fDPI">Monto inicial de la cuenta</label>
-                    </div>
-                    <div class="col-77">
-                        <input type="number" step=".01" min="1.0" pattern="^[0-9]+" id="lDPI" name="monto" placeholder="Monto" required>
+                        <input type="number" step=".01" min="0.0" pattern="^[0-9]+" id="lDPI" value="${limitesSeleccionados.getLimite_reporte3()}" name="limite3" placeholder="${limitesSeleccionados.getLimite_reporte3()}" required>
                     </div>
                 </div>
 
                 <div class="row">
                     <br> 
-                    <input type="submit" class="button2" value="Registrar cuenta">
+                    <input type="submit" class="button2" value="Establecer limites">
                 </div>
+
 
             </div>
 
@@ -60,22 +52,22 @@
         <%-- 
                   Mensajes de error
         --%>
-        <c:if test="${successCrearCuenta == 0}">
+        <c:if test="${successEditarLimites == 0}">
             <div class="alert2">
                 <span class="closebtn"> 
-                    <strong>Error</strong> No ingreso datos validos del cajero
+                    <strong>Error</strong> No ingreso datos validos
             </div>
         </c:if>
-        <c:if test="${successCrearCuenta == 1}">
+        <c:if test="${successEditarLimites == 1}">
             <div class="alert1">
                 <span class="closebtn"> 
-                    <strong>Creado</strong> El cajero se creo exitosamente
+                    <strong>Establecidos</strong> Los limites se establecieron correctamente
             </div>
         </c:if>
-        <c:if test="${successCrearCuenta == 2}">
+             <c:if test="${successEditarLimites == 2}">
             <div class="alert2">
                 <span class="closebtn"> 
-                    <strong>Creado</strong> No se aceptan datos vacios en los campos
+                    <strong>Error</strong> El limite del reporte 2 debe ser menor al limite del reporte 3
             </div>
         </c:if>
     </body>

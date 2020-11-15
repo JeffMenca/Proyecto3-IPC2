@@ -56,7 +56,7 @@
                         <label for="fDPI">DPI</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" id="lDPI" name="DPI" value="${gerenteSeleccionado.getDPI()}" required>
+                        <input type="number" id="lDPI" min="0" pattern="^[0-9]+" name="DPI" value="${gerenteSeleccionado.getDPI()}" required>
                     </div>
                 </div>
                 <div class="row">
@@ -110,6 +110,12 @@
             <div class="alert1">
                 <span class="closebtn"> 
                     <strong>Actualizado</strong> La informacion se actualizo exitosamente
+            </div>
+        </c:if>
+          <c:if test="${successEditarGerente == 2}">
+            <div class="alert2">
+                <span class="closebtn"> 
+                    <strong>Error</strong> No se aceptan campos vacios en los campos
             </div>
         </c:if>
     </body>

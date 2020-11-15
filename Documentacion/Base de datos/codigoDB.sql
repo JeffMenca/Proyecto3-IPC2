@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `GERENTE` (
   `sexo` VARCHAR(45) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`codigo`));
-  INSERT INTO GERENTE VALUES(1,'Banca virtual','Toda hora',101,'','','123');
 
 
 -- -----------------------------------------------------
@@ -55,8 +54,15 @@ CREATE TABLE IF NOT EXISTS `CLIENTE` (
   `password` VARCHAR(200) NOT NULL,
   `DPI_copia` MEDIUMBLOB NOT NULL,
   PRIMARY KEY (`codigo`));
-  INSERT INTO CLIENTE VALUES('1','PEDROS','2020-01-12','12','12A','MUJER','123','0');
 
+-- -----------------------------------------------------
+-- Tabla Limites Gerente
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `LIMITES_GERENTE` (
+  `limite_reporte2` DOUBLE NOT NULL,
+  `limite_reporte3` DOUBLE NOT NULL,
+  PRIMARY KEY (`limite_reporte2`,`limite_reporte3`));
+  INSERT INTO LIMITES_GERENTE VALUES(0,1);
 
 -- -----------------------------------------------------
 -- Tabla cuenta

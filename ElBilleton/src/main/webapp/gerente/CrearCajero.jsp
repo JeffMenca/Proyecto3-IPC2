@@ -47,7 +47,7 @@
                         <label for="fDPI">DPI</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" id="lDPI" name="DPI" placeholder="DPI" required>
+                        <input type="number" min="0" pattern="^[0-9]+" id="lDPI" name="DPI" placeholder="DPI" required>
                     </div>
                 </div>
                 <div class="row">
@@ -100,6 +100,12 @@
             <div class="alert1">
                 <span class="closebtn"> 
                     <strong>Creado</strong> El cajero se creo exitosamente
+            </div>
+        </c:if>
+        <c:if test="${successCrearCajero == 2}">
+            <div class="alert2">
+                <span class="closebtn"> 
+                    <strong>Error</strong> No se permiten espacios vacios en campos necesarios
             </div>
         </c:if>
     </body>

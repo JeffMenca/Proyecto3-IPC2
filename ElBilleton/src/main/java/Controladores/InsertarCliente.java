@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controladores;
 
 import Clases.GeneradorArchivo;
@@ -88,33 +83,38 @@ public class InsertarCliente extends HttpServlet {
         CuentaModel cuentaModel = new CuentaModel();
         HistorialClienteModel historialClienteModel = new HistorialClienteModel();
         GeneradorArchivo generadorArchivo = new GeneradorArchivo();
-        String nombre = request.getParameter("nombre");
+        String nombre = request.getParameter("nombre").trim();
         Date fecha_nacimiento = Date.valueOf((String) request.getParameter("fecha"));
         String DPI = request.getParameter("DPI");
-        String direccion = request.getParameter("direccion");
+        String direccion = request.getParameter("direccion").trim();
         String sexo = request.getParameter("sexo");
         String password = request.getParameter("password");
         Double monto = Double.valueOf((String) request.getParameter("monto"));
         Date fecha = Date.valueOf(LocalDate.now());
         InputStream archivo = InputStream.nullInputStream();
-        try {
-            archivo = generadorArchivo.extraerArchivo("archivo", request);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-
-        Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, archivo);
-
-        try {
-            Long codigoCliente = clienteModel.agregarCliente(nuevoCliente);
-            historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
-            Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
-            cuentaModel.agregarCuenta(nuevaCuenta);
-            request.setAttribute("successCrearCliente", 1);
+        if (nombre.trim().equals("") || direccion.trim().equals("")) {
+            request.setAttribute("successCrearCliente", 2);
             request.getRequestDispatcher("/gerente/CrearCliente.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("successCrearCliente", 0);
-            request.getRequestDispatcher("/gerente/CrearCliente.jsp").forward(request, response);
+        } else {
+            try {
+                archivo = generadorArchivo.extraerArchivo("archivo", request);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+
+            Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, archivo);
+
+            try {
+                Long codigoCliente = clienteModel.agregarCliente(nuevoCliente);
+                historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
+                Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
+                cuentaModel.agregarCuenta(nuevaCuenta);
+                request.setAttribute("successCrearCliente", 1);
+                request.getRequestDispatcher("/gerente/CrearCliente.jsp").forward(request, response);
+            } catch (Exception e) {
+                request.setAttribute("successCrearCliente", 0);
+                request.getRequestDispatcher("/gerente/CrearCliente.jsp").forward(request, response);
+            }
         }
 
     }

@@ -1,23 +1,17 @@
 package Controladores;
 
-import Clases.GeneradorArchivo;
 import Modelos.CajeroModel;
-import Modelos.ClienteModel;
 import Modelos.HistorialCajeroModel;
-import Modelos.HistorialClienteModel;
 import Objetos.Cajero;
-import Objetos.Cliente;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.sql.Date;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import javax.swing.JOptionPane;
 
 /**
@@ -85,26 +79,31 @@ public class ActualizarCajero extends HttpServlet {
             HistorialCajeroModel historialCajeroModel = new HistorialCajeroModel();
 
             Long codigoCajero = Long.parseLong((String) request.getParameter("codigo"));
-            String nombre = request.getParameter("nombre");
+            String nombre = request.getParameter("nombre").trim();
             String turno = request.getParameter("turno");
             String DPI = request.getParameter("DPI");
-            String direccion = request.getParameter("direccion");
+            String direccion = request.getParameter("direccion").trim();
             String sexo = request.getParameter("sexo");
             String password = request.getParameter("password");
-
-            Cajero nuevoCajero = new Cajero(0, nombre, turno, DPI, direccion, sexo, password);
-            try {
-                cajeroModel.actualizarCajero(nuevoCajero, codigoCajero);
-                historialCajeroModel.agregarHistorialCajeroCodigo(nuevoCajero, codigoCajero);
-                request.setAttribute("successEditarCajero", 1);
+            if (nombre.trim().equals("") || direccion.trim().equals("")) {
+                request.setAttribute("successEditarCajero", 2);
                 request.getRequestDispatcher("/gerente/EditarCajero.jsp").forward(request, response);
-            } catch (Exception e) {
-                request.setAttribute("successEditarCajero", 0);
-                request.getRequestDispatcher("/gerente/EditarCajero.jsp").forward(request, response);
+            } else {
+                Cajero nuevoCajero = new Cajero(0, nombre, turno, DPI, direccion, sexo, password);
+                try {
+                    cajeroModel.actualizarCajero(nuevoCajero, codigoCajero);
+                    historialCajeroModel.agregarHistorialCajeroCodigo(nuevoCajero, codigoCajero);
+                    request.setAttribute("successEditarCajero", 1);
+                    request.getRequestDispatcher("/gerente/EditarCajero.jsp").forward(request, response);
+                } catch (IOException | SQLException | ServletException e) {
+                    request.setAttribute("successEditarCajero", 0);
+                    request.getRequestDispatcher("/gerente/EditarCajero.jsp").forward(request, response);
+                }
             }
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+        } catch (IOException | NumberFormatException | ServletException e) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningun cajero");
+            request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
         }
 
     }

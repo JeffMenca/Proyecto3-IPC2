@@ -1,26 +1,28 @@
-
 package Controladores;
 
-import Modelos.CuentaModel;
-import Objetos.Cuenta;
+import Modelos.GerenteModel;
+import Modelos.HistorialGerenteModel;
+import Modelos.LimitesGerenteModel;
+import Objetos.Gerente;
+import Objetos.LimitesGerente;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author jeffrey
  */
-@WebServlet(name = "InsertarCuenta", urlPatterns = {"/InsertarCuenta"})
+@WebServlet(name = "EstablecerLimites", urlPatterns = {"/EstablecerLimites"})
 @MultipartConfig
-public class InsertarCuenta extends HttpServlet {
+public class EstablecerLimites extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -75,20 +77,29 @@ public class InsertarCuenta extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            CuentaModel cuentaModel = new CuentaModel();
-            Long codigoCliente = Long.valueOf((String) request.getParameter("codigo"));
-            Double monto = Double.valueOf((String) request.getParameter("monto"));
-            Date fecha = Date.valueOf(LocalDate.now());
-            Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
-            try {
-                cuentaModel.agregarCuenta(nuevaCuenta);
-                request.setAttribute("successCrearCuenta", 1);
-                request.getRequestDispatcher("/gerente/CrearCuenta.jsp").forward(request, response);
-            } catch (Exception e) {
-                request.setAttribute("successCrearCuenta", 0);
-                request.getRequestDispatcher("/gerente/CrearCuenta.jsp").forward(request, response);
+            LimitesGerenteModel limitesModel = new LimitesGerenteModel();
+
+            Double limite2 = Double.parseDouble((String) request.getParameter("limite2"));
+            Double limite3 = Double.parseDouble((String) request.getParameter("limite3"));
+            if (limite2 < limite3) {
+                LimitesGerente limites = new LimitesGerente(limite2, limite3);
+                try {
+                    limitesModel.agregarLimites(limites);
+                    request.setAttribute("successEditarLimites", 1);
+                    request.getRequestDispatcher("/gerente/EditarLimites.jsp").forward(request, response);
+                } catch (IOException | SQLException | ServletException e) {
+                    request.setAttribute("successEditarLimites", 0);
+                    request.getRequestDispatcher("/gerente/EditarLimites.jsp").forward(request, response);
+                }
             }
-        } catch (Exception e) {
+            else{
+                request.setAttribute("successEditarLimites", 2);
+                    request.getRequestDispatcher("/gerente/EditarLimites.jsp").forward(request, response);
+            }
+
+        } catch (IOException | NumberFormatException | ServletException e) {
+            JOptionPane.showMessageDialog(null, "No ha cargado los limites ya establecidos");
+            request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
         }
 
     }

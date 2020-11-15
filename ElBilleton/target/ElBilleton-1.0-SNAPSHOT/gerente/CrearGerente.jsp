@@ -47,7 +47,7 @@
                         <label for="fDPI">DPI</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" id="lDPI" name="DPI" placeholder="DPI" required>
+                        <input type="number" id="lDPI" min="0" pattern="^[0-9]+" name="DPI" placeholder="DPI" required>
                     </div>
                 </div>
                 <div class="row">
@@ -100,6 +100,12 @@
             <div class="alert1">
                 <span class="closebtn"> 
                     <strong>Creado</strong> El gerente se creo exitosamente
+            </div>
+        </c:if>
+           <c:if test="${successCrearGerente == 2}">
+            <div class="alert2">
+                <span class="closebtn"> 
+                    <strong>Error</strong> No se aceptan espacios vacios en los campos
             </div>
         </c:if>
     </body>

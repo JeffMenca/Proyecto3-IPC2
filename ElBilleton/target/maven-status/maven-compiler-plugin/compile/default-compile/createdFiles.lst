@@ -3,7 +3,9 @@ Clases/LeerXML.class
 Objetos/HistorialCliente.class
 Objetos/HistorialCajero.class
 Modelos/CuentaModel.class
+Modelos/LimitesGerenteModel.class
 Controladores/CargarDPI.class
+Controladores/EstablecerLimites.class
 Objetos/Cajero.class
 Modelos/TransaccionModel.class
 Modelos/HistorialClienteModel.class
@@ -28,8 +30,10 @@ Modelos/HistorialGerenteModel.class
 SQLConnector/Encriptar.class
 Controladores/CargarCliente.class
 Controladores/CargarEditarCajero.class
+Controladores/CargarLimitesGerente.class
 Controladores/InsertarCuenta.class
 Objetos/Cuenta.class
+Objetos/LimitesGerente.class
 Controladores/VerEditarClientes.class
 Clases/EtiquetasGerente.class
 Controladores/ActualizarCliente.class
