@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,7 +17,7 @@ import java.sql.Statement;
 public class HistorialCajeroModel {
 
     private final String HISTORIAL_CAJERO = "SELECT * FROM " + HistorialCajero.HISTORIAL_CAJERO_DB_NAME;
-    private final String BUSCAR_HISTORIAL_CAJERO = HISTORIAL_CAJERO + " WHERE " + HistorialCajero.CODIGO_DB_NAME + " = ? LIMIT 1";
+    private final String BUSCAR_HISTORIAL_CAJERO = HISTORIAL_CAJERO + " WHERE " + HistorialCajero.CAJERO_CODIGO_DB_NAME + " = ?";
     private final String BUSCAR_POR_NOMBRE = HISTORIAL_CAJERO + " WHERE " + HistorialCajero.NOMBRE_DB_NAME + " LIKE ?";
     private final String CREAR_HISTORIAL_CAJERO = "INSERT INTO " + HistorialCajero.HISTORIAL_CAJERO_DB_NAME + " (" + HistorialCajero.NOMBRE_DB_NAME + ","
             + HistorialCajero.TURNO_DB_NAME + "," + HistorialCajero.DPI_DB_NAME + "," + HistorialCajero.DIRECCION_DB_NAME + "," + HistorialCajero.SEXO_DB_NAME + ","
@@ -94,15 +95,16 @@ public class HistorialCajeroModel {
      * Realizamos una busqueda en base al codigo del cajero. De no existir la
      * nos devuelve un valor null.
      *
-     * @param codigoHistorialCajero
+     * @param codigoCajero 
      * @return
      * @throws SQLException
      */
-    public HistorialCajero obtenerHistorialCajero(int codigoHistorialCajero) throws SQLException {
+    public ArrayList obtenerHistorialCajero(Long codigoCajero) throws SQLException {
         PreparedStatement preSt = connection.prepareStatement(BUSCAR_HISTORIAL_CAJERO);
-        preSt.setInt(1, codigoHistorialCajero);
+        preSt.setLong(1, codigoCajero);
         ResultSet result = preSt.executeQuery();
         HistorialCajero cajero = null;
+        ArrayList cajeros = new ArrayList();
         while (result.next()) {
             cajero = new HistorialCajero(
                     result.getInt(HistorialCajero.CODIGO_DB_NAME),
@@ -114,8 +116,9 @@ public class HistorialCajeroModel {
                     result.getString(HistorialCajero.PASSWORD_DB_NAME),
                     result.getInt(HistorialCajero.CAJERO_CODIGO_DB_NAME)
             );
+            cajeros.add(cajero);
         }
-        return cajero;
+        return cajeros;
     }
 
     

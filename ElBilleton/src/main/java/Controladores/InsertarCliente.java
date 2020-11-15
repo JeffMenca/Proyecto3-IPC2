@@ -1,11 +1,13 @@
 package Controladores;
 
 import Clases.GeneradorArchivo;
+import Clases.PDFHistorial;
 import Modelos.ClienteModel;
 import Modelos.CuentaModel;
 import Modelos.HistorialClienteModel;
 import Objetos.Cliente;
 import Objetos.Cuenta;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -92,6 +94,7 @@ public class InsertarCliente extends HttpServlet {
         Double monto = Double.valueOf((String) request.getParameter("monto"));
         Date fecha = Date.valueOf(LocalDate.now());
         InputStream archivo = InputStream.nullInputStream();
+
         if (nombre.trim().equals("") || direccion.trim().equals("")) {
             request.setAttribute("successCrearCliente", 2);
             request.getRequestDispatcher("/gerente/CrearCliente.jsp").forward(request, response);
@@ -101,11 +104,14 @@ public class InsertarCliente extends HttpServlet {
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
-
-            Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, archivo);
+            PDFHistorial crearPDF = new PDFHistorial(archivo);
+            InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+            InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+            Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, pdf1);
 
             try {
                 Long codigoCliente = clienteModel.agregarCliente(nuevoCliente);
+                nuevoCliente.setDPI_copia(pdf2);
                 historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
                 Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
                 cuentaModel.agregarCuenta(nuevaCuenta);

@@ -1,5 +1,6 @@
 package Modelos;
 
+import Objetos.Cajero;
 import Objetos.Gerente;
 import SQLConnector.DbConnection;
 import SQLConnector.Encriptar;
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,6 +19,7 @@ import java.time.LocalTime;
 public class GerenteModel {
 
     private final String GERENTE = "SELECT * FROM " + Gerente.GERENTE_DB_NAME;
+    private final String BUSCAR_GERENTES = "SELECT * FROM GERENTE";
     private final String BUSCAR_GERENTE = GERENTE + " WHERE " + Gerente.CODIGO_DB_NAME + " = ? LIMIT 1";
     private final String BUSCAR_POR_NOMBRE = GERENTE + " WHERE " + Gerente.NOMBRE_DB_NAME + " LIKE ?";
     private final String CREAR_GERENTE = "INSERT INTO " + Gerente.GERENTE_DB_NAME + " (" + Gerente.NOMBRE_DB_NAME + ","
@@ -126,7 +129,62 @@ public class GerenteModel {
         }
         return gerente;
     }
-    
+
+    /**
+     * Realizamos una busqueda en base al codigo del cajero. De no existir nos
+     * devuelve un valor null.
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerGerentes() throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_GERENTES);
+        ResultSet result = preSt.executeQuery();
+        ArrayList gerentes = new ArrayList();
+        Gerente gerente = null;
+        while (result.next()) {
+            gerente = new Gerente(
+                    result.getLong(Gerente.CODIGO_DB_NAME),
+                    result.getString(Gerente.NOMBRE_DB_NAME),
+                    result.getString(Gerente.TURNO_DB_NAME),
+                    result.getString(Gerente.DPI_DB_NAME),
+                    result.getString(Gerente.DIRECCION_DB_NAME),
+                    result.getString(Gerente.SEXO_DB_NAME),
+                    result.getString(Gerente.PASSWORD_DB_NAME)
+            );
+            gerentes.add(gerente);
+        }
+        return gerentes;
+    }
+
+    /**
+     * Realizamos una busqueda en base al codigo del cliente. De no existir nos
+     * devuelve un valor null.
+     *
+     * @param filtro
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerGerentesLike(String filtro) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_GERENTES + " WHERE codigo LIKE '%" + filtro + "%'");
+        ResultSet result = preSt.executeQuery();
+        ArrayList gerentes = new ArrayList();
+        Gerente gerente = null;
+        while (result.next()) {
+            gerente = new Gerente(
+                    result.getLong(Gerente.CODIGO_DB_NAME),
+                    result.getString(Gerente.NOMBRE_DB_NAME),
+                    result.getString(Gerente.TURNO_DB_NAME),
+                    result.getString(Gerente.DPI_DB_NAME),
+                    result.getString(Gerente.DIRECCION_DB_NAME),
+                    result.getString(Gerente.SEXO_DB_NAME),
+                    result.getString(Gerente.PASSWORD_DB_NAME)
+            );
+            gerentes.add(gerente);
+        }
+        return gerentes;
+    }
+
     /**
      * Editamos el cajero por medio de un codig
      *

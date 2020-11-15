@@ -1,10 +1,15 @@
 package Modelos;
 
+import Clases.PDFHistorial;
 import Objetos.Cliente;
+import Objetos.Cuenta;
+import Objetos.Transaccion;
 import SQLConnector.DbConnection;
 import SQLConnector.Encriptar;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,8 +35,15 @@ public class ClienteModel {
             + Cliente.PASSWORD_DB_NAME + "," + Cliente.PDF_DB_NAME + ") VALUES (?,?,?,?,?,?,?,?)";
     private final String EDITAR_CLIENTE = "UPDATE " + Cliente.CLIENTE_DB_NAME + " SET " + Cliente.NOMBRE_DB_NAME + "=?,"
             + Cliente.FECHA_DB_NAME + "=?," + Cliente.DPI_DB_NAME + "=?," + Cliente.DIRECCION_DB_NAME + "=?," + Cliente.SEXO_DB_NAME + "=?,"
-            + Cliente.PASSWORD_DB_NAME + "=?," + Cliente.PDF_DB_NAME + "=? WHERE "+Cliente.CODIGO_DB_NAME+" =?";
+            + Cliente.PASSWORD_DB_NAME + "=?," + Cliente.PDF_DB_NAME + "=? WHERE " + Cliente.CODIGO_DB_NAME + " =?";
     private final String DPI_CLIENTE = "SELECT " + Cliente.PDF_DB_NAME + " FROM " + Cliente.CLIENTE_DB_NAME + " WHERE " + Cliente.CODIGO_DB_NAME + "= ?";
+    private final String REPORTE_2 = "SELECT C.* FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME
+            + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo WHERE T.monto>? GROUP BY C.codigo";
+    private final String REPORTE_3 = "SELECT C.*,SUM(T.monto) AS TOTAL FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME
+            + " CU ON C.codigo=CU.cliente_codigo INNER JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo GROUP BY C.codigo HAVING SUM(T.monto)>?";
+    private final String REPORTE_4 = "SELECT C.*,SUM(CU.monto) AS TOTAL FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON C.codigo=CU.cliente_codigo GROUP BY C.codigo ORDER BY TOTAL DESC LIMIT 10";
+    private final String REPORTE_5 = "SELECT C.* FROM " + Cliente.CLIENTE_DB_NAME + " C WHERE nombre NOT IN(SELECT C.nombre FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON CU.cliente_codigo=C.codigo RIGHT JOIN " + Transaccion.TRANSACCION_DB_NAME + " T ON T.cuenta_codigo=CU.codigo WHERE T.fecha BETWEEN ? AND ? GROUP BY C.codigo )";
+    private final String REPORTE_6 = "SELECT C.* FROM " + Cliente.CLIENTE_DB_NAME + " C INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON CU.cliente_codigo=C.codigo WHERE CU.monto>? && C.nombre LIKE ? GROUP BY C.codigo ORDER BY C.nombre DESC";
     private static Connection connection = DbConnection.getConnection();
     HistorialClienteModel historialCliente = new HistorialClienteModel();
     CuentaModel cuentasModel = new CuentaModel();
@@ -94,9 +106,12 @@ public class ClienteModel {
                 preSt.setString(7, Encriptar.encriptar(cliente.getPassword()));
             } catch (Exception e) {
             }
-            preSt.setBinaryStream(8, cliente.getDPI_copia());
-
+            PDFHistorial crearPDF = new PDFHistorial(cliente.getDPI_copia());
+            InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+            InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+            preSt.setBinaryStream(8, pdf1);
             preSt.executeUpdate();
+            cliente.setDPI_copia(pdf2);
             historialCliente.agregarHistorialCliente(cliente);
             ResultSet result = preSt.getGeneratedKeys();
             if (result.first()) {
@@ -195,12 +210,183 @@ public class ClienteModel {
     }
 
     /**
-     * Editamos el cliente por medio de un codig
+     * Obtenemos el reporte 2 por medio del limite del reporte 2
      *
-     * @param cliente
+     * @param limite2
+     * @return
      * @throws SQLException
      */
-    public void actualizarCliente(Cliente cliente,Long codigoCliente) throws SQLException {
+    public ArrayList obtenerReporte2(Double limite2) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_2);
+            preSt.setDouble(1, limite2);
+            ResultSet result = preSt.executeQuery();
+            ArrayList clientes = new ArrayList();
+            Cliente cliente = null;
+            while (result.next()) {
+                cliente = new Cliente(
+                        result.getLong(Cliente.CODIGO_DB_NAME),
+                        result.getString(Cliente.NOMBRE_DB_NAME),
+                        result.getDate(Cliente.FECHA_DB_NAME),
+                        result.getString(Cliente.DPI_DB_NAME),
+                        result.getString(Cliente.DIRECCION_DB_NAME),
+                        result.getString(Cliente.SEXO_DB_NAME),
+                        result.getString(Cliente.PASSWORD_DB_NAME),
+                        result.getBinaryStream(Cliente.PDF_DB_NAME)
+                );
+                clientes.add(cliente);
+            }
+            return clientes;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return null;
+        }
+
+    }
+
+    /**
+     * Obtenemos el reporte 3 por medio del limite del reporte 3
+     *
+     * @param limite2
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerReporte3(Double limite2) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_3);
+            preSt.setDouble(1, limite2);
+            ResultSet result = preSt.executeQuery();
+            ArrayList clientes = new ArrayList();
+            Cliente cliente = null;
+            while (result.next()) {
+                cliente = new Cliente(
+                        result.getLong(Cliente.CODIGO_DB_NAME),
+                        result.getString(Cliente.NOMBRE_DB_NAME),
+                        result.getString(Cliente.DPI_DB_NAME),
+                        result.getString(Cliente.DIRECCION_DB_NAME),
+                        result.getString(Cliente.SEXO_DB_NAME),
+                        result.getDouble("TOTAL")
+                );
+                clientes.add(cliente);
+            }
+            return clientes;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return null;
+        }
+
+    }
+
+    /**
+     * Obtenemos el reporte 4 por medio del limite del reporte 4
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerReporte4() throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_4);
+            ResultSet result = preSt.executeQuery();
+            ArrayList clientes = new ArrayList();
+            Cliente cliente = null;
+            while (result.next()) {
+                cliente = new Cliente(
+                        result.getLong(Cliente.CODIGO_DB_NAME),
+                        result.getString(Cliente.NOMBRE_DB_NAME),
+                        result.getString(Cliente.DPI_DB_NAME),
+                        result.getString(Cliente.DIRECCION_DB_NAME),
+                        result.getString(Cliente.SEXO_DB_NAME),
+                        result.getDouble("TOTAL")
+                );
+                clientes.add(cliente);
+            }
+            return clientes;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return null;
+        }
+
+    }
+
+    /**
+     * Obtenemos el reporte 5 por medio del limite del reporte 5
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerReporte5(Date fechaInicio, Date fechaFinal) throws SQLException {
+        try {
+
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_5);
+            preSt.setDate(1, fechaInicio);
+            preSt.setDate(2, fechaFinal);
+
+            ResultSet result = preSt.executeQuery();
+            ArrayList clientes = new ArrayList();
+            Cliente cliente = null;
+            while (result.next()) {
+                cliente = new Cliente(
+                        result.getLong(Cliente.CODIGO_DB_NAME),
+                        result.getString(Cliente.NOMBRE_DB_NAME),
+                        result.getDate(Cliente.FECHA_DB_NAME),
+                        result.getString(Cliente.DPI_DB_NAME),
+                        result.getString(Cliente.DIRECCION_DB_NAME),
+                        result.getString(Cliente.SEXO_DB_NAME),
+                        result.getString(Cliente.PASSWORD_DB_NAME),
+                        result.getBinaryStream(Cliente.PDF_DB_NAME)
+                );
+                clientes.add(cliente);
+            }
+            return clientes;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return null;
+        }
+
+    }
+
+    /**
+     * Obtenemos el reporte 5 por medio del limite del reporte 5
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerReporte6(Double limite, String nombre) throws SQLException {
+        try {
+
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_6);
+            preSt.setDouble(1, limite);
+            preSt.setString(2, "%" + nombre + "%");
+            ResultSet result = preSt.executeQuery();
+            ArrayList clientes = new ArrayList();
+            Cliente cliente = null;
+            while (result.next()) {
+                cliente = new Cliente(
+                        result.getLong(Cliente.CODIGO_DB_NAME),
+                        result.getString(Cliente.NOMBRE_DB_NAME),
+                        result.getDate(Cliente.FECHA_DB_NAME),
+                        result.getString(Cliente.DPI_DB_NAME),
+                        result.getString(Cliente.DIRECCION_DB_NAME),
+                        result.getString(Cliente.SEXO_DB_NAME),
+                        result.getString(Cliente.PASSWORD_DB_NAME),
+                        result.getBinaryStream(Cliente.PDF_DB_NAME)
+                );
+                clientes.add(cliente);
+            }
+            return clientes;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+    /**
+     * Editamos el cliente por medio de un codig
+     *
+     * @param codigoCliente
+     * @throws SQLException
+     */
+    public void actualizarCliente(Cliente cliente, Long codigoCliente) throws SQLException {
         try {
             PreparedStatement preSt = connection.prepareStatement(EDITAR_CLIENTE, Statement.RETURN_GENERATED_KEYS);
 
@@ -216,18 +402,18 @@ public class ClienteModel {
             preSt.setBinaryStream(7, cliente.getDPI_copia());
             preSt.setLong(8, codigoCliente);
             preSt.executeUpdate();
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
     }
-    
+
     /**
      * Obtiene el DPI en PDF
      *
-     * @param cliente
-     * @throws SQLException
+     * @param codigo
+     * @return
      */
     public InputStream obtenerDPI(long codigo) {
         try {

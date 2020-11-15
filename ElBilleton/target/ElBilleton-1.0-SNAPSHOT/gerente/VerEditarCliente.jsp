@@ -27,7 +27,7 @@
                 <br> <br>
                 <div class="wrap">
                     <div class="search">
-                        <input type="text" name="filtro" class="searchTerm" placeholder="Que desea buscar?">
+                        <input type="text" name="filtro" class="searchTerm" placeholder="Busqueda por codigo">
                         <button type="submit" class="searchButton">
                             <i class="fa fa-search"></i>
                         </button>

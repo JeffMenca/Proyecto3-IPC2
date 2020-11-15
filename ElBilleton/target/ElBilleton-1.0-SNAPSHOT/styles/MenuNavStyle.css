@@ -44,18 +44,6 @@ body {
     z-index: 1;
 }
 
-.dropdown-content a {
-    float: none;
-    color: white;
-    padding: 20px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
 
 .show {
     display: block;
@@ -83,13 +71,6 @@ body {
     border-radius: 4px;
 }
 
-/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
-.header a.logo {
-    font-size: 25px;
-    font-weight: bold;
-    padding: 12px;
-}
-
 /* Change the background color on mouse-over */
 .header a:hover {
     background-color: #60aeee;
@@ -98,7 +79,7 @@ body {
 
 /* Style the active/current link*/
 .header a.active {
-    background-color: dodgerblue;
+    background-color: #60aeee;
     color: white;
 }
 

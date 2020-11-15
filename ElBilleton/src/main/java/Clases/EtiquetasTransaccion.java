@@ -23,7 +23,6 @@ public class EtiquetasTransaccion {
      */
     public void ingresarEtiquetaTransaccion(NodeList listadoTransaccion) {
         // Imprime en consola la entidad
-        JOptionPane.showMessageDialog(null, listadoTransaccion.getLength());
         System.out.println(" <========>TRANSACCION");
 
         Transaccion transaccion ;

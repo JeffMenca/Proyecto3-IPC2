@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,7 +17,7 @@ import java.sql.Statement;
 public class HistorialGerenteModel {
 
     private final String HISTORIAL_GERENTE = "SELECT * FROM " + HistorialGerente.HISTORIAL_GERENTE_DB_NAME;
-    private final String BUSCAR_HISTORIAL_GERENTE = HISTORIAL_GERENTE + " WHERE " + HistorialGerente.CODIGO_DB_NAME + " = ? LIMIT 1";
+    private final String BUSCAR_HISTORIAL_GERENTE = HISTORIAL_GERENTE + " WHERE " + HistorialGerente.GERENTE_CODIGO_DB_NAME + " = ?";
     private final String BUSCAR_POR_GERENTE = HISTORIAL_GERENTE + " WHERE " + HistorialGerente.GERENTE_CODIGO_DB_NAME + " LIKE ?";
     private final String CREAR_HISTORIAL_GERENTE = "INSERT INTO " + HistorialGerente.HISTORIAL_GERENTE_DB_NAME + " (" + HistorialGerente.NOMBRE_DB_NAME + ","
             + HistorialGerente.TURNO_DB_NAME + "," + HistorialGerente.DPI_DB_NAME + "," + HistorialGerente.DIRECCION_DB_NAME + "," + HistorialGerente.SEXO_DB_NAME + ","
@@ -47,7 +48,7 @@ public class HistorialGerenteModel {
         }
 
     }
-    
+
     /**
      * Agregamos una nuevo Historial de gerente. Al completar la insercion
      * devuelve el codigo autogenerado del historial de gerente. De no existir
@@ -56,7 +57,7 @@ public class HistorialGerenteModel {
      * @param gerente
      * @throws SQLException
      */
-    public void agregarHistorialGerenteCodigo(Gerente gerente,Long codigoGerente) throws SQLException {
+    public void agregarHistorialGerenteCodigo(Gerente gerente, Long codigoGerente) throws SQLException {
         try {
             PreparedStatement preSt = connection.prepareStatement(CREAR_HISTORIAL_GERENTE, Statement.RETURN_GENERATED_KEYS);
 
@@ -81,10 +82,11 @@ public class HistorialGerenteModel {
      * @return
      * @throws SQLException
      */
-    public HistorialGerente obtenerGerente(int codigoHistorialGerente) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(BUSCAR_HISTORIAL_GERENTE);
-        preSt.setInt(1, codigoHistorialGerente);
+    public ArrayList obtenerHistorialGerente(Long codigoGerente) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_POR_GERENTE);
+        preSt.setLong(1, codigoGerente);
         ResultSet result = preSt.executeQuery();
+        ArrayList gerentes = new ArrayList();
         HistorialGerente gerente = null;
         while (result.next()) {
             gerente = new HistorialGerente(
@@ -97,8 +99,9 @@ public class HistorialGerenteModel {
                     result.getString(HistorialGerente.PASSWORD_DB_NAME),
                     result.getLong(HistorialGerente.GERENTE_CODIGO_DB_NAME)
             );
+            gerentes.add(gerente);
         }
-        return gerente;
+        return gerentes;
     }
 
 }

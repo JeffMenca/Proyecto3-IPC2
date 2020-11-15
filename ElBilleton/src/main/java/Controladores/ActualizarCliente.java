@@ -1,10 +1,12 @@
 package Controladores;
 
 import Clases.GeneradorArchivo;
+import Clases.PDFHistorial;
 import Modelos.ClienteModel;
 import Modelos.HistorialClienteModel;
 import Objetos.Cliente;
 import java.awt.HeadlessException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -101,9 +103,13 @@ public class ActualizarCliente extends HttpServlet {
                 if (file != null && file.getSize() > 0) {
                     try {
                         archivo = generadorArchivo.extraerArchivo("archivo", request);
-                        Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, archivo);
+                        PDFHistorial crearPDF = new PDFHistorial(archivo);
+                        InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+                        InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
+                        Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, pdf1);
                         try {
                             clienteModel.actualizarCliente(nuevoCliente, codigoCliente);
+                            nuevoCliente.setDPI_copia(pdf2);
                             historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
                             request.setAttribute("successEditarCliente", 1);
                             request.getRequestDispatcher("/gerente/EditarCliente.jsp").forward(request, response);

@@ -28,8 +28,17 @@ public class Cliente {
     private String sexo;
     private String password;
     private InputStream DPI_copia;
+    private Double totalTransaccion;
     
     public Cliente() {
+    }
+    public Cliente(long codigo, String nombre, String DPI, String direccion, String sexo, Double totalTransaccion) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.DPI = DPI;
+        this.direccion = direccion;
+        this.sexo = sexo;
+        this.totalTransaccion=totalTransaccion;
     }
 
     public Cliente(long codigo, String nombre, Date fechaNacimiento, String DPI, String direccion, String sexo, String password, InputStream DPI_copia) {
@@ -106,5 +115,14 @@ public class Cliente {
     public void setDPI_copia(InputStream DPI_copia) {
         this.DPI_copia = DPI_copia;
     }
+
+    public Double getTotalTransaccion() {
+        return totalTransaccion;
+    }
+
+    public void setTotalTransaccion(Double totalTransaccion) {
+        this.totalTransaccion = totalTransaccion;
+    }
+    
 
 }

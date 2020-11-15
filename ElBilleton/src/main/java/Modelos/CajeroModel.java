@@ -2,9 +2,11 @@ package Modelos;
 
 import Objetos.Cajero;
 import Objetos.Cliente;
+import Objetos.Transaccion;
 import SQLConnector.DbConnection;
 import SQLConnector.Encriptar;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +33,8 @@ public class CajeroModel {
     private final String EDITAR_CAJERO = "UPDATE " + Cajero.CAJERO_DB_NAME + " SET " + Cajero.NOMBRE_DB_NAME + "=?,"
             + Cajero.TURNO_DB_NAME + "=?," + Cajero.DPI_DB_NAME + "=?," + Cajero.DIRECCION_DB_NAME + "=?," + Cajero.SEXO_DB_NAME + "=?,"
             + Cajero.PASSWORD_DB_NAME + "=? WHERE codigo=?";
+    private final String REPORTE_7 = "SELECT COUNT(*) AS transacciones,C.* FROM " + Cajero.CAJERO_DB_NAME + " C INNER JOIN " + Transaccion.TRANSACCION_DB_NAME
+            + " T ON C.codigo=T.cajero_codigo WHERE T.fecha BETWEEN ? AND ? GROUP BY C.codigo ORDER BY transacciones DESC LIMIT 1";
     private static Connection connection = DbConnection.getConnection();
     HistorialCajeroModel historialCajero = new HistorialCajeroModel();
 
@@ -180,6 +184,37 @@ public class CajeroModel {
                     result.getString(Cajero.DIRECCION_DB_NAME),
                     result.getString(Cajero.SEXO_DB_NAME),
                     result.getString(Cajero.PASSWORD_DB_NAME)
+            );
+            cajeros.add(cajero);
+        }
+        return cajeros;
+    }
+
+    /**
+     * Realizamos una busqueda en base al codigo del cajero. De no existir nos
+     * devuelve un valor null.
+     *
+     * @return
+     * @param fechaFinal 
+     * @param fechaInicio 
+     * @throws SQLException
+     */
+    public ArrayList obtenerReporte7(Date fechaInicio,Date fechaFinal) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(REPORTE_7);
+        preSt.setDate(1, fechaInicio);
+        preSt.setDate(2, fechaFinal);
+        ResultSet result = preSt.executeQuery();
+        ArrayList cajeros = new ArrayList();
+        Cajero cajero = null;
+        while (result.next()) {
+            cajero = new Cajero(
+                    result.getLong(Cajero.CODIGO_DB_NAME),
+                    result.getString(Cajero.NOMBRE_DB_NAME),
+                    result.getString(Cajero.TURNO_DB_NAME),
+                    result.getString(Cajero.DPI_DB_NAME),
+                    result.getString(Cajero.DIRECCION_DB_NAME),
+                    result.getString(Cajero.SEXO_DB_NAME),
+                    result.getString("transacciones")
             );
             cajeros.add(cajero);
         }

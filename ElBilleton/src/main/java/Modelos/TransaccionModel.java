@@ -1,5 +1,7 @@
 package Modelos;
 
+import Objetos.Cliente;
+import Objetos.Cuenta;
 import Objetos.Transaccion;
 import SQLConnector.DbConnection;
 import java.sql.Connection;
@@ -7,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +27,8 @@ public class TransaccionModel {
     private final String CREAR_TRANSACCION_MANUALMENTE = "INSERT INTO " + Transaccion.TRANSACCION_DB_NAME + " (" + Transaccion.CODIGO_DB_NAME + "," + Transaccion.FECHA_DB_NAME + ","
             + Transaccion.HORA_DB_NAME + "," + Transaccion.TIPO_DB_NAME + "," + Transaccion.MONTO_DB_NAME + "," + Transaccion.CUENTA_CODIGO_DB_NAME + ","
             + Transaccion.CAJERO_CODIGO_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
+    private final String REPORTE_2 = "SELECT T.* FROM " + Transaccion.TRANSACCION_DB_NAME + " T INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON T.cuenta_codigo=CU.codigo INNER JOIN "
+            + Cliente.CLIENTE_DB_NAME + " C ON C.codigo=CU.cliente_codigo WHERE C.codigo=? && T.monto>?";
     private static Connection connection = DbConnection.getConnection();
 
     /**
@@ -114,6 +119,42 @@ public class TransaccionModel {
             );
         }
         return cajero;
+    }
+
+    /**
+     * Realizamos una busqueda en base al codigo del cajero. De no existir la
+     * nos devuelve un valor null.
+     *
+     * @param limiteReporte2
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerTransaccionLimite(Double limiteReporte2, Long codigoCliente) throws SQLException {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE_2);
+            preSt.setLong(1, codigoCliente);
+            preSt.setDouble(2, limiteReporte2);
+            ArrayList transacciones = new ArrayList();
+            ResultSet result = preSt.executeQuery();
+            Transaccion cajero = null;
+            while (result.next()) {
+                cajero = new Transaccion(
+                        result.getLong(Transaccion.CODIGO_DB_NAME),
+                        result.getDate(Transaccion.FECHA_DB_NAME),
+                        result.getTime(Transaccion.HORA_DB_NAME),
+                        result.getString(Transaccion.TIPO_DB_NAME),
+                        result.getDouble(Transaccion.MONTO_DB_NAME),
+                        result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
+                        result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
+                );
+                transacciones.add(cajero);
+            }
+            return transacciones;
+        } catch (Exception e) {
+            
+            return null;
+        }
+
     }
 
 }

@@ -5,7 +5,7 @@
         <title>Menu</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/MenuNavStyle.css?4.0">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/MenuNavStyle.css?6.2">
 
     </head>
     <body>
@@ -42,17 +42,17 @@
                         </button>
                         <div class="dropdown-content" id="reportes">
                             <a href="${pageContext.request.contextPath}/CargarLimitesGerente">Establecer limites</a>
-                            <a href="VerPacienteHistorial.jsp">Ver historial de cambios realizados en una entidad
+                            <a href="${pageContext.request.contextPath}/gerente/SeleccionarEntidad.jsp">Ver historial de cambios realizados en una entidad
                                 especifica</a>
-                            <a href="VerCitaActual.jsp">Ver clientes con transacciones monetarios mayores
+                            <a href="${pageContext.request.contextPath}/GenerarReporte2">Ver clientes con transacciones monetarias mayores
                                 a un limite establecido</a>
-                            <a href="VerPacienteHistorial.jsp">Ver clientes con transacciones monetarias sumadas
+                            <a href="${pageContext.request.contextPath}/GenerarReporte3">Ver clientes con transacciones monetarias sumadas
                                 mayores a un limite establecido</a>
-                            <a href="VerPacienteHistorial.jsp">Ver los 10 clientes con mas dinero en sus cuentas</a>
-                            <a href="VerPacienteHistorial.jsp">Ver los clientes que no han realizado transacciones
+                            <a href="${pageContext.request.contextPath}/GenerarReporte4">Ver los 10 clientes con mas dinero en sus cuentas</a>
+                            <a href="${pageContext.request.contextPath}/gerente/IntervaloReporte5.jsp">Ver los clientes que no han realizado transacciones
                                 dentro de un intervalo de tiempo</a>
-                            <a href="VerPacienteHistorial.jsp">Ver el historial de transacciones por cliente</a>
-                            <a href="VerPacienteHistorial.jsp">Ver el cajero que mas transacciones ha realizado en
+                            <a href="${pageContext.request.contextPath}/VerClientesReporte6">Ver el historial de transacciones por cliente</a>
+                            <a href="${pageContext.request.contextPath}/gerente/IntervaloReporte7.jsp">Ver el cajero que mas transacciones ha realizado en
                                 un intervalo de tiempo</a>
                         </div>
                     </div>
