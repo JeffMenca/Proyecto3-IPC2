@@ -16,13 +16,16 @@ Controladores/VerReporte1.class
 Controladores/InsertarGerente.class
 Controladores/Logout.class
 Objetos/Gerente.class
+Objetos/SolicitudAsociacion.class
 Objetos/HistorialGerente.class
 Controladores/CargarEditarCliente.class
 SQLConnector/Encriptar.class
 Controladores/CargarCliente.class
 Controladores/GenerarReporte1.class
+ControladoresCliente/CrearSolicitud.class
 Controladores/InsertarCuenta.class
 Controladores/VerTransaccionesReporte2.class
+ControladoresCliente/VerCuentasCliente.class
 Controladores/GenerarReporte4.class
 Controladores/VerEditarClientes.class
 Controladores/ActualizarCliente.class
@@ -43,6 +46,7 @@ SQLConnector/DbConnection.class
 Controladores/Login.class
 Controladores/InsertarCajero.class
 Clases/EtiquetasCliente.class
+ControladoresCajero/HorarioCajero.class
 Controladores/ActualizarCajero.class
 Modelos/GerenteModel.class
 Controladores/Horario.class
@@ -53,6 +57,7 @@ Controladores/CargarLimitesGerente.class
 Objetos/Cuenta.class
 Objetos/LimitesGerente.class
 Clases/EtiquetasGerente.class
+Modelos/SolicitudModel.class
 Clases/EtiquetasTransaccion.class
 Controladores/GenerarReporte2.class
 Clases/GeneradorArchivo.class

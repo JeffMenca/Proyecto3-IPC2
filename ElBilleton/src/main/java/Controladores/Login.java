@@ -21,7 +21,7 @@ import java.sql.SQLException;
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
-    
+
     /**
      * Objetos de entidad para comprobar en el login
      */
@@ -101,7 +101,7 @@ public class Login extends HttpServlet {
             } else if (cajero != null && tipo.equals("Cajero")) {
                 request.getSession().setAttribute("user", username);
                 request.getSession().setAttribute("cajero", cajero);
-                request.getRequestDispatcher("/cajero/CajeroIndex").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/HorarioCajero");
             } else if (cliente != null && tipo.equals("Cliente")) {
                 request.getSession().setAttribute("user", username);
                 request.getSession().setAttribute("cliente", cliente);

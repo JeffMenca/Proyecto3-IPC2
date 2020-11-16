@@ -6,7 +6,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/MenuNavStyle.css?6.2">
-
     </head>
     <body>
         <div class="header">
@@ -21,7 +20,7 @@
                         </button>
                         <div class="dropdown-content" id="crear">
                             <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=2">Ver solicitudes </a>
-                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=3">Solicitar asociacion</a>
+                            <a href="${pageContext.request.contextPath}/cliente/IngresarCuenta.jsp">Solicitar asociacion</a>
                         </div>
                     </div>
                     <div class="dropdown">
@@ -40,8 +39,8 @@
             </div>
         </div>
         <script>
-            /* When the user clicks on the button, 
-             toggle between hiding and showing the dropdown content */
+            /* Cuando se presiona el boton en el menu
+             se cierran o abren sus submenus */
 
             function dropCrear() {
                 document.getElementById("crear").classList.toggle("show");
@@ -55,7 +54,7 @@
                 myDropdown.classList.remove('show');
             }
 
-            // Close the dropdown if the user clicks outside of it
+            // Se cierran los menus cuando se presiona fuera de ellos
             window.onclick = function (e) {
                 if (!e.target.matches('.dropbtn')) {
                     var myDropdown1 = document.getElementById("crear");

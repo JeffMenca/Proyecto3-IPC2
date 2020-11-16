@@ -60,7 +60,7 @@ public class Horario extends HttpServlet {
             Gerente gerente = (Gerente) request.getSession().getAttribute("gerente");
             LocalTime horaActual = LocalTime.now();
             LocalTime horaInicio, horaFinal;
-            if (gerente.getTurno().equals("Vespertino")) {
+            if (gerente.getTurno().equalsIgnoreCase("Vespertino")) {
                 horaInicio = LocalTime.of(1, 0);
                 horaFinal = LocalTime.of(22, 0);
             } else {

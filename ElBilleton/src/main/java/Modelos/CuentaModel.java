@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,6 +17,7 @@ public class CuentaModel {
 
     private final String CUENTA = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME;
     private final String BUSCAR_CUENTA = CUENTA + " WHERE " + Cuenta.CODIGO_DB_NAME + " = ? LIMIT 1";
+    private final String BUSCAR_CUENTA_SIN_CLIENTE_DUENIO = CUENTA + " WHERE " + Cuenta.CODIGO_DB_NAME + " = ? && "+Cuenta.CLIENTE_CODIGO_DB_NAME+" !=? LIMIT 1";
     private final String BUSCAR_POR_CLIENTE = CUENTA + " WHERE " + Cuenta.CLIENTE_CODIGO_DB_NAME + " LIKE ?";
     private final String CREAR_CUENTA = "INSERT INTO " + Cuenta.CUENTA_DB_NAME + " (" + Cuenta.FECHA_CREACION_DB_NAME + ","
             + Cuenta.MONTO_DB_NAME + "," + Cuenta.CLIENTE_CODIGO_DB_NAME + ") VALUES (?,?,?)";
@@ -87,12 +89,14 @@ public class CuentaModel {
      * devuelve un valor null.
      *
      * @param codigoCuenta
+     * @param codigoCliente 
      * @return
      * @throws SQLException
      */
-    public Cuenta obtenerCuenta(Long codigoCuenta) throws SQLException {
-        PreparedStatement preSt = connection.prepareStatement(BUSCAR_CUENTA);
+    public Cuenta obtenerCuenta(Long codigoCuenta,Long codigoCliente) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_CUENTA_SIN_CLIENTE_DUENIO);
         preSt.setLong(1, codigoCuenta);
+        preSt.setLong(2, codigoCliente);
         ResultSet result = preSt.executeQuery();
         Cuenta cuenta = null;
         while (result.next()) {
@@ -104,6 +108,32 @@ public class CuentaModel {
             );
         }
         return cuenta;
+    }
+    
+    /**
+     * Realizamos una busqueda en base al duenio de las cuentas. De no existir nos
+     * devuelve un valor null.
+     *
+     * @param codigoCliente
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerCuentasCliente(Long codigoCliente) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_POR_CLIENTE);
+        preSt.setLong(1, codigoCliente);
+        ResultSet result = preSt.executeQuery();
+        ArrayList cuentas=new ArrayList();
+        Cuenta cuenta = null;
+        while (result.next()) {
+            cuenta = new Cuenta(
+                    result.getInt(cuenta.CODIGO_DB_NAME),
+                    result.getDate(cuenta.FECHA_CREACION_DB_NAME),
+                    result.getDouble(cuenta.MONTO_DB_NAME),
+                    result.getInt(cuenta.CLIENTE_CODIGO_DB_NAME)
+            );
+            cuentas.add(cuenta);
+        }
+        return cuentas;
     }
 
 }

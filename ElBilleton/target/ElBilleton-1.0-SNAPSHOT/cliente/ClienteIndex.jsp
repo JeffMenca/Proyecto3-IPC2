@@ -20,20 +20,19 @@
         <%@include  file="MenuNavigator.jsp" %>
         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
     <center><h1 style="color:white;">Bienvenido cliente</h1></h1></center>
-    <br> 
-    <center><div style="color:white;">
-            <strong><p>Codigo: ${cliente.getCodigo()}</p>
-                <p>Nombre: ${cliente.getNombre()}</p>
-                <br>
+<br> 
+<center><div style="color:white;">
+        <strong><p>Codigo: ${cliente.getCodigo()}</p>
+            <p>Nombre: ${cliente.getNombre()}</p>
+            <br>
             <p>Aqui podra administrar su cuenta web.</p>
             <p>Podra hacer transacciones como depositos a otras cuentas o a terceros</p>
             <p>Podra generar reportes y exportarlos de facil manera .</p>
             <p>Tambien podra acceder a la asosiacion de cuentas para poder hacer transacciones .</p>
             <p>Sus datos son privados y seguros.</p>
             <p>bienvenido</p>
-        </div></center>
-    <center><img src="${pageContext.request.contextPath}/img/logo.png" width="150" height="150" /></center>
-    
+    </div></center>
+<center><img src="${pageContext.request.contextPath}/img/logo.png" width="150" height="150" /></center>
 
 
 </body>

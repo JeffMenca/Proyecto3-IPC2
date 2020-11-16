@@ -249,7 +249,7 @@ public class GerenteModel {
 
             turno = result.getString(Gerente.TURNO_DB_NAME);
         }
-        if (turno.equals("Vespertino")) {
+        if (turno.equalsIgnoreCase("Vespertino")) {
             horaInicio = LocalTime.of(1, 0);
             horaFinal = LocalTime.of(22, 0);
         } else {

@@ -346,7 +346,7 @@ public class ClienteModel {
     }
 
     /**
-     * Obtenemos el reporte 5 por medio del limite del reporte 5
+     * Obtenemos el reporte 6 por medio del limite del reporte 6
      *
      * @return
      * @throws SQLException

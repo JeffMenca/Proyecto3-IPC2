@@ -2,6 +2,7 @@ package Modelos;
 
 import Objetos.Cajero;
 import Objetos.Cliente;
+import Objetos.Gerente;
 import Objetos.Transaccion;
 import SQLConnector.DbConnection;
 import SQLConnector.Encriptar;
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -195,11 +197,11 @@ public class CajeroModel {
      * devuelve un valor null.
      *
      * @return
-     * @param fechaFinal 
-     * @param fechaInicio 
+     * @param fechaFinal
+     * @param fechaInicio
      * @throws SQLException
      */
-    public ArrayList obtenerReporte7(Date fechaInicio,Date fechaFinal) throws SQLException {
+    public ArrayList obtenerReporte7(Date fechaInicio, Date fechaFinal) throws SQLException {
         PreparedStatement preSt = connection.prepareStatement(REPORTE_7);
         preSt.setDate(1, fechaInicio);
         preSt.setDate(2, fechaFinal);
@@ -247,6 +249,39 @@ public class CajeroModel {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
+    }
+
+    /**
+     * Verifica si el cajero estra trabajando dentro de su turno
+     *
+     * @param codigoCajero
+     * @return
+     * @throws SQLException
+     */
+    public Boolean enHora(Long codigoCajero) throws SQLException {
+        LocalTime horaActual = LocalTime.now();
+        LocalTime horaInicio, horaFinal;
+        PreparedStatement preSt = connection.prepareStatement(BUSCAR_CAJERO);
+        preSt.setLong(1, codigoCajero);
+        ResultSet result = preSt.executeQuery();
+        String turno = "";
+        while (result.next()) {
+
+            turno = result.getString(Cajero.TURNO_DB_NAME);
+        }
+        if (turno.equalsIgnoreCase("Vespertino")) {
+            horaInicio = LocalTime.of(1, 0);
+            horaFinal = LocalTime.of(22, 0);
+        } else {
+            horaInicio = LocalTime.of(0, 0);
+            horaFinal = LocalTime.of(23, 59);
+        }
+
+        if (horaActual.isAfter(horaInicio) && (horaActual.isBefore(horaFinal))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
