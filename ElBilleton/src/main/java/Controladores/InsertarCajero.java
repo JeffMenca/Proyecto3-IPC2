@@ -92,6 +92,7 @@ public class InsertarCajero extends HttpServlet {
             try {
                 Long codigoCajero = cajeroModel.agregarCajero(nuevoCajero);
                 historialCajero.agregarHistorialCajeroCodigo(nuevoCajero, codigoCajero);
+                request.setAttribute("codigoCreado", codigoCajero);
                 request.setAttribute("successCrearCajero", 1);
                 request.getRequestDispatcher("/gerente/CrearCajero.jsp").forward(request, response);
             } catch (Exception e) {

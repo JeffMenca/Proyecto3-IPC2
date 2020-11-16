@@ -84,8 +84,8 @@
                     </div>
                     <div class="col-77">
                         
-                        <a href="${pageContext.request.contextPath}/CargarDPI?codigo=${clienteSeleccionado.getCodigo()}" target="_blank">Ver el DPI en PDF</a>
-                        <input type="file" id="lfile" name="archivo"  multiple >
+                        <a style="background-color: #60aeee;" href="${pageContext.request.contextPath}/CargarDPI?codigo=${clienteSeleccionado.getCodigo()}" target="_blank">Ver el DPI en PDF</a>
+                        <input type="file" id="lfile" accept="application/pdf" name="archivo"  multiple >
                     </div>
                 </div>
                 <div class="row">

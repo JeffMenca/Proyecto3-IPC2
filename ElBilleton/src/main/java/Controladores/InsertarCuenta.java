@@ -81,7 +81,8 @@ public class InsertarCuenta extends HttpServlet {
             Date fecha = Date.valueOf(LocalDate.now());
             Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
             try {
-                cuentaModel.agregarCuenta(nuevaCuenta);
+                Long codigoCuenta=cuentaModel.agregarCuenta(nuevaCuenta);
+                request.setAttribute("codigoCreado", codigoCuenta);
                 request.setAttribute("successCrearCuenta", 1);
                 request.getRequestDispatcher("/gerente/CrearCuenta.jsp").forward(request, response);
             } catch (Exception e) {

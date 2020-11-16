@@ -99,10 +99,11 @@
         <c:if test="${successCrearGerente == 1}">
             <div class="alert1">
                 <span class="closebtn"> 
-                    <strong>Creado</strong> El gerente se creo exitosamente
+                    <strong>Creado</strong> El gerente se creo exitosamente.  
+                     (El codigo del gerente creado es <strong>${codigoCreado}</strong>)
             </div>
         </c:if>
-           <c:if test="${successCrearGerente == 2}">
+        <c:if test="${successCrearGerente == 2}">
             <div class="alert2">
                 <span class="closebtn"> 
                     <strong>Error</strong> No se aceptan espacios vacios en los campos

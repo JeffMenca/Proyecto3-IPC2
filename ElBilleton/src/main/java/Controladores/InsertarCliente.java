@@ -114,7 +114,9 @@ public class InsertarCliente extends HttpServlet {
                 nuevoCliente.setDPI_copia(pdf2);
                 historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
                 Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
-                cuentaModel.agregarCuenta(nuevaCuenta);
+                Long codigoCuenta=cuentaModel.agregarCuenta(nuevaCuenta);
+                request.setAttribute("codigoCreado", codigoCliente);
+                request.setAttribute("cuentaCreado", codigoCuenta);
                 request.setAttribute("successCrearCliente", 1);
                 request.getRequestDispatcher("/gerente/CrearCliente.jsp").forward(request, response);
             } catch (Exception e) {

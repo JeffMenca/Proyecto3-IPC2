@@ -63,13 +63,14 @@
         <c:if test="${successCrearCuenta == 0}">
             <div class="alert2">
                 <span class="closebtn"> 
-                    <strong>Error</strong> No ingreso datos validos del cajero
+                    <strong>Error</strong> No ingreso datos validos de la cuenta
             </div>
         </c:if>
         <c:if test="${successCrearCuenta == 1}">
             <div class="alert1">
                 <span class="closebtn"> 
-                    <strong>Creado</strong> El cajero se creo exitosamente
+                    <strong>Creado</strong> La cuenta se creo exitosamente. 
+                    (El codigo de la cuenta creada es <strong>${codigoCreado}</strong>)
             </div>
         </c:if>
         <c:if test="${successCrearCuenta == 2}">

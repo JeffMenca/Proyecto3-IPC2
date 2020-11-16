@@ -99,7 +99,8 @@
         <c:if test="${successCrearCajero == 1}">
             <div class="alert1">
                 <span class="closebtn"> 
-                    <strong>Creado</strong> El cajero se creo exitosamente
+                    <strong>Creado</strong> El cajero se creo exitosamente. 
+                    (El codigo del cajero creado es <strong>${codigoCreado}</strong>)
             </div>
         </c:if>
         <c:if test="${successCrearCajero == 2}">

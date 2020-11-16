@@ -88,6 +88,7 @@ public class InsertarGerente extends HttpServlet {
             try {
                 Long codigoGerente = gerenteModel.agregarGerente(nuevoGerente);
                 historialGerente.agregarHistorialGerenteCodigo(nuevoGerente, codigoGerente);
+                request.setAttribute("codigoCreado", codigoGerente);
                 request.setAttribute("successCrearGerente", 1);
                 request.getRequestDispatcher("/gerente/CrearGerente.jsp").forward(request, response);
             } catch (Exception e) {

@@ -74,7 +74,7 @@
                         <label for="fname">Seleccionar archivos</label>
                     </div>
                     <div class="col-77">
-                        <input type="file" id="lfile" name="archivo"  multiple required>
+                        <input type="file" id="lfile" accept="application/pdf" name="archivo"  multiple required>
                     </div>
                 </div>
                 <div class="row">
@@ -114,7 +114,8 @@
         <c:if test="${successCrearCliente == 1}">
             <div class="alert1">
                 <span class="closebtn"> 
-                    <strong>Creado</strong> El cliente y su primera cuenta se registraron exitosamente
+                    <strong>Creado</strong> El cliente y su primera cuenta se registraron exitosamente.
+                    (El codigo del cliente es <strong>${codigoCreado}</strong> y su codigo de cuenta es <strong>${cuentaCreado}</strong>)
             </div>
         </c:if>
               <c:if test="${successCrearCliente == 2}">
