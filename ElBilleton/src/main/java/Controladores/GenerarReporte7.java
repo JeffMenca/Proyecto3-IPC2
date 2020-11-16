@@ -65,11 +65,15 @@ public class GenerarReporte7 extends HttpServlet {
 
         if (fechaInicio.after(fechaFinal)) {
             request.setAttribute("successIntervalo", 2);
+            request.setAttribute("fecha1", fechaInicio);
+            request.setAttribute("fecha2", fechaFinal);
             request.getRequestDispatcher("/gerente/IntervaloReporte7.jsp").forward(request, response);
         } else {
             try {
                 ArrayList cajeros = cajeroModel.obtenerReporte7(fechaInicio, fechaFinal);
                 request.setAttribute("listaCajeros", cajeros);
+                request.setAttribute("fecha1", fechaInicio);
+                request.setAttribute("fecha2", fechaFinal);
                 request.getRequestDispatcher("/gerente/VerReporte7.jsp").forward(request, response);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());

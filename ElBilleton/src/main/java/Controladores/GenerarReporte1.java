@@ -69,6 +69,7 @@ public class GenerarReporte1 extends HttpServlet {
                 ArrayList historialGerentes = gerenteModel.obtenerHistorialGerente(codigoEntidad);
 
                 request.setAttribute("listaHistorial", historialGerentes);
+                request.setAttribute("tipo", tipoEntidad);
                 request.setAttribute("codigoEntidad", codigoEntidad);
                 request.getRequestDispatcher("/gerente/VerReporte1.jsp").forward(request, response);
             } catch (Exception e) {
@@ -79,6 +80,7 @@ public class GenerarReporte1 extends HttpServlet {
                 ArrayList historialClientes = clienteModel.obtenerHistorialCliente(codigoEntidad);
 
                 request.setAttribute("listaHistorial", historialClientes);
+                request.setAttribute("tipo", tipoEntidad);
                 request.setAttribute("codigoEntidad", codigoEntidad);
                 request.getRequestDispatcher("/gerente/VerReporte1.jsp").forward(request, response);
             } catch (Exception e) {
@@ -89,6 +91,7 @@ public class GenerarReporte1 extends HttpServlet {
                 ArrayList historialCajeros = clienteModel.obtenerHistorialCajero(codigoEntidad);
 
                 request.setAttribute("listaHistorial", historialCajeros);
+                request.setAttribute("tipo", tipoEntidad);
                 request.setAttribute("codigoEntidad", codigoEntidad);
                 request.getRequestDispatcher("/gerente/VerReporte1.jsp").forward(request, response);
             } catch (Exception e) {

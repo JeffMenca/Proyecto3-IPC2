@@ -64,6 +64,7 @@ public class GenerarReporte2 extends HttpServlet {
             LimitesGerente limites = limitesModel.obtenerLimites();
             ArrayList clientes = clienteModel.obtenerReporte2(limites.getLimite_reporte2());
             request.setAttribute("listaCliente", clientes);
+            request.setAttribute("monto", limites.getLimite_reporte2());
             request.getRequestDispatcher("/gerente/VerReporte2.jsp").forward(request, response);
         } catch (Exception e) {
             

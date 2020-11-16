@@ -18,7 +18,7 @@
     </head> 
     <body>
         <%@include  file="MenuNavigator.jsp" %>
-        <form method="GET" action="VerReporte1">
+        <form method="GET" action="${pageContext.request.contextPath}/exportarReporte4">
 
             <br> <br> <br> <br> <br> <br> <br> 
 

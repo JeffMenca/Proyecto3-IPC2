@@ -27,6 +27,16 @@
                         </div>
                     </div>
                     <div class="dropdown">
+                        <button class="dropbtn" onclick="dropCrear()">Ver usuarios
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="ver">
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=9">Ver clientes </a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=10">Ver cajeros</a>
+                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=11">Ver gerentes</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
                         <button class="dropbtn" onclick="dropEditar()">Editar usuarios
                             <i class="fa fa-caret-down"></i>
                         </button>
@@ -68,23 +78,38 @@
                 document.getElementById("crear").classList.toggle("show");
                 var myDropdown = document.getElementById("editar");
                 var myDropdown1 = document.getElementById("reportes");
+                var myDropdown2 = document.getElementById("ver");
                 myDropdown.classList.remove('show');
                 myDropdown1.classList.remove('show');
+                myDropdown2.classList.remove('show');
             }
 
             function dropEditar() {
                 document.getElementById("editar").classList.toggle("show");
                 var myDropdown = document.getElementById("crear");
                 var myDropdown1 = document.getElementById("reportes");
+                var myDropdown2 = document.getElementById("ver");
                 myDropdown.classList.remove('show');
                 myDropdown1.classList.remove('show');
+                myDropdown2.classList.remove('show');
             }
             function dropReporte() {
                 document.getElementById("reportes").classList.toggle("show");
                 var myDropdown = document.getElementById("crear");
                 var myDropdown1 = document.getElementById("editar");
+                var myDropdown2 = document.getElementById("ver");
                 myDropdown.classList.remove('show');
                 myDropdown1.classList.remove('show');
+                myDropdown2.classList.remove('show');
+            }
+            function dropCrear() {
+                document.getElementById("ver").classList.toggle("show");
+                var myDropdown = document.getElementById("editar");
+                var myDropdown1 = document.getElementById("reportes");
+                var myDropdown2 = document.getElementById("crear");
+                myDropdown.classList.remove('show');
+                myDropdown1.classList.remove('show');
+                myDropdown2.classList.remove('show');
             }
 
             // Close the dropdown if the user clicks outside of it
@@ -93,6 +118,7 @@
                     var myDropdown1 = document.getElementById("crear");
                     var myDropdown2 = document.getElementById("editar");
                     var myDropdown3 = document.getElementById("reportes");
+                    var myDropdown4 = document.getElementById("ver");
                     if (myDropdown1.classList.contains('show')) {
                         myDropdown1.classList.remove('show');
                     }
@@ -101,6 +127,9 @@
                     }
                     if (myDropdown3.classList.contains('show')) {
                         myDropdown3.classList.remove('show');
+                    }
+                    if (myDropdown4.classList.contains('show')) {
+                        myDropdown4.classList.remove('show');
                     }
                 }
             };

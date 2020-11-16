@@ -63,11 +63,15 @@ public class GenerarReporte5 extends HttpServlet {
         Date fechaFinal = Date.valueOf((String) request.getParameter("fechaFinal"));
         if (fechaInicio.after(fechaFinal)) {
             request.setAttribute("successIntervalo", 2);
+            request.setAttribute("fecha1", fechaInicio);
+            request.setAttribute("fecha2", fechaFinal);
             request.getRequestDispatcher("/gerente/IntervaloReporte5.jsp").forward(request, response);
         } else {
             try {
                 ArrayList clientes = clienteModel.obtenerReporte5(fechaInicio, fechaFinal);
                 request.setAttribute("listaClientes", clientes);
+                request.setAttribute("fecha1", fechaInicio);
+                request.setAttribute("fecha2", fechaFinal);
                 request.getRequestDispatcher("/gerente/VerReporte5.jsp").forward(request, response);
             } catch (Exception e) {
 

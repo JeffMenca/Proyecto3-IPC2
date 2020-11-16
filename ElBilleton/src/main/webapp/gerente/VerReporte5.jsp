@@ -18,7 +18,7 @@
     </head> 
     <body>
         <%@include  file="MenuNavigator.jsp" %>
-        <form method="GET" action="VerReporte1">
+        <form method="GET" action="${pageContext.request.contextPath}/exportarReporte5">
 
             <br> <br> <br> <br> <br> <br> <br> 
 
@@ -29,6 +29,8 @@
 
 
                 <input type="submit" class="button3" value="Exportar Reporte">
+                <input  name="fecha1" type="hidden" value="${fecha1}">
+                <input  name="fecha2" type="hidden" value="${fecha2}">
                 <table id="customers">
                     <tr>
                         <th >Codigo </th>

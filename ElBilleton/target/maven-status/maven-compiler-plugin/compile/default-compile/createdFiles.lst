@@ -1,6 +1,7 @@
 Controladores/VerEditarCajeros.class
 Controladores/GenerarReporte5.class
 Clases/LeerXML.class
+ControladoresReportesGerente/exportarReporte1.class
 Controladores/VerClientesReporte6.class
 Objetos/HistorialCliente.class
 Objetos/HistorialCajero.class
@@ -18,7 +19,9 @@ Controladores/Logout.class
 Objetos/Gerente.class
 Objetos/SolicitudAsociacion.class
 Objetos/HistorialGerente.class
+ControladoresReportesGerente/exportarReporte5.class
 Controladores/CargarEditarCliente.class
+Controladores/VisualizarCajeros.class
 SQLConnector/Encriptar.class
 Controladores/CargarCliente.class
 Controladores/GenerarReporte1.class
@@ -26,11 +29,13 @@ ControladoresCliente/CrearSolicitud.class
 Controladores/InsertarCuenta.class
 Controladores/VerTransaccionesReporte2.class
 ControladoresCliente/VerCuentasCliente.class
+ControladoresReportesGerente/exportarReporte2.class
 Controladores/GenerarReporte4.class
 Controladores/VerEditarClientes.class
 Controladores/ActualizarCliente.class
 Controladores/CargarEditarGerente.class
 Modelos/CajeroModel.class
+Controladores/VisualizarGerentes.class
 Controladores/VerClientes.class
 Controladores/VerTransaccionesReporte6.class
 Controladores/ActualizarGerente.class
@@ -40,6 +45,7 @@ Controladores/GenerarReporte7.class
 Objetos/Cajero.class
 Modelos/TransaccionModel.class
 Controladores/GenerarReporte3.class
+ControladoresReportesGerente/exportarReporte6.class
 Modelos/HistorialClienteModel.class
 Clases/EtiquetasCajero.class
 SQLConnector/DbConnection.class
@@ -48,11 +54,14 @@ Controladores/InsertarCajero.class
 Clases/EtiquetasCliente.class
 ControladoresCajero/HorarioCajero.class
 Controladores/ActualizarCajero.class
+ControladoresReportesGerente/exportarReporte3.class
 Modelos/GerenteModel.class
 Controladores/Horario.class
 Controladores/CargarDPIHistorial.class
 Modelos/HistorialGerenteModel.class
 Controladores/CargarEditarCajero.class
+Controladores/VisualizarClientes.class
+ControladoresReportesGerente/exportarReporte7.class
 Controladores/CargarLimitesGerente.class
 Objetos/Cuenta.class
 Objetos/LimitesGerente.class
@@ -64,3 +73,4 @@ Clases/GeneradorArchivo.class
 Modelos/ClienteModel.class
 Controladores/CargaDatos.class
 Modelos/HistorialCajeroModel.class
+ControladoresReportesGerente/exportarReporte4.class

@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controladores;
 
-import Modelos.ClienteModel;
 import Modelos.LimitesGerenteModel;
 import Modelos.TransaccionModel;
 import Objetos.LimitesGerente;
@@ -72,6 +67,7 @@ public class VerTransaccionesReporte2 extends HttpServlet {
             LimitesGerente limites = limitesModel.obtenerLimites();
             ArrayList transacciones = modelTransaccion.obtenerTransaccionLimite(limites.getLimite_reporte2(), codigoCliente);
             request.setAttribute("listaTransacciones", transacciones);
+            request.setAttribute("cliente", codigoCliente);
             request.getRequestDispatcher("/gerente/VerTransaccionesReporte2.jsp").forward(request, response);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());

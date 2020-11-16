@@ -82,6 +82,12 @@ public class HorarioAcciones extends HttpServlet {
                         request.getRequestDispatcher("/VerEditarCajeros").forward(request, response);
                     } else if (opcion.equals("8")) {
                         request.getRequestDispatcher("/VerEditarClientes").forward(request, response);
+                    } else if (opcion.equals("9")) {
+                        request.getRequestDispatcher("/VisualizarClientes").forward(request, response);
+                    } else if (opcion.equals("10")) {
+                        request.getRequestDispatcher("/VisualizarCajeros").forward(request, response);
+                    } else if (opcion.equals("11")) {
+                        request.getRequestDispatcher("/VisualizarGerentes").forward(request, response);
                     }
 
                 } else {

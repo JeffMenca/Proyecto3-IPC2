@@ -67,6 +67,7 @@ public class VerTransaccionesReporte6 extends HttpServlet {
             LimitesGerente limites = limitesModel.obtenerLimites();
             ArrayList transacciones = modelTransaccion.obtenerTransaccionLimite(0.0, codigoCliente);
             request.setAttribute("listaTransacciones", transacciones);
+            request.setAttribute("cliente", codigoCliente);
             request.getRequestDispatcher("/gerente/VerTransaccionesReporte2.jsp").forward(request, response);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
