@@ -30,21 +30,16 @@ public class EtiquetasTransaccion {
         for (int i = 0; i < listadoTransaccion.getLength(); i++) {
 
             transaccion = new Transaccion();
-            // Cojo el nodo actual
+            // S toma el nodo
             Node nodo = listadoTransaccion.item(i);
-            // Compruebo si el nodo es un elemento
+            // Comprobacion si el nodo es un elemento
             if (nodo.getNodeType() == Node.ELEMENT_NODE) {
-                // Lo transformo a Element
                 Element e = (Element) nodo;
-                // Obtengo sus hijos
+                // Obtengo sus hijos y recorre hijos
                 NodeList hijos = e.getChildNodes();
-                // Recorro sus hijos
                 for (int j = 0; j < hijos.getLength(); j++) {
-                    // Obtengo al hijo actual
                     Node hijo = hijos.item(j);
-                    // Compruebo si es un nodo
                     if (hijo.getNodeType() == Node.ELEMENT_NODE) {
-                        // Muestro el contenido
 
                         System.out.println("Etiqueta: " + hijo.getNodeName()
                                 + ", Valor: " + hijo.getTextContent());

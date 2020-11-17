@@ -250,11 +250,11 @@ public class GerenteModel {
             turno = result.getString(Gerente.TURNO_DB_NAME);
         }
         if (turno.equalsIgnoreCase("Vespertino")) {
-            horaInicio = LocalTime.of(1, 0);
+            horaInicio = LocalTime.of(13, 0);
             horaFinal = LocalTime.of(22, 0);
         } else {
-            horaInicio = LocalTime.of(0, 0);
-            horaFinal = LocalTime.of(23, 59);
+            horaInicio = LocalTime.of(6, 0);
+            horaFinal = LocalTime.of(14, 30);
         }
 
         if (horaActual.isAfter(horaInicio) && (horaActual.isBefore(horaFinal))) {

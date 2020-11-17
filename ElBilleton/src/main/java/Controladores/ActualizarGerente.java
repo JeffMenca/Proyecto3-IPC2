@@ -102,7 +102,6 @@ public class ActualizarGerente extends HttpServlet {
             }
 
         } catch (IOException | NumberFormatException | ServletException e) {
-            JOptionPane.showMessageDialog(null, "No ha cargado su informacion");
             request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
         }
 

@@ -61,7 +61,7 @@ public class Horario extends HttpServlet {
             LocalTime horaActual = LocalTime.now();
             LocalTime horaInicio, horaFinal;
             if (gerente.getTurno().equalsIgnoreCase("Vespertino")) {
-                horaInicio = LocalTime.of(1, 0);
+                horaInicio = LocalTime.of(13, 0);
                 horaFinal = LocalTime.of(22, 0);
             } else {
                 horaInicio = LocalTime.of(6, 0);

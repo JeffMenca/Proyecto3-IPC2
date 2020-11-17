@@ -1,11 +1,8 @@
 package Controladores;
 
-import Modelos.GerenteModel;
 import Modelos.HistorialCajeroModel;
 import Modelos.HistorialClienteModel;
 import Modelos.HistorialGerenteModel;
-import Objetos.HistorialCliente;
-import java.awt.JobAttributes;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -61,6 +58,7 @@ public class GenerarReporte1 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         Long codigoEntidad = Long.valueOf((String) request.getParameter("codigo"));
         String tipoEntidad = request.getParameter("tipo");
         if (tipoEntidad.equals("gerente")) {

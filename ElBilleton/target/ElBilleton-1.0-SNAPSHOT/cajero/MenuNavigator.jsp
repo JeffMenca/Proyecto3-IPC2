@@ -12,62 +12,15 @@
             <img class="logo" src="${pageContext.request.contextPath}/img/logo.png" width="60" height="60" />
             <div class="header-right">
                 <div class="navbar">
-                    <a href="${pageContext.request.contextPath}/cliente/ClienteIndex.jsp">Inicio</a>
-                    <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=1">Crear transaccion</a>
-                    <div class="dropdown">
-                        <button class="dropbtn" onclick="dropCrear()">Asociacion de cuentas
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content" id="crear">
-                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=2">Ver solicitudes </a>
-                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=3">Solicitar asociacion</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <button class="dropbtn" onclick="dropReporte()">Reportes
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content" id="reportes">
-                            <a href="${pageContext.request.contextPath}/gerente/SeleccionarEntidad.jsp">Ver historial de cambios realizados en una entidad
-                                especifica</a>
-                            <a href="${pageContext.request.contextPath}/GenerarReporte2">Ver clientes con transacciones monetarias mayores
-                                a un limite establecido</a>
-                        </div>
-                    </div>
+                    <a href="${pageContext.request.contextPath}/cajero/CajeroIndex.jsp">Inicio</a>
+                    <a href="${pageContext.request.contextPath}/HorarioAccionesCajero?opcion=1">Realizar deposito</a>
+                    <a href="${pageContext.request.contextPath}/HorarioAccionesCajero?opcion=2">Realizar retiro</a>
+                   
                     <a href="${pageContext.request.contextPath}/Logout">Cerrar sesion</a>
                 </div>
             </div>
         </div>
-        <script>
-            /* Cuando se presiona el boton en el menu
-             se cierran o abren sus submenus */
-
-            function dropCrear() {
-                document.getElementById("crear").classList.toggle("show");
-                var myDropdown1 = document.getElementById("reportes");
-                myDropdown1.classList.remove('show');
-            }
-
-            function dropReporte() {
-                document.getElementById("reportes").classList.toggle("show");
-                var myDropdown = document.getElementById("crear");
-                myDropdown.classList.remove('show');
-            }
-
-            // Se cierran los menus cuando se presiona fuera de ellos
-            window.onclick = function (e) {
-                if (!e.target.matches('.dropbtn')) {
-                    var myDropdown1 = document.getElementById("crear");
-                    var myDropdown3 = document.getElementById("reportes");
-                    if (myDropdown1.classList.contains('show')) {
-                        myDropdown1.classList.remove('show');
-                    }
-                    if (myDropdown3.classList.contains('show')) {
-                        myDropdown3.classList.remove('show');
-                    }
-                }
-            };
-        </script>
+       
         <%
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 

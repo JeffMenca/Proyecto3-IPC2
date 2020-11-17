@@ -31,8 +31,6 @@
                         <div class="dropdown-content" id="reportes">
                             <a href="${pageContext.request.contextPath}/VerCuentasReporte1">Ver las últimas 15 transacciones más grandes realizadas
                                 en el último año, por cuenta</a>
-                            <a href="${pageContext.request.contextPath}/GenerarReporte2">Ver clientes con transacciones monetarias mayores
-                                a un limite establecido</a>
                             <a href="${pageContext.request.contextPath}/cliente/IntervaloReporte3Cliente.jsp">Ver la cuenta con más dinero y todas sus
                                 transacciones con fecha mínima a la fecha actual</a>
                             <a href="${pageContext.request.contextPath}/GenerarReporte4Cliente">Ver historial con listado de solicitud de asociación

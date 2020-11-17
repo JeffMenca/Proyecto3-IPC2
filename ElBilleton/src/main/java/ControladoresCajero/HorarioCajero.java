@@ -2,7 +2,6 @@ package ControladoresCajero;
 
 import Controladores.*;
 import Objetos.Cajero;
-import Objetos.Gerente;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalTime;
@@ -11,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
 import javax.swing.JOptionPane;
 
 /**
@@ -61,11 +59,10 @@ public class HorarioCajero extends HttpServlet {
             throws ServletException, IOException {
         try {
             Cajero cajero = (Cajero) request.getSession().getAttribute("cajero");
-            JOptionPane.showMessageDialog(null, cajero.getNombre());
             LocalTime horaActual = LocalTime.now();
             LocalTime horaInicio, horaFinal;
             if (cajero.getTurno().equalsIgnoreCase("Vespertino")) {
-                horaInicio = LocalTime.of(1, 0);
+                horaInicio = LocalTime.of(13, 0);
                 horaFinal = LocalTime.of(22, 0);
             } else {
                 horaInicio = LocalTime.of(6, 0);

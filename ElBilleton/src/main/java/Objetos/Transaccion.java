@@ -19,7 +19,6 @@ public class Transaccion {
     public static final String CUENTA_CODIGO_DB_NAME = "cuenta_codigo";
     public static final String CAJERO_CODIGO_DB_NAME = "cajero_codigo";
 
-    
     private long codigo;
     private Date fecha;
     private Time hora;
@@ -96,7 +95,6 @@ public class Transaccion {
     public void setCajero_codigo(long cajero_codigo) {
         this.cajero_codigo = cajero_codigo;
     }
-
-   
+    
 
 }

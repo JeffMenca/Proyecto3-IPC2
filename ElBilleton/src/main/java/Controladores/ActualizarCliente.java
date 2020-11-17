@@ -134,7 +134,6 @@ public class ActualizarCliente extends HttpServlet {
             }
 
         } catch (HeadlessException | IOException | NumberFormatException | ServletException e) {
-            JOptionPane.showMessageDialog(null, "No ha seleccionado ningun cliente");
             request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
         }
 

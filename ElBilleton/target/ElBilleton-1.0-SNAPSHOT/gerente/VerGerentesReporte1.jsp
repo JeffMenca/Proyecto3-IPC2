@@ -54,7 +54,7 @@
                             <td>${gerente.getSexo()}</td>
                             <td>
                                 
-                                <a class="button" href="${pageContext.request.contextPath}/GenerarReporte1?codigo=${gerente.getCodigo()}&&tipo=gerente">Seleccionar</a>
+                                <a class="button" href="${pageContext.request.contextPath}/GenerarReporte1?codigo=${gerente.getCodigo()}&tipo=gerente">Seleccionar</a>
                             </td>
                         </tr>
                     </c:forEach>

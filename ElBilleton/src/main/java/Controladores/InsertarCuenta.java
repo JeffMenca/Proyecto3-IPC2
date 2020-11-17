@@ -1,4 +1,3 @@
-
 package Controladores;
 
 import Modelos.CuentaModel;
@@ -80,15 +79,15 @@ public class InsertarCuenta extends HttpServlet {
             throws ServletException, IOException {
         try {
             CuentaModel cuentaModel = new CuentaModel();
-            TransaccionModel transaccionModel= new TransaccionModel();
+            TransaccionModel transaccionModel = new TransaccionModel();
             Long codigoCliente = Long.valueOf((String) request.getParameter("codigo"));
             Double monto = Double.valueOf((String) request.getParameter("monto"));
             Date fecha = Date.valueOf(LocalDate.now());
-            Time hora=Time.valueOf(LocalTime.now());
+            Time hora = Time.valueOf(LocalTime.now());
             Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
             try {
-                Long codigoCuenta=cuentaModel.agregarCuenta(nuevaCuenta);
-                Transaccion transaccion=new Transaccion(0,fecha,hora,"Credito",monto,codigoCuenta,101);
+                Long codigoCuenta = cuentaModel.agregarCuenta(nuevaCuenta);
+                Transaccion transaccion = new Transaccion(0, fecha, hora, "Credito", monto, codigoCuenta, 101);
                 transaccionModel.agregarTransaccion(transaccion);
                 request.setAttribute("codigoCreado", codigoCuenta);
                 request.setAttribute("successCrearCuenta", 1);
@@ -98,6 +97,7 @@ public class InsertarCuenta extends HttpServlet {
                 request.getRequestDispatcher("/gerente/CrearCuenta.jsp").forward(request, response);
             }
         } catch (Exception e) {
+            request.getRequestDispatcher("/gerente/GerenteIndex.jsp").forward(request, response);
         }
 
     }
