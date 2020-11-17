@@ -60,22 +60,18 @@ public class VerCuentasCliente extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CuentaModel cuentaModel = new CuentaModel();
-        ClienteModel clienteModel=new ClienteModel();
+        String codigo = request.getParameter("filtro");
         Long codigoCliente = Long.valueOf((String) request.getSession().getAttribute("user"));
-        Long cuentaSeleccionada = Long.valueOf((String) request.getParameter("cuenta"));
-        Cuenta cuentaEncontrada = null;
+
         try {
-            cuentaEncontrada = cuentaModel.obtenerCuenta(cuentaSeleccionada,codigoCliente);
             ArrayList cuentas = cuentaModel.obtenerCuentasCliente(codigoCliente);
-            request.setAttribute("listaCuentas", cuentas);
-            request.setAttribute("cuentaEncontrada", cuentaEncontrada);
-            if (cuentaEncontrada != null) {
-                Cliente clienteEncontrado=clienteModel.obtenerCliente(cuentaEncontrada.getCliente_codigo());
-                request.setAttribute("clienteEncontrado", clienteEncontrado);
-                request.getRequestDispatcher("/cliente/EnviarSolicitudAsociacion.jsp").forward(request, response);
+            if (codigo == null || (codigo != null && codigo.isEmpty())) {
+                cuentas = cuentaModel.obtenerCuentasCliente(codigoCliente);
             } else {
-                request.getRequestDispatcher("/cliente/ErrorEncontrarCuenta.jsp").forward(request, response);
+                cuentas=cuentaModel.obtenerCuentasClienteLike(codigoCliente, codigo);
             }
+            request.setAttribute("listaCuentas", cuentas);
+            request.getRequestDispatcher("/cliente/VerCuentasCliente.jsp").forward(request, response);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());

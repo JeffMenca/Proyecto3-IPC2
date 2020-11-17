@@ -18,7 +18,7 @@
     </head> 
     <body>
         <%@include  file="MenuNavigator.jsp" %>
-        <form method="GET" action="VerEditarCajeros">
+        <form method="GET" action="VerCuentasCliente">
 
             <br> <br> <br> <br> <br> <br> <br> 
 
@@ -27,7 +27,7 @@
                 <br> <br>
                 <div class="wrap">
                     <div class="search">
-                        <input type="text" name="filtro" class="searchTerm" placeholder="Busqu">
+                        <input type="text" name="filtro" class="searchTerm" placeholder="Busqueda por codigo">
                         <button type="submit" class="searchButton">
                             <i class="fa fa-search"></i>
                         </button>
@@ -36,10 +36,14 @@
                 <table id="customers">
                     <tr>
                         <th >Codigo  </th>
+                        <th >Seleccionar cuenta  </th>
                     </tr>
                     <c:forEach items="${listaCuentas}" var="cuenta">
                         <tr>
                             <td>${cuenta.getCodigo()}</td>
+                            <td>
+                                <a class="button" href="${pageContext.request.contextPath}/VerSolicitudesPendientes?cuenta=${cuenta.getCodigo()}">Seleccionar</a>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>

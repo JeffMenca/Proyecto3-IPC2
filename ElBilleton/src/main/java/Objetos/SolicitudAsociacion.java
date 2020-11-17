@@ -17,7 +17,7 @@ public class SolicitudAsociacion {
     public static final String CUENTA_RECIBE_CODIGO_DB_NAME = "cuenta2_recibe_codigo1";
 
     
-    private long codigo;
+    private int codigo;
     private Date fecha;
     private String estado;
     private Long cuenta_envia_codigo;
@@ -26,7 +26,7 @@ public class SolicitudAsociacion {
     public SolicitudAsociacion() {
     }
 
-    public SolicitudAsociacion(long codigo, Date fecha, String estado, Long cuenta_envia_codigo, Long cuenta2_recibe_codigo1) {
+    public SolicitudAsociacion(int codigo, Date fecha, String estado, Long cuenta_envia_codigo, Long cuenta2_recibe_codigo1) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.estado = estado;
@@ -38,7 +38,7 @@ public class SolicitudAsociacion {
         return codigo;
     }
 
-    public void setCodigo(long codigo) {
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 

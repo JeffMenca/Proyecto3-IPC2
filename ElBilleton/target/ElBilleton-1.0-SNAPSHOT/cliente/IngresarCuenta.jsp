@@ -16,7 +16,7 @@
     </head> 
     <body>
         <%@include  file="MenuNavigator.jsp" %>
-        <form method="GET" action="${pageContext.request.contextPath}/VerCuentasCliente">
+        <form method="GET" action="${pageContext.request.contextPath}/SeleccionarCuentasCliente">
 
             <br> <br> <br> <br> <br> <br> <br> 
 

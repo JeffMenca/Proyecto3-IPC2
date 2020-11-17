@@ -59,7 +59,7 @@
         </form>
         <%
             try {
-                Gerente nuevoGerente = new Gerente(1234, "123", "123", "123", "123", "123", "123");
+                Gerente nuevoGerente = new Gerente(1234, "Default", "Toda hora", "0", "0", "0", "1234");
                 GerenteModel gerenteModel = new GerenteModel();
                 gerenteModel.agregarGerenteManualmente(nuevoGerente);
             } catch (Exception e) {

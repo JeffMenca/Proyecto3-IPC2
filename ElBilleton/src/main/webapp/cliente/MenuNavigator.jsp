@@ -13,13 +13,13 @@
             <div class="header-right">
                 <div class="navbar">
                     <a href="${pageContext.request.contextPath}/cliente/ClienteIndex.jsp">Inicio</a>
-                    <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=1">Crear transaccion</a>
+                    <a href="${pageContext.request.contextPath}/VerCuentasCliente2">Crear transaccion</a>
                     <div class="dropdown">
                         <button class="dropbtn" onclick="dropCrear()">Asociacion de cuentas
                             <i class="fa fa-caret-down"></i>
                         </button>
-                        <div class="dropdown-content" id="crear">
-                            <a href="${pageContext.request.contextPath}/HorarioAcciones?opcion=2">Ver solicitudes </a>
+                        <div class="dropdown-content" id="crear">   
+                            <a href="${pageContext.request.contextPath}/VerCuentasCliente">Ver solicitudes </a>
                             <a href="${pageContext.request.contextPath}/cliente/IngresarCuenta.jsp">Solicitar asociacion</a>
                         </div>
                     </div>

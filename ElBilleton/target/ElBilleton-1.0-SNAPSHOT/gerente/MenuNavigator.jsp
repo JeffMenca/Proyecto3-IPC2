@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="dropdown">
-                        <button class="dropbtn" onclick="dropCrear()">Ver usuarios
+                        <button class="dropbtn" onclick="dropVer()">Ver usuarios
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content" id="ver">
@@ -102,7 +102,7 @@
                 myDropdown1.classList.remove('show');
                 myDropdown2.classList.remove('show');
             }
-            function dropCrear() {
+            function dropVer() {
                 document.getElementById("ver").classList.toggle("show");
                 var myDropdown = document.getElementById("editar");
                 var myDropdown1 = document.getElementById("reportes");

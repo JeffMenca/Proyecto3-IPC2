@@ -5,14 +5,18 @@ import Clases.PDFHistorial;
 import Modelos.ClienteModel;
 import Modelos.CuentaModel;
 import Modelos.HistorialClienteModel;
+import Modelos.TransaccionModel;
 import Objetos.Cliente;
 import Objetos.Cuenta;
+import Objetos.Transaccion;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -93,6 +97,7 @@ public class InsertarCliente extends HttpServlet {
         String password = request.getParameter("password");
         Double monto = Double.valueOf((String) request.getParameter("monto"));
         Date fecha = Date.valueOf(LocalDate.now());
+        Time hora=Time.valueOf(LocalTime.now());
         InputStream archivo = InputStream.nullInputStream();
 
         if (nombre.trim().equals("") || direccion.trim().equals("")) {
@@ -108,6 +113,7 @@ public class InsertarCliente extends HttpServlet {
             InputStream pdf1 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
             InputStream pdf2 = new ByteArrayInputStream(crearPDF.obtenerArrayDatos());
             Cliente nuevoCliente = new Cliente(0, nombre, fecha_nacimiento, DPI, direccion, sexo, password, pdf1);
+            TransaccionModel transaccionModel=new TransaccionModel();
 
             try {
                 Long codigoCliente = clienteModel.agregarCliente(nuevoCliente);
@@ -115,6 +121,8 @@ public class InsertarCliente extends HttpServlet {
                 historialClienteModel.agregarHistorialClienteCodigo(nuevoCliente, codigoCliente);
                 Cuenta nuevaCuenta = new Cuenta(0, fecha, monto, codigoCliente);
                 Long codigoCuenta=cuentaModel.agregarCuenta(nuevaCuenta);
+                Transaccion transaccion=new Transaccion(0,fecha,hora,"Credito",monto,codigoCuenta,101);
+                transaccionModel.agregarTransaccion(transaccion);
                 request.setAttribute("codigoCreado", codigoCliente);
                 request.setAttribute("cuentaCreado", codigoCuenta);
                 request.setAttribute("successCrearCliente", 1);

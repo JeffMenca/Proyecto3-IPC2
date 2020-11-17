@@ -1,5 +1,6 @@
 Controladores/VerEditarCajeros.class
 Controladores/GenerarReporte5.class
+Objetos/AsociacionCuentas.class
 Clases/LeerXML.class
 ControladoresReportesGerente/exportarReporte1.class
 Controladores/VerClientesReporte6.class
@@ -26,6 +27,7 @@ SQLConnector/Encriptar.class
 Controladores/CargarCliente.class
 Controladores/GenerarReporte1.class
 ControladoresCliente/CrearSolicitud.class
+Modelos/AsociacionModel.class
 Controladores/InsertarCuenta.class
 Controladores/VerTransaccionesReporte2.class
 ControladoresCliente/VerCuentasCliente.class
@@ -37,6 +39,7 @@ Controladores/CargarEditarGerente.class
 Modelos/CajeroModel.class
 Controladores/VisualizarGerentes.class
 Controladores/VerClientes.class
+ControladoresCliente/RealizarTransaccion.class
 Controladores/VerTransaccionesReporte6.class
 Controladores/ActualizarGerente.class
 Controladores/CargarDPI.class
@@ -47,18 +50,23 @@ Modelos/TransaccionModel.class
 Controladores/GenerarReporte3.class
 ControladoresReportesGerente/exportarReporte6.class
 Modelos/HistorialClienteModel.class
+ControladoresCliente/VerCuentasCliente2.class
 Clases/EtiquetasCajero.class
+ControladoresCliente/SeleccionarCuentaAsociada.class
 SQLConnector/DbConnection.class
+ControladoresCliente/VerSolicitudesPendientes.class
 Controladores/Login.class
 Controladores/InsertarCajero.class
 Clases/EtiquetasCliente.class
 ControladoresCajero/HorarioCajero.class
 Controladores/ActualizarCajero.class
+ControladoresCliente/BuscarCuentaAsociada.class
 ControladoresReportesGerente/exportarReporte3.class
 Modelos/GerenteModel.class
 Controladores/Horario.class
 Controladores/CargarDPIHistorial.class
 Modelos/HistorialGerenteModel.class
+ControladoresCliente/RechazarSolicitud.class
 Controladores/CargarEditarCajero.class
 Controladores/VisualizarClientes.class
 ControladoresReportesGerente/exportarReporte7.class
@@ -66,6 +74,8 @@ Controladores/CargarLimitesGerente.class
 Objetos/Cuenta.class
 Objetos/LimitesGerente.class
 Clases/EtiquetasGerente.class
+ControladoresCliente/SeleccionarCuentasCliente.class
+ControladoresCliente/AceptarSolicitud.class
 Modelos/SolicitudModel.class
 Clases/EtiquetasTransaccion.class
 Controladores/GenerarReporte2.class
