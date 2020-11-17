@@ -5,6 +5,7 @@ import Objetos.Cuenta;
 import Objetos.Transaccion;
 import SQLConnector.DbConnection;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +30,10 @@ public class TransaccionModel {
             + Transaccion.CAJERO_CODIGO_DB_NAME + ") VALUES (?,?,?,?,?,?,?)";
     private final String REPORTE_2 = "SELECT T.* FROM " + Transaccion.TRANSACCION_DB_NAME + " T INNER JOIN " + Cuenta.CUENTA_DB_NAME + " CU ON T.cuenta_codigo=CU.codigo INNER JOIN "
             + Cliente.CLIENTE_DB_NAME + " C ON C.codigo=CU.cliente_codigo WHERE C.codigo=? && T.monto>?";
+    private final String OBTENER_TRANSACCIONES_CUENTA = "SELECT * FROM " + Transaccion.TRANSACCION_DB_NAME + " WHERE " + Transaccion.CUENTA_CODIGO_DB_NAME + "=?";
+    private final String REPORTE1 = "SELECT * FROM " + Transaccion.TRANSACCION_DB_NAME + " T INNER JOIN "
+            + Cuenta.CUENTA_DB_NAME + " C ON C.codigo=T.cuenta_codigo WHERE C.codigo=? && T.fecha >= date_sub(CURDATE(), INTERVAL 1 YEAR) ORDER BY T.monto DESC LIMIT 15  ";
+    private final String REPORTE3_CLIENTE = "SELECT * FROM " + Transaccion.TRANSACCION_DB_NAME + " WHERE "+Transaccion.CUENTA_CODIGO_DB_NAME+"=? && "+Transaccion.FECHA_DB_NAME+" BETWEEN ? AND ?";
     private static Connection connection = DbConnection.getConnection();
 
     /**
@@ -151,10 +156,113 @@ public class TransaccionModel {
             }
             return transacciones;
         } catch (Exception e) {
-            
+
             return null;
         }
 
     }
 
+    /**
+     * Obtenemos las transacciones de una cuenta en especifico
+     *
+     * @param cuenta_codigo return
+     */
+    public ArrayList<Transaccion> obtenerTransaccionesCuenta(long cuenta_codigo) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(OBTENER_TRANSACCIONES_CUENTA);
+            preSt.setLong(1, cuenta_codigo);
+
+            ArrayList<Transaccion> listaTransacciones = new ArrayList<>();
+            Transaccion transaccion = null;
+
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                transaccion = new Transaccion(
+                        result.getLong(Transaccion.CODIGO_DB_NAME),
+                        result.getDate(Transaccion.FECHA_DB_NAME),
+                        result.getTime(Transaccion.HORA_DB_NAME),
+                        result.getString(Transaccion.TIPO_DB_NAME),
+                        result.getDouble(Transaccion.MONTO_DB_NAME),
+                        result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
+                        result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
+                );
+                listaTransacciones.add(transaccion);
+            }
+            return listaTransacciones;
+
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Obtenemos las transacciones del reporte 1
+     *
+     * @param cuentaCodigo return
+     */
+    public ArrayList<Transaccion> obtenerReporte1Cliente(long cuentaCodigo) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE1);
+            preSt.setLong(1, cuentaCodigo);
+
+            ArrayList<Transaccion> listaTransacciones = new ArrayList<>();
+            Transaccion transaccion = null;
+
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                transaccion = new Transaccion(
+                        result.getLong(Transaccion.CODIGO_DB_NAME),
+                        result.getDate(Transaccion.FECHA_DB_NAME),
+                        result.getTime(Transaccion.HORA_DB_NAME),
+                        result.getString(Transaccion.TIPO_DB_NAME),
+                        result.getDouble(Transaccion.MONTO_DB_NAME),
+                        result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
+                        result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
+                );
+                listaTransacciones.add(transaccion);
+            }
+            return listaTransacciones;
+
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Obtenemos las transacciones del reporte 1
+     *
+     * @param cuentaCodigo return
+     */
+    public ArrayList<Transaccion> obtenerReporte3Cliente(long cuentaCodigo,Date fecha1, Date fecha2) {
+        try {
+            PreparedStatement preSt = connection.prepareStatement(REPORTE3_CLIENTE);
+            preSt.setLong(1, cuentaCodigo);
+            preSt.setDate(2, fecha1);
+            preSt.setDate(3, fecha2);
+
+            ArrayList<Transaccion> listaTransacciones = new ArrayList<>();
+            Transaccion transaccion = null;
+
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                transaccion = new Transaccion(
+                        result.getLong(Transaccion.CODIGO_DB_NAME),
+                        result.getDate(Transaccion.FECHA_DB_NAME),
+                        result.getTime(Transaccion.HORA_DB_NAME),
+                        result.getString(Transaccion.TIPO_DB_NAME),
+                        result.getDouble(Transaccion.MONTO_DB_NAME),
+                        result.getLong(Transaccion.CUENTA_CODIGO_DB_NAME),
+                        result.getLong(Transaccion.CAJERO_CODIGO_DB_NAME)
+                );
+                listaTransacciones.add(transaccion);
+            }
+            return listaTransacciones;
+
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }

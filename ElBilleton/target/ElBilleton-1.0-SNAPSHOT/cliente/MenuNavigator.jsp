@@ -14,6 +14,7 @@
                 <div class="navbar">
                     <a href="${pageContext.request.contextPath}/cliente/ClienteIndex.jsp">Inicio</a>
                     <a href="${pageContext.request.contextPath}/VerCuentasCliente2">Crear transaccion</a>
+                    <a href="${pageContext.request.contextPath}/VerCuentasCliente3">Estado de cuenta</a>
                     <div class="dropdown">
                         <button class="dropbtn" onclick="dropCrear()">Asociacion de cuentas
                             <i class="fa fa-caret-down"></i>
@@ -28,10 +29,16 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content" id="reportes">
-                            <a href="${pageContext.request.contextPath}/gerente/SeleccionarEntidad.jsp">Ver historial de cambios realizados en una entidad
-                                especifica</a>
+                            <a href="${pageContext.request.contextPath}/VerCuentasReporte1">Ver las últimas 15 transacciones más grandes realizadas
+                                en el último año, por cuenta</a>
                             <a href="${pageContext.request.contextPath}/GenerarReporte2">Ver clientes con transacciones monetarias mayores
                                 a un limite establecido</a>
+                            <a href="${pageContext.request.contextPath}/cliente/IntervaloReporte3Cliente.jsp">Ver la cuenta con más dinero y todas sus
+                                transacciones con fecha mínima a la fecha actual</a>
+                            <a href="${pageContext.request.contextPath}/GenerarReporte4Cliente">Ver historial con listado de solicitud de asociación
+                                de cuentas recibidas</a>
+                            <a href="${pageContext.request.contextPath}/GenerarReporte5Cliente">Ver historial con listado de solicitud de asociación
+                                de cuentas realizadas</a>
                         </div>
                     </div>
                     <a href="${pageContext.request.contextPath}/Logout">Cerrar sesion</a>

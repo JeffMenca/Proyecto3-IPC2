@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a081fedf-0289-4c82-9cc0-dcebf1a8d844">
+	<property name="ireport.zoom" value="1.363636363636366"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cliente" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT C.* FROM CUENTA C WHERE C.cliente_codigo=$P{cliente} ORDER BY C.monto DESC LIMIT 1;]]>
+	</queryString>
+	<field name="codigo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_creacion" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliente_codigo" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-25" y="-39" width="796" height="118" backcolor="#3A3A3A" uuid="69f07034-1e72-434f-a35f-f74039ed1fcd"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="46" width="752" height="20" forecolor="#FFFFFF" uuid="002a53f6-3889-4ec4-bde3-8a74a722eced"/>
+				<textElement>
+					<font fontName="Monospaced" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuenta con mas dinero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="-13" width="245" height="46" forecolor="#FFFFFF" uuid="8509263b-1455-49ea-9db4-198f12c175b8"/>
+				<textElement>
+					<font fontName="Monospaced" size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EL BILLETON]]></text>
+			</staticText>
+			<image>
+				<reportElement x="249" y="-13" width="79" height="46" uuid="8f93b559-4590-48d4-8acb-a92939a4a0c9"/>
+				<imageExpression><![CDATA["/home/jeffrey/NetBeansProjects/Proyecto3-IPC2/ElBilleton/src/main/webapp/img/logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-25" y="0" width="796" height="28" forecolor="#CCCCCC" backcolor="#29823D" uuid="429c0e99-2bd5-4ad3-962a-9fba3a1993bc"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="278" y="8" width="115" height="20" forecolor="#FFFFFF" uuid="4a887fc4-0741-4edf-9ba0-7b729fa2ccff"/>
+				<textElement>
+					<font fontName="Nimbus Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Creacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="8" width="111" height="20" forecolor="#FFFFFF" uuid="debf755f-81ad-4ccf-83ab-67c634f68ef4"/>
+				<textElement>
+					<font fontName="Nimbus Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo de cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-15" y="8" width="43" height="20" forecolor="#FFFFFF" uuid="f391005c-79dd-4a08-b505-7115f4f13a76"/>
+				<textElement>
+					<font fontName="Nimbus Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="164" y="8" width="31" height="20" forecolor="#FFFFFF" uuid="9ff8e8b1-2c3c-4cf0-84f9-2d5142f18c94"/>
+				<textElement>
+					<font fontName="Nimbus Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="42" splitType="Stretch">
+			<line>
+				<reportElement x="126" y="0" width="1" height="41" uuid="f506cc7f-8970-40a2-a6f3-5c2b1d7d4a80"/>
+			</line>
+			<line>
+				<reportElement x="249" y="0" width="1" height="41" uuid="0b4b111d-0c5b-404c-989e-49156c9ba700"/>
+			</line>
+			<line>
+				<reportElement x="419" y="0" width="1" height="41" uuid="045f3596-3249-4cc6-af80-2c0e7c0f2be3"/>
+			</line>
+			<line>
+				<reportElement x="-25" y="41" width="803" height="1" uuid="4c0b3b1b-2e70-4eb3-9fda-51f10a6296fb"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="10" width="100" height="20" uuid="5b3c764c-15a8-40a1-a694-b55a2b06eaca"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="145" y="10" width="100" height="20" uuid="f68c2425-6f63-4992-adef-b133ec93e59d"/>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="10" width="100" height="20" uuid="8b5a8dca-569b-4760-b339-22941e77fe68"/>
+				<textFieldExpression><![CDATA[$F{fecha_creacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="514" y="10" width="100" height="20" uuid="eefb8216-0ab1-4ed4-8668-c8a4c0a5cf54"/>
+				<textFieldExpression><![CDATA[$F{cliente_codigo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

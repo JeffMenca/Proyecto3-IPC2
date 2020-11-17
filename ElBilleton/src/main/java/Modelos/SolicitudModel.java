@@ -24,6 +24,8 @@ public class SolicitudModel {
 
     private final String SOLICITUD = "SELECT * FROM " + SolicitudAsociacion.SOLICITUD_DB_NAME;
     private final String SOLICITUD_CODIGO = "SELECT * FROM " + SolicitudAsociacion.SOLICITUD_DB_NAME + " WHERE " + SolicitudAsociacion.CODIGO_DB_NAME + "=?";
+    private final String REPORTE4 = "SELECT * FROM SOLICITUD_ASOCIACION S INNER JOIN CUENTA C ON C.codigo=S.cuenta2_recibe_codigo1 where C.cliente_codigo=?";
+    private final String REPORTE5 = "SELECT * FROM SOLICITUD_ASOCIACION S INNER JOIN CUENTA C ON C.codigo=S.cuenta_envia_codigo where C.cliente_codigo=?";
     private final String BUSCAR_SOLICITUD = SOLICITUD + " WHERE " + SolicitudAsociacion.CUENTA_ENVIA_CODIGO_DB_NAME + " = ? &&  " + SolicitudAsociacion.CUENTA_RECIBE_CODIGO_DB_NAME + " = ? LIMIT 1";
     private final String BUSCAR_SOLICITUD_PENDIENTE = SOLICITUD + " WHERE " + SolicitudAsociacion.CUENTA_RECIBE_CODIGO_DB_NAME + " = ? && " + SolicitudAsociacion.ESTADO_DB_NAME + "='Pendiente'";
     private final String BUSCAR_SOLICITUD_VECES = "SELECT COUNT(*) AS VECES FROM " + SolicitudAsociacion.SOLICITUD_DB_NAME + " WHERE " + SolicitudAsociacion.CUENTA_ENVIA_CODIGO_DB_NAME + " = ? &&  " + SolicitudAsociacion.CUENTA_RECIBE_CODIGO_DB_NAME + " = ?";
@@ -92,8 +94,6 @@ public class SolicitudModel {
         }
         return solicitud;
     }
-    
-    
 
     /**
      * Realizamos una busqueda en base a el codigo de las solicitudes. De no
@@ -213,6 +213,58 @@ public class SolicitudModel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
+    }
+
+    /**
+     * Realizamos una busqueda en de la cantidad solicitudes. De no existir nos
+     * devuelve un valor null.
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerReporte4(Long codigoCliente) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(REPORTE4);
+        preSt.setLong(1, codigoCliente);
+        ResultSet result = preSt.executeQuery();
+        ArrayList solicitudes = new ArrayList();
+        SolicitudAsociacion solicitud = null;
+        while (result.next()) {
+            solicitud = new SolicitudAsociacion(
+                    result.getInt(SolicitudAsociacion.CODIGO_DB_NAME),
+                    result.getDate(SolicitudAsociacion.FECHA_DB_NAME),
+                    result.getString(SolicitudAsociacion.ESTADO_DB_NAME),
+                    result.getLong(SolicitudAsociacion.CUENTA_ENVIA_CODIGO_DB_NAME),
+                    result.getLong(SolicitudAsociacion.CUENTA_RECIBE_CODIGO_DB_NAME)
+            );
+            solicitudes.add(solicitud);
+        }
+        return solicitudes;
+    }
+    
+    /**
+     * Realizamos una busqueda en de la cantidad solicitudes. De no existir nos
+     * devuelve un valor null.
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList obtenerReporte5(Long codigoCliente) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(REPORTE5);
+        preSt.setLong(1, codigoCliente);
+        ResultSet result = preSt.executeQuery();
+        ArrayList solicitudes = new ArrayList();
+        SolicitudAsociacion solicitud = null;
+        while (result.next()) {
+            solicitud = new SolicitudAsociacion(
+                    result.getInt(SolicitudAsociacion.CODIGO_DB_NAME),
+                    result.getDate(SolicitudAsociacion.FECHA_DB_NAME),
+                    result.getString(SolicitudAsociacion.ESTADO_DB_NAME),
+                    result.getLong(SolicitudAsociacion.CUENTA_ENVIA_CODIGO_DB_NAME),
+                    result.getLong(SolicitudAsociacion.CUENTA_RECIBE_CODIGO_DB_NAME)
+            );
+            solicitudes.add(solicitud);
+        }
+        return solicitudes;
     }
 
 }

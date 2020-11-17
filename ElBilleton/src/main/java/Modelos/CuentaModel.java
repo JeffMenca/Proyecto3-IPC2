@@ -3,13 +3,18 @@ package Modelos;
 import Objetos.AsociacionCuentas;
 import Objetos.Cuenta;
 import Objetos.SolicitudAsociacion;
+import Objetos.Transaccion;
 import SQLConnector.DbConnection;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -32,6 +37,7 @@ public class CuentaModel {
             + AsociacionCuentas.ASOCIACION_DB_NAME + " A ON A.solicitud_asociacion_codigo=S.codigo WHERE S.estado='Aceptada' && C.codigo!=? && C.cliente_codigo!=? GROUP BY C.codigo";
     public static final String BUSCAR_CUENTAS_CLIENTE = "SELECT * FROM " + Cuenta.CUENTA_DB_NAME + " WHERE cliente_codigo=? && codigo!=?";
     private final String EDITAR_MONTO = "UPDATE " + Cuenta.CUENTA_DB_NAME + " SET " + Cuenta.MONTO_DB_NAME + "=? WHERE " + Cuenta.CODIGO_DB_NAME + "=?";
+    private final String REPORTE3_CLIENTE="SELECT C.* FROM CUENTA C WHERE C.cliente_codigo=? ORDER BY C.monto DESC LIMIT 1";
     private static Connection connection = DbConnection.getConnection();
 
     /**
@@ -81,7 +87,11 @@ public class CuentaModel {
             preSt.setLong(4, codigoCliente);
 
             preSt.executeUpdate();
-
+            TransaccionModel transaccionModel = new TransaccionModel();
+            Date fecha = Date.valueOf(LocalDate.now());
+            Time hora = Time.valueOf(LocalTime.now());
+            Transaccion transaccion = new Transaccion(0, fecha, hora, "Credito", cuenta.getMonto(), cuenta.getCodigo(), 101);
+            transaccionModel.agregarTransaccion(transaccion);
             ResultSet result = preSt.getGeneratedKeys();
             if (result.first()) {
                 return result.getLong(1);
@@ -272,5 +282,30 @@ public class CuentaModel {
         }
 
         return -1;
+    }
+
+    /**
+     * Realizamos una busqueda en base al codigo de la cuenta. De no existir nos
+     * devuelve un valor null.
+     *
+     * @param codigoCuenta
+     *
+     * @return
+     * @throws SQLException
+     */
+    public Cuenta Reporte3Cliente(Long codigoCliente) throws SQLException {
+        PreparedStatement preSt = connection.prepareStatement(REPORTE3_CLIENTE);
+        preSt.setLong(1, codigoCliente);
+        ResultSet result = preSt.executeQuery();
+        Cuenta cuenta = null;
+        while (result.next()) {
+            cuenta = new Cuenta(
+                    result.getLong(cuenta.CODIGO_DB_NAME),
+                    result.getDate(cuenta.FECHA_CREACION_DB_NAME),
+                    result.getDouble(cuenta.MONTO_DB_NAME),
+                    result.getInt(cuenta.CLIENTE_CODIGO_DB_NAME)
+            );
+        }
+        return cuenta;
     }
 }
